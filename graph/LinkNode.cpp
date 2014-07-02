@@ -7,8 +7,7 @@
 using namespace std;
 
 
-
-node* makelist(const int *arr, const unsigned int length)
+ListNode* makelist(const int *arr, const unsigned int length)
 {
 
 	if (arr == NULL || length == 0)
@@ -16,12 +15,12 @@ node* makelist(const int *arr, const unsigned int length)
 		return NULL;
 	}
 
-	node *head, *p;
-	p = head = new node(arr[0]);
+	ListNode *head, *p;
+	p = head = new ListNode(arr[0]);
 
 	for (unsigned int i = 1; i < length; i += 1)
 	{
-		p->setnext(new node(arr[i]));
+		p->setnext(new ListNode(arr[i]));
 		p = p->getnext();
 	}
 
@@ -29,7 +28,7 @@ node* makelist(const int *arr, const unsigned int length)
 }
 
 
-node* makelist(const vector<int> vi)
+ListNode* makelist(const vector<int> vi)
 {
 
 	int length = vi.size();
@@ -38,12 +37,12 @@ node* makelist(const vector<int> vi)
 		return NULL;
 	}
 
-	node *head, *p;
-	p = head = new node(vi[0]);
+	ListNode *head, *p;
+	p = head = new ListNode(vi[0]);
 
 	for (int i = 1; i < length; i += 1)
 	{
-		p->setnext(new node(vi[i]));
+		p->setnext(new ListNode(vi[i]));
 		p = p->getnext();
 	}
 
@@ -51,28 +50,28 @@ node* makelist(const vector<int> vi)
 }
 
 
-void print(node *head)
+void print(ListNode *head)
 {
-	//参数中的 const 要求getvar需要加const
+	//参数中的 const 要求getval需要加const
 
 	std::cout << "\n--------------------------------------------------\n";
 	while (head)
 	{
 		std::cout.width(4);
-		std::cout << left << head->getvar();
+		std::cout << left << head->getval();
 		head = head->getnext();
 	}
 }
 
 
-void print(node *list, unsigned int M)
+void print(ListNode *list, unsigned int M)
 {
 	std::cout << "\n--------------------------------------------------\n";
 
 	for (unsigned int i = 0; i<M; i += 1)
 	{
 		std::cout.width(4);
-		std::cout << left << list->getvar();
+		std::cout << left << list->getval();
 
 		if (list->getnext())
 		{
@@ -83,7 +82,7 @@ void print(node *list, unsigned int M)
 }
 
 
-void sortlist1(node * &list)
+void sortlist1(ListNode * &list)
 {
 	//Sort a linked list using insertion sort.
 	if (!list)
@@ -91,9 +90,9 @@ void sortlist1(node * &list)
 		return;
 	}
 
-	node *p;	//p是tail之后，要插入元素
-	node *sp;
-	node *tail = list;
+	ListNode *p;	//p是tail之后，要插入元素
+	ListNode *sp;
+	ListNode *tail = list;
 
 	while (p = tail->getnext())
 	{
@@ -102,14 +101,14 @@ void sortlist1(node * &list)
 		p是未排序部分第一个元素
 		*/
 
-		if (p->getvar() >= tail->getvar())
+		if (p->getval() >= tail->getval())
 		{
 			//p大于等于最大，插到尾部
 			tail = p;
 			continue;
 		}
 
-		if (p->getvar() <= list->getvar())
+		if (p->getval() <= list->getval())
 		{
 			//p小于等于最小，查到首部
 			tail->setnext(p->getnext());
@@ -120,7 +119,7 @@ void sortlist1(node * &list)
 
 		//插到中间，sp点之后
 		sp = list;
-		while ((sp->getnext())->getvar()<p->getvar())
+		while ((sp->getnext())->getval()<p->getval())
 		{
 			//找到要插入的点，之前的点记录为sp
 			sp = sp->getnext();
@@ -137,7 +136,7 @@ void sortlist1(node * &list)
 }
 
 
-node* sortlist2(node *list)
+ListNode* sortlist2(ListNode *list)
 {
 	//冒泡
 
@@ -146,11 +145,11 @@ node* sortlist2(node *list)
 		return list;
 	}
 
-	node *Head = list;//store list-head for return
+	ListNode *Head = list;//store list-head for return
 
-	node *post;
-	node *curr;
-	node *prev;
+	ListNode *post;
+	ListNode *curr;
+	ListNode *prev;
 
 	for (unsigned int i = 1; i<getsize(Head); i += 1)	//2 ele at least
 	{
@@ -160,7 +159,7 @@ node* sortlist2(node *list)
 		curr = post->getnext();
 		prev = curr->getnext();
 
-		if (curr->getvar()<post->getvar())
+		if (curr->getval()<post->getval())
 		{
 			curr->setnext(post);
 			post->setnext(prev);
@@ -174,7 +173,7 @@ node* sortlist2(node *list)
 
 		while (prev)//冒泡一轮
 		{
-			if (prev->getvar()<curr->getvar())
+			if (prev->getval()<curr->getval())
 			{
 				//exchange
 				curr->setnext(prev->getnext());
@@ -197,7 +196,7 @@ node* sortlist2(node *list)
 }
 
 
-void  rdfsl1(node *list)
+void  rdfsl1(ListNode *list)
 {
 	/*
 	Given a sorted linked list,
@@ -207,10 +206,10 @@ void  rdfsl1(node *list)
 	Given 1->1->2->3->3, return 1->2->3.
 	*/
 
-	node *pre, *t;
+	ListNode *pre, *t;
 	while (list && (pre = list->getnext()))
 	{
-		while (pre && (list->getvar()) == pre->getvar())
+		while (pre && (list->getval()) == pre->getval())
 		{
 			t = pre;
 			pre = pre->getnext();
@@ -224,13 +223,76 @@ void  rdfsl1(node *list)
 
 }
 
+ListNode *deleteDuplicates(ListNode * head) 
+{
+	if (head == NULL || head->next == NULL)
+	{
+		return head;
+	}
 
-void  rdfsl2(node * & list)
+
+	ListNode * ret		= NULL;
+	ListNode * tail		= NULL;
+	ListNode * p		= head;
+	ListNode * todel;
+	ListNode * tmp		= head;
+
+
+	while (p = p->next)
+	{ 
+		if (p->val != tmp->val)
+		{
+			if (ret == NULL)//头部
+			{
+				ret = tail = tmp;
+			}
+			else
+			{
+				tail->next = tmp;
+				tail = tmp;
+			}
+			tail->next = NULL;
+			tmp = p;
+			continue;
+		}
+
+		while (p && p->val == tmp->val)
+		{
+			todel = p;
+			p = p->next;
+			delete todel;
+		}
+		delete tmp;
+
+		if (p == NULL)//末尾部分是连续相同的情况
+		{
+			return ret;
+		}
+		else//p可用
+		{
+			tmp = p;//tmp/p可能是一个新阶段的开始，也可能是最后一个有效点
+		}
+	} 
+
+	if (ret == NULL)
+	{
+		ret = tmp;
+	}
+	else
+	{
+		tail->next = tmp;
+	}
+	tmp->next = NULL;
+	 
+	return ret;
+}
+
+void  rdfsl2(ListNode * & list)
 {
 
 	/*
 	Given a sorted linked list,
-	delete all nodes that have duplicate numbers,
+	delete all ListNodes that have duplicate numbers,
 	leaving only distinct numbers from the original list.
 
 	For example,
@@ -247,12 +309,12 @@ void  rdfsl2(node * & list)
 
 	//至少2个元素
 
-	node *temp = NULL;
+	ListNode *temp = NULL;
 
-	node *p = list;
+	ListNode *p = list;
 
-	node *Head = NULL;
-	node *h = NULL;;
+	ListNode *Head = NULL;
+	ListNode *h = NULL;;
 
 	//init
 	temp = p;
@@ -260,7 +322,7 @@ void  rdfsl2(node * & list)
 
 	while (p = p->getnext())
 	{
-		if (p->getvar() != temp->getvar())
+		if (p->getval() != temp->getval())
 		{
 			if (count == 1)
 			{
@@ -299,7 +361,9 @@ void  rdfsl2(node * & list)
 }
 
 
-unsigned int getsize(node *list)
+
+
+unsigned int getsize(ListNode *list)
 {
 	unsigned int n = 0;
 
@@ -313,7 +377,7 @@ unsigned int getsize(node *list)
 }
 
 
-int   ifcycle1(node *list)
+int   ifcycle1(ListNode *list)
 {
 	/*
 	Given a linked list, determine if it has a cycle in it.
@@ -321,10 +385,10 @@ int   ifcycle1(node *list)
 	Follow up:
 	Can you solve it without using extra space?
 	*/
-	node *p1 = list;
-	node *p2 = list;
+	ListNode *p1 = list;
+	ListNode *p2 = list;
 
-	node *t;
+	ListNode *t;
 	while (p2)
 	{
 		p1 = p1->getnext();
@@ -346,11 +410,11 @@ int   ifcycle1(node *list)
 }
 
 
-node* ifcycle2(node *list)
+ListNode* ifcycle2(ListNode *list)
 {
 	/*
 	Given a linked list,
-	return the node where the cycle begins.
+	return the ListNode where the cycle begins.
 	If there is no cycle, return null.
 
 	Follow up:
@@ -361,7 +425,7 @@ node* ifcycle2(node *list)
 }
 
 
-node *find(node *list, unsigned int nth)
+ListNode *find(ListNode *list, unsigned int nth)
 {
 
 	/*找到list中的第nth个节点
@@ -381,11 +445,11 @@ node *find(node *list, unsigned int nth)
 }
 
 
-int makecycle(node *list, unsigned int nth)
+int makecycle(ListNode *list, unsigned int nth)
 {
 	//把第nth个节点和尾部连接构成环；
 
-	node *t = find(list, nth);
+	ListNode *t = find(list, nth);
 	if (!t)
 	{
 		return 0;//nth too big
@@ -402,7 +466,7 @@ int makecycle(node *list, unsigned int nth)
 }
 
 
-node *Qpart(node * &list, node *fron, node *tail)
+ListNode *Qpart(ListNode * &list, ListNode *fron, ListNode *tail)
 {
 	/*
 	返回时：
@@ -421,13 +485,13 @@ node *Qpart(node * &list, node *fron, node *tail)
 	}
 
 
-	node *mid = list;
-	node *p = list;
-	node *pp;
+	ListNode *mid = list;
+	ListNode *p = list;
+	ListNode *pp;
 
 	while ((pp = p->getnext()) != tail)
 	{
-		if (pp->getvar()<mid->getvar())//取出pp
+		if (pp->getval()<mid->getval())//取出pp
 		{
 			p->setnext(pp->getnext());
 			pp->setnext(list);
@@ -453,12 +517,12 @@ node *Qpart(node * &list, node *fron, node *tail)
 }
 
 
-void Qsort(node * &list, node *fron, node *tail)
+void Qsort(ListNode * &list, ListNode *fron, ListNode *tail)
 {
-	node *mid = Qpart(list, fron, tail);
+	ListNode *mid = Qpart(list, fron, tail);
 	//print(list);
 
-	node *midn;
+	ListNode *midn;
 	if (mid)
 	{
 		midn = mid->getnext();
@@ -470,13 +534,13 @@ void Qsort(node * &list, node *fron, node *tail)
 }
 
 
-node *reorder(node *h1, node *h2)
+ListNode *reorder(ListNode *h1, ListNode *h2)
 {
 
 	/*
 	Given a singly linked list L: L0→L1→…→Ln-1→Ln,
 	reorder it to: L0→Ln→L1→Ln-1→L2→Ln-2→…
-	You must do this in-place without altering the nodes' values.
+	You must do this in-place without altering the ListNodes' values.
 	For example,
 	Given {1,2,3,4}, reorder it to {1,4,2,3}.
 	*/
@@ -487,8 +551,8 @@ node *reorder(node *h1, node *h2)
 		return NULL;
 	}
 
-	node  *head = h1;
-	node *t;
+	ListNode  *head = h1;
+	ListNode *t;
 
 	while (h2)
 	{
@@ -507,7 +571,7 @@ node *reorder(node *h1, node *h2)
 }
 
 
-node *get_inv_tail(node *list)
+ListNode *get_inv_tail(ListNode *list)
 {
 	unsigned int n = getsize(list);
 
@@ -523,7 +587,7 @@ node *get_inv_tail(node *list)
 		list = list->getnext();
 	}
 
-	node *t = list;
+	ListNode *t = list;
 	list = list->getnext();
 	t->setnext(NULL);
 
@@ -531,11 +595,11 @@ node *get_inv_tail(node *list)
 }
 
 
-node *inorder(node *list)
+ListNode *inorder(ListNode *list)
 {
 
-	node *head = NULL;;//head of reordered list
-	node *t;   //the  isolate node
+	ListNode *head = NULL;;//head of reordered list
+	ListNode *t;   //the  isolate ListNode
 
 	while (list)
 	{
@@ -550,7 +614,7 @@ node *inorder(node *list)
 }
 
 
-node *reverseBetween(node *head, int m, int n)
+ListNode *reverseBetween(ListNode *head, int m, int n)
 {
 	/*
 	Reverse a linked list from position m to n. Do it in-place and in one-pass.
@@ -570,14 +634,14 @@ node *reverseBetween(node *head, int m, int n)
 		return NULL;
 	}
 
-	node *p = head;
+	ListNode *p = head;
 	for (int i = 1; i < m - 1; i += 1)
 	{
 		p = p->getnext();
 		if (!p)	return head; //m过大 
 	}
 
-	node *prev;//pre是反转前一个节点指针
+	ListNode *prev;//pre是反转前一个节点指针
 	if (m == 1)
 	{
 		prev = NULL;
@@ -588,8 +652,8 @@ node *reverseBetween(node *head, int m, int n)
 		p = prev->getnext();
 	}
 
-	node *h = NULL;
-	node *t;
+	ListNode *h = NULL;
+	ListNode *t;
 	for (int i = m; i <= n; i += 1)
 	{
 		if (p == NULL)	break;//p指向要反转部分第一个节点
@@ -599,7 +663,7 @@ node *reverseBetween(node *head, int m, int n)
 		h = t;
 	}
 
-	node *tail = (prev == NULL ? head : prev->getnext());
+	ListNode *tail = (prev == NULL ? head : prev->getnext());
 	tail->setnext(p);		//处理尾部
 
 	if (prev == NULL)			//处理开头
@@ -616,20 +680,20 @@ node *reverseBetween(node *head, int m, int n)
 
 
 
-void  rnfel(node * & head, unsigned int nth)
+void  rnfel(ListNode * & head, unsigned int nth)
 {
 	/*
-	Given a linked list, remove the nth node from the end of list and return its head.
+	Given a linked list, remove the nth ListNode from the end of list and return its head.
 	For example,
 	Given linked list: 1->2->3->4->5, and n = 2.
 
-	After removing the second node from the end, the linked list becomes 1->2->3->5.
+	After removing the second ListNode from the end, the linked list becomes 1->2->3->5.
 	Note:
 	Given n will always be valid.
 	Try to do this in one pass.
 	*/
 
-	node *list = head;
+	ListNode *list = head;
 
 	if (!list)
 	{
@@ -651,7 +715,7 @@ void  rnfel(node * & head, unsigned int nth)
 		危险，当链表中只含有1个元素，删掉一个元素后，delete，原指针会变成野指针；
 		已处理
 		*/
-		node *p = list;
+		ListNode *p = list;
 		list = list->getnext();
 		delete p;
 
@@ -668,7 +732,7 @@ void  rnfel(node * & head, unsigned int nth)
 		list = list->getnext();
 	}
 
-	node *p = list->getnext();
+	ListNode *p = list->getnext();
 	if (nth == 1)
 	{
 		list->setnext(NULL);
@@ -685,7 +749,7 @@ void  rnfel(node * & head, unsigned int nth)
 #define M 6
 #define N 6
 
-node *rotateRight(node *list, int k)
+ListNode *rotateRight(ListNode *list, int k)
 {
 	/*
 	Given a list, rotate the list to the right by k places,
@@ -706,7 +770,7 @@ node *rotateRight(node *list, int k)
 
 
 	int n = 1;
-	node *p = list;
+	ListNode *p = list;
 	while (p->getnext())
 	{
 		n += 1;
@@ -731,16 +795,16 @@ node *rotateRight(node *list, int k)
 
 
 
-node *mergeTwoLists(node *l1, node *l2)
+ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
 {
 
 	if (l1 == NULL)	return l2;
 	if (l2 == NULL)   return l1;
 
-	node *head;
-	node *tail;
+	ListNode *head;
+	ListNode *tail;
 
-	if (l1->getvar() < l2->getvar())
+	if (l1->getval() < l2->getval())
 	{
 		head = tail = l1;
 		l1 = l1->getnext();
@@ -753,7 +817,7 @@ node *mergeTwoLists(node *l1, node *l2)
 
 	while (l1&&l2)
 	{
-		if (l1->getvar()<l2->getvar())
+		if (l1->getval()<l2->getval())
 		{
 			tail->setnext(l1);
 			l1 = l1->getnext();
@@ -777,12 +841,12 @@ node *mergeTwoLists(node *l1, node *l2)
 
 
 
-node *addTwoNumbers(node *l1, node *l2)
+ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 {
 
 	/*
 	You are given two linked lists representing two non-negative numbers.
-	The digits are stored in reverse order and each of their nodes contain a single digit.
+	The digits are stored in reverse order and each of their ListNodes contain a single digit.
 	Add the two numbers and return it as a linked list.
 
 	Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
@@ -796,18 +860,18 @@ node *addTwoNumbers(node *l1, node *l2)
 	while (l1&&l2)
 	{
 
-		sum = l1->getvar() + l2->getvar();
+		sum = l1->getval() + l2->getval();
 		vi.push_back(c + sum % 10);
 		c = (sum >= 10 ? 1 : 0);
 
 		l1 = l1->getnext();
 		l2 = l2->getnext();
 	}
-	node * p = (l1 == NULL ? l2 : l1);
+	ListNode * p = (l1 == NULL ? l2 : l1);
 
 	while (p)
 	{
-		vi.push_back(p->getvar() + c);
+		vi.push_back(p->getval() + c);
 		p = p->getnext();
 		c = 0;
 	}
@@ -824,14 +888,14 @@ node *addTwoNumbers(node *l1, node *l2)
 
 
 
-node *reverseKGroup(node *head, int k)
+ListNode *reverseKGroup(ListNode *head, int k)
 {
 	/*
-	Given a linked list, reverse the nodes of a linked list k at a time and return its modified list.
+	Given a linked list, reverse the ListNodes of a linked list k at a time and return its modified list.
 
-	If the number of nodes is not a multiple of k then left-out nodes in the end should remain as it is.
+	If the number of ListNodes is not a multiple of k then left-out ListNodes in the end should remain as it is.
 
-	You may not alter the values in the nodes, only nodes itself may be changed.
+	You may not alter the values in the ListNodes, only ListNodes itself may be changed.
 
 	Only constant memory is allowed.
 
@@ -843,12 +907,12 @@ node *reverseKGroup(node *head, int k)
 	For k = 3, you should return: 3->2->1->4->5
 	*/
 
-	node *p = head;//即将处理的点
-	node *tail;//k-group中已反序部分的尾部
-	node *rest;//未反序部分的头
-	node *thehead = NULL;//k-group已反序部分的头
-	node *list = NULL;//总体的头
-	node *prev = NULL;//k-group的前一个点
+	ListNode *p = head;//即将处理的点
+	ListNode *tail;//k-group中已反序部分的尾部
+	ListNode *rest;//未反序部分的头
+	ListNode *thehead = NULL;//k-group已反序部分的头
+	ListNode *list = NULL;//总体的头
+	ListNode *prev = NULL;//k-group的前一个点
 
 	if (k <= 1)
 	{
@@ -890,25 +954,25 @@ node *reverseKGroup(node *head, int k)
 }
 
 
-node *swapPairs(node *head)
+ListNode *swapPairs(ListNode *head)
 {
 	/*
-	Given a linked list, swap every two adjacent nodes and return its head.
+	Given a linked list, swap every two adjacent ListNodes and return its head.
 
 	For example,
 	Given 1->2->3->4, you should return the list as 2->1->4->3.
 
 	Your algorithm should use only constant space.
-	You may not modify the values in the list, only nodes itself can be changed.
+	You may not modify the values in the list, only ListNodes itself can be changed.
 	*/
 	if (!head || !head->next) // 0 / 1
 	{
 		return head;
 	}
 
-	node *prev = head;
-	node *fron = head->next;
-	node *rest = head->next->next;
+	ListNode *prev = head;
+	ListNode *fron = head->next;
+	ListNode *rest = head->next->next;
 
 	//[prev front] rest
 	head->next = fron->next;
@@ -932,7 +996,7 @@ node *swapPairs(node *head)
 
 
 
-node *mergeKLists(vector<node *> &lists)
+ListNode *mergeKLists(vector<ListNode *> &lists)
 {
 	/*
 	Merge k sorted linked lists and return it as one sorted list.
@@ -943,9 +1007,9 @@ node *mergeKLists(vector<node *> &lists)
 
 	总结点数  的线性函数
 	*/
-	node **min = NULL;
-	node *head = NULL;
-	node *tail = NULL;;
+	ListNode **min = NULL;
+	ListNode *head = NULL;
+	ListNode *tail = NULL;;
 
 	unsigned int k = lists.size();;
 	unsigned int i;
@@ -967,7 +1031,7 @@ node *mergeKLists(vector<node *> &lists)
 
 		for (i += 1; i < k; i++)
 		{
-			if (lists[i] && (*min)->var > lists[i]->var)
+			if (lists[i] && (*min)->val > lists[i]->val)
 			{
 				min = &lists[i];
 			}
@@ -984,7 +1048,7 @@ node *mergeKLists(vector<node *> &lists)
 
 
 
-int lengthof(node * head)
+int lengthof(ListNode * head)
 {
 	int i = 0;
 	while (head)
@@ -996,7 +1060,7 @@ int lengthof(node * head)
 }
 
 /*
-T *sortedListToBST_(node *head, int n)
+T *sortedListToBST_(ListNode *head, int n)
 {
 	if (head == NULL || n <= 0)
 	{
@@ -1005,26 +1069,26 @@ T *sortedListToBST_(node *head, int n)
 
 	if (n == 1)
 	{
-		return new T(head->var);
+		return new T(head->val);
 	}
 
 	T *root;
-	node *parent = head;
+	ListNode *parent = head;
 	for (int i = 0; i < n / 2; i += 1)
 	{
 		parent = parent->next;
 	}
 
-	root = new T(parent->var);
+	root = new T(parent->val);
 
-	root->L = sortedListToBST_(head, n / 2);
-	root->R = sortedListToBST_(parent->next, n - n / 2 - 1);
+	root->left = sortedListToBST_(head, n / 2);
+	root->right = sortedListToBST_(parent->next, n - n / 2 - 1);
 
 	return root;
 }
 
 
-T *sortedListToBST(node *head)
+T *sortedListToBST(ListNode *head)
 {
 	/*
 	Given a singly linked list where elements are sorted in ascending order,
@@ -1045,54 +1109,10 @@ T *sortedListToBST(node *head)
 
 
 
-vector<vector<int> > zigzagLevelOrder(node *root)
-{
-	/*
-	Given a binary tree, return the zigzag level order traversal of its nodes' values.
-	(ie, from left to right, then right to left for the next level and alternate between).
-
-	For example:
-	Given binary tree {3,9,20,#,#,15,7},
-	3
-	/ \
-	9  20
-	/  \
-	15   7
-	return its zigzag level order traversal as:
-	[
-	[3],
-	[20,9],
-	[15,7]
-	]
-	confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
 
 
-	OJ's Binary Tree Serialization:
-	The serialization of a binary tree follows a level order traversal,
-	where '#' signifies a path terminator where no node exists below.
 
-	Here's an example:
-	1
-	/ \
-	2   3
-	/
-	4
-	\
-	5
-	The above binary tree is serialized as "{1,2,3,#,#,4,#,#,5}".
-	*/
-
-	vector<vector<int> > vv;
-	//在level order 的实现中加一个bool标记，
-	//当添加一层时，根据标记决定，
-	//	在vector<T *>尾部按RL添加-----从右向左读
-	//  在vector<T *>头部按RL添加-----从左向右读
-
-	return vv;
-}
-
-
-void recoverTree(node *root)
+void recoverTree(ListNode *root)
 {
 	/*
 	Two elements of a binary search tree (BST) are swapped by mistake.
@@ -1107,24 +1127,24 @@ void recoverTree(node *root)
 
 }
 
-node *partition(node *head, int x)
+ListNode *partition(ListNode *head, int x)
 {
 	/*
 	Given a linked list and a value x,
-	partition it such that all nodes less than x come before nodes greater than or equal to x.
+	partition it such that all ListNodes less than x come before ListNodes greater than or equal to x.
 
-	You should preserve the original relative order of the nodes in each of the two partitions.
+	You should preserve the original relative order of the ListNodes in each of the two partitions.
 
 	For example,好像有错误
 	Given  1->4->3->2->5->2 and x = 3,
 	return 1->2->2->4->3->5.
 	*/
 
-	node * scanp = head;
-	node * tmp, *tmp2;
-	node * pre = NULL;
+	ListNode * scanp = head;
+	ListNode * tmp, *tmp2;
+	ListNode * pre = NULL;
 
-	while (scanp && scanp->var < x)
+	while (scanp && scanp->val < x)
 	{
 		pre = scanp;
 		scanp = scanp->next;
@@ -1134,8 +1154,8 @@ node *partition(node *head, int x)
 
 	while (scanp && scanp->next)
 	{
-		int xx = scanp->next->var;
-		if (scanp->next->var < x)
+		int xx = scanp->next->val;
+		if (scanp->next->val < x)
 		{
 			tmp = scanp->next;
 			scanp->next = tmp->next;
@@ -1169,7 +1189,7 @@ node *partition(node *head, int x)
 
 
 
-vector<node *> generateTrees(int n)
+vector<ListNode *> generateTrees(int n)
 {
 	/*
 	Given n, generate all structurally unique BST's (binary search trees) that store values 1...n.
@@ -1185,29 +1205,29 @@ vector<node *> generateTrees(int n)
 	confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
 	*/
 
-	vector<node *> vn;
+	vector<ListNode *> vn;
 
 	return vn;
 }
 
 
 
-node *copyRandomList(node *head)
+ListNode *copyRandomList(ListNode *head)
 {
 	if (head == NULL)
 	{
 		return NULL;
 	}
 
-	node *p;
-	node *pp;
-	node *Head;
+	ListNode *p;
+	ListNode *pp;
+	ListNode *Head;
 
 	p = head;
 	while (p)
 	{
 		pp = p->next;
-		p->next = new node(p->var);//复制 ，更普遍的情况，使用copy constructor
+		p->next = new ListNode(p->val);//复制 ，更普遍的情况，使用copy constructor
 		p->next->next = pp;
 		p = pp;
 	}

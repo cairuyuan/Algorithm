@@ -3,90 +3,226 @@
 
 #include "stdafx.h"
 #include "head.h"
+#include "Tree.h"
+#include "LinkNode.h"
 
 using namespace std;
 
 bool wordBreak(string s, unordered_set<string> &dic);
 int decode(string s);
 int lengthOfLastWord(const char *s);
-
+bool isMatch(const char *s, const char *p);
+string getPermutation(int n, int k);
+ListNode *deleteDuplicates(ListNode * head);
+vector<int> grayCode(int n);
+TreeNode *sortedListToBST(ListNode *head);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-	//string s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
-	string s = "aaab";
-	unordered_set<string> dic;
-
-	dic.insert("a");
-	dic.insert("aa");
-
-	//dic.insert("aaa");
-	//dic.insert("aaaa");
-	//dic.insert("aaaaa");
-	//dic.insert("aaaaaa");
-	//dic.insert("aaaaaaa");
-	//dic.insert("aaaaaaaa");
-	//dic.insert("aaaaaaaaa");
-	//dic.insert("aaaaaaaaaa");
+	int a[5] = {2,1,3};
+	ListNode *root = makelist(a,3);
+	//print(root);
+	//cout << "\n----------\n";
+	TreeNode *Troot = sortedListToBST(root);
+	print4(Troot);
+	connect1(Troot);
+	//zigzagLevelOrder(Troot);
+	//root = deleteDuplicates(root);
+	//print(root);
 	
-	bool x = wordBreak(s, dic);
-	//decode("17");
+
 	return 0;   
 }
 
+TreeNode * packfun(ListNode * head, int count)//count 是个数
+{
+
+	/*
+	退出条件
+	*/
+
+	if (count == 0)
+	{
+		return NULL;
+	}
+
+	ListNode * mid = head;
+	for (int i = 0; i < count/2; i++)
+	{
+		mid = mid->next;
+	}
+	//此时mid在中间位置 count/2
+
+	TreeNode *root = new TreeNode(mid->val);
+	root->left = packfun(head,count/2);
+	root->right = packfun(mid->next,count-count/2-1);
+
+	return root;
+}
+
+
+
+TreeNode *sortedListToBST(ListNode *head)
+{
+	if (head ==NULL)
+	{
+		return NULL;
+	}
+	int n = 0;
+	ListNode * p = head;
+	while (p)
+	{
+		n += 1;
+		p = p->next;
+	}
+
+	return packfun(head,n);
+}
+
+
+
+vector<int> grayCode(int n) 
+{
+	/*
+	n位格雷码
+	使用n个bit返回可以表示的格雷码序列
+	格雷码两个数字之间只有一个bit不相同
+	*/
+
+	vector<int> ret(1,0);
+
+	int num;
+	for (int i = 1; i <= n; i++)
+	{
+		/*
+		计算有i位的格雷码
+		*/
+		num = 1 << (i-1);//i-1位的格雷码共有num个码
+		for (int j = 0; j < num; j++)
+		{
+			ret.push_back(ret[num - 1 - j] | num);
+		}
+
+	}
+	return ret;
+}
+
+string getPermutation(int n, int k)
+{
+	/*
+	1到n（n<10）个数字全排，的第k个
+	*/
+	int A[10];A[0] = 1;
+	vector<char> C;
+	for (size_t i = 1; i < 10; i++)
+	{
+		A[i] = i* A[i - 1];
+		C.push_back( i + '0');
+	}
+	string s;
+	int x;
+	k -= 1;
+
+	for (size_t i = 0; i < n; i++)
+	{
+		x = k / A[n - 1];
+		s += C[x];
+		C.erase(C.begin() + x);
+		k %= A[n - 1];
+		n -= 1;
+	}
+
+	return s;
+}
+bool isMatch(const char *s, const char *p)
+{
+	int i = 0;//s
+	int j = 0;//p
+
+	while (p[j])
+	{
+		switch (p[j])
+		{
+		case '?':
+			if (s[i] == 0)
+			{
+				return false;
+			}
+			break;
+
+		case '*':
+
+
+			//*
+			if (p[j+1] == 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			break;
+
+		default:
+			if (p[j] != s[i])
+			{
+				return false;
+			}
+			break;
+		}
+		i += 1;
+		j += 1;
+	}
+
+	return s[i] ? false : true;
+}
 
 bool wordBreak(string s, unordered_set<string> &dic)
 {
 
-	int sLength = s.size();
-	vector<int> index(sLength, 0);
-
 	std::unordered_set<std::string>::const_iterator get;
+	int sLength = s.size();
 	int right = 0;
-	int top = 0;
 	string tmp;
-	bool done = false;
+	stack<int> index;
+	int start;
 
 	while (true)
 	{
+		
 		tmp += s[right];
-
+		//cout<< tmp.size()<<'\t'<< index.size() << '\n';
 		get = dic.find(tmp);
 		if (get != dic.end())
 		{
-
-			index[++top] = right;
+			//匹配
+			index.push(right);
 			tmp.clear();
 
 			if (right == sLength - 1)
 			{
-				done = true;//return true;
-				break;
+				return true;
 			}
 		}
 
 		if (right == sLength - 1)
 		{
-
-			top = done ? --top : top;
-			done = false;
-			right = index[top];
-
-			if (--top == -1)
+			if (index.empty())
 			{
-				break;//或break ;表示全局搜索结束
+				return false;
 			}
 
-			tmp = string(s, index[top]+1, right - index[top]);//从index[top]+1下表开始(包含) 复制right - index[top]个
+			right = index.top();
+			index.pop();
+			start = index.empty() ? 0 : index.top() + 1;
+
+			tmp = string(s, start, right - start + 1);//从index[top]+1下表开始(包含) 复制right - index[top]个
 
 		}
 
 		right += 1;
 	}
-
-	return done;
-
 }
 
 

@@ -17,16 +17,16 @@
 class RBT
 {
 public:
-	int var;
-	RBT *L;
-	RBT *R;
+	int val;
+	RBT *left;
+	RBT *right;
 	RBT *P;
 	bool color;
 public:
-	RBT(void) :var(0), L(NULL), R(NULL), P(NULL), color(black){};
-	RBT(int x, bool c) :var(x), L(NULL), R(NULL), P(NULL), color(c){};
-	RBT(int x, RBT *l, RBT *r, bool c) :var(x), L(l), R(r), P(NULL), color(c){};
-	RBT(int x, RBT *l, RBT *r, RBT *p, bool c) :var(x), L(l), R(r), P(p), color(c){};
+	RBT(void) :val(0), left(NULL), right(NULL), P(NULL), color(black){};
+	RBT(int x, bool c) :val(x), left(NULL), right(NULL), P(NULL), color(c){};
+	RBT(int x, RBT *l, RBT *r, bool c) :val(x), left(l), right(r), P(NULL), color(c){};
+	RBT(int x, RBT *l, RBT *r, RBT *p, bool c) :val(x), left(l), right(r), P(p), color(c){};
 	~RBT(void){};
 };
 RBT *nil = new RBT(~0, black);

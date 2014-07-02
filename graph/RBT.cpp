@@ -31,7 +31,7 @@ void  print4_(RBT *root)
 		if (t1[i] != nil)
 		{
 			cout.width(3);
-			cout << t1[i]->var;
+			cout << t1[i]->val;
 
 			if (t1[i]->color == black)
 			{
@@ -41,8 +41,8 @@ void  print4_(RBT *root)
 			{
 				cout << 'r';
 			}
-			t2[2 * i] = t1[i]->L;
-			t2[2 * i + 1] = t1[i]->R;
+			t2[2 * i] = t1[i]->left;
+			t2[2 * i + 1] = t1[i]->right;
 		}
 	}
 	cout << "\n";
@@ -55,7 +55,7 @@ void  print4_(RBT *root)
 		{
 			cout << "      ";
 			cout.width(3);
-			cout << t2[i]->var;
+			cout << t2[i]->val;
 			if (t2[i]->color == black)
 			{
 				cout << 'b';
@@ -65,8 +65,8 @@ void  print4_(RBT *root)
 				cout << 'r';
 			}
 			cout << "       ";
-			t3[2 * i] = t2[i]->L;
-			t3[2 * i + 1] = t2[i]->R;
+			t3[2 * i] = t2[i]->left;
+			t3[2 * i + 1] = t2[i]->right;
 		}
 		else
 		{
@@ -83,7 +83,7 @@ void  print4_(RBT *root)
 		{
 			cout << "  ";
 			cout.width(3);
-			cout << t3[i]->var;
+			cout << t3[i]->val;
 			if (t3[i]->color == black)
 			{
 				cout << 'b';
@@ -94,8 +94,8 @@ void  print4_(RBT *root)
 			}
 			cout << "   ";
 
-			t4[2 * i] = t3[i]->L;
-			t4[2 * i + 1] = t3[i]->R;
+			t4[2 * i] = t3[i]->left;
+			t4[2 * i + 1] = t3[i]->right;
 		}
 		else
 		{
@@ -112,7 +112,7 @@ void  print4_(RBT *root)
 		if (t4[i] != nil)
 		{
 			cout.width(3);
-			cout << t4[i]->var;
+			cout << t4[i]->val;
 			if (t4[i]->color == black)
 			{
 				cout << 'b';
@@ -154,7 +154,7 @@ void  print4(RBT *root)
 		if (t1[i] != NULL)
 		{
 			cout.width(3);
-			cout << t1[i]->var;
+			cout << t1[i]->val;
 
 			if (t1[i]->color == black)
 			{
@@ -164,8 +164,8 @@ void  print4(RBT *root)
 			{
 				cout << 'r';
 			}
-			t2[2 * i] = t1[i]->L;
-			t2[2 * i + 1] = t1[i]->R;
+			t2[2 * i] = t1[i]->left;
+			t2[2 * i + 1] = t1[i]->right;
 		}
 	}
 	cout << "\n";
@@ -178,7 +178,7 @@ void  print4(RBT *root)
 		{
 			cout << "      ";
 			cout.width(3);
-			cout << t2[i]->var;
+			cout << t2[i]->val;
 			if (t2[i]->color == black)
 			{
 				cout << 'b';
@@ -188,8 +188,8 @@ void  print4(RBT *root)
 				cout << 'r';
 			}
 			cout << "       ";
-			t3[2 * i] = t2[i]->L;
-			t3[2 * i + 1] = t2[i]->R;
+			t3[2 * i] = t2[i]->left;
+			t3[2 * i + 1] = t2[i]->right;
 		}
 		else
 		{
@@ -206,7 +206,7 @@ void  print4(RBT *root)
 		{
 			cout << "  ";
 			cout.width(3);
-			cout << t3[i]->var;
+			cout << t3[i]->val;
 			if (t3[i]->color == black)
 			{
 				cout << 'b';
@@ -217,8 +217,8 @@ void  print4(RBT *root)
 			}
 			cout << "   ";
 
-			t4[2 * i] = t3[i]->L;
-			t4[2 * i + 1] = t3[i]->R;
+			t4[2 * i] = t3[i]->left;
+			t4[2 * i + 1] = t3[i]->right;
 		}
 		else
 		{
@@ -235,7 +235,7 @@ void  print4(RBT *root)
 		if (t4[i] != NULL)
 		{
 			cout.width(3);
-			cout << t4[i]->var;
+			cout << t4[i]->val;
 			if (t4[i]->color == black)
 			{
 				cout << 'b';
@@ -270,13 +270,13 @@ RBT *gp(RBT *root)
 
 RBT *un(RBT *root)
 {
-	if (root->P == gp(root)->L)
+	if (root->P == gp(root)->left)
 	{
-		return gp(root)->R;
+		return gp(root)->right;
 	}
 	else
 	{
-		return gp(root)->L;
+		return gp(root)->left;
 	}
 }
 
@@ -355,18 +355,18 @@ RBT * insert_case4(RBT *ROOT, RBT *root)
 	进行一次左旋转调换新节点和其父节点的角色
 	*/
 
-	if (root == root->P->R && root->P == gp(root)->L)
+	if (root == root->P->right && root->P == gp(root)->left)
 	{
 		//rote_left(root->p)
 		ROOT = rotate_L(ROOT, root->P);
-		root = root->L;
+		root = root->left;
 	}
 	else
-		if (root == root->P->L && root->P == gp(root)->R)
+		if (root == root->P->left && root->P == gp(root)->right)
 		{
 		//rote_right(root->p)
 		ROOT = rotate_R(ROOT, root->P);
-		root = root->R;
+		root = root->right;
 		}
 
 	return insert_case5(ROOT, root);
@@ -386,13 +386,13 @@ RBT * insert_case5(RBT *ROOT, RBT *root)
 	root->P->color = black;
 	gp(root)->color = red;
 
-	if (root == root->P->L && root->P == gp(root)->L)
+	if (root == root->P->left && root->P == gp(root)->left)
 	{
 		return rotate_R(ROOT, gp(root));
 		//rote_right(gp(root))
 	}
 
-	if (root == root->P->R && root->P == gp(root)->R)
+	if (root == root->P->right && root->P == gp(root)->right)
 	{
 		return rotate_L(ROOT, gp(root));
 		//rote_left(gp(root))
@@ -412,46 +412,46 @@ RBT * rotate_L(RBT *ROOT, RBT *root)
 
 	//root ->p==null 怎么办
 
-	RBT * rootR = root->R;
+	RBT * rootR = root->right;
 	RBT * rp = root->P;
 
 	if (rp == NULL)
 	{
 
 		root->P = rootR;
-		root->R = rootR->L;
-		//(root->L)
-		if (root->R != NULL)
+		root->right = rootR->left;
+		//(root->left)
+		if (root->right != NULL)
 		{
-			root->R->P = root;
+			root->right->P = root;
 		}
 		rootR->P = rp;
-		rootR->L = root;
-		//(root->R)
+		rootR->left = root;
+		//(root->right)
 
 		return rootR;
 	}
 
-	if (rp->L == root)
+	if (rp->left == root)
 	{
-		rp->L = rootR;
+		rp->left = rootR;
 	}
 	else
 	{
-		rp->R = rootR;
+		rp->right = rootR;
 	}
 	rootR->P = rp;
 
 	root->P = rootR;
-	root->R = rootR->L;
-	//(root->L)
-	if (root->R != NULL)
+	root->right = rootR->left;
+	//(root->left)
+	if (root->right != NULL)
 	{
-		root->R->P = root;
+		root->right->P = root;
 	}
 
-	rootR->L = root;
-	//rootE->R
+	rootR->left = root;
+	//rootE->right
 	//rootR->P
 
 	return ROOT;
@@ -465,48 +465,48 @@ RBT * rotate_R(RBT *ROOT, RBT *root)
 	红黑树右旋：使得root-〉L取代root成为新的根节点
 	*/
 
-	RBT * rootL = root->L;
+	RBT * rootL = root->left;
 	RBT * rp = root->P;
 
 	if (rp == NULL)
 	{
 		root->P = rootL;
-		root->L = rootL->R;
-		//root->R
+		root->left = rootL->right;
+		//root->right
 
-		if (root->L != NULL)
+		if (root->left != NULL)
 		{
-			root->L->P = root;
+			root->left->P = root;
 		}
 
 		rootL->P = rp;
-		rootL->R = root;
-		//(rootL->L)
+		rootL->right = root;
+		//(rootL->left)
 
 		return rootL;
 	}
 
-	if (rp->L == root)
+	if (rp->left == root)
 	{
-		rp->L = rootL;
+		rp->left = rootL;
 	}
 	else
 	{
-		rp->R = rootL;
+		rp->right = rootL;
 	}
 	rootL->P = rp;
 
 	root->P = rootL;
-	root->L = rootL->R;
-	//root->R
-	if (root->L != NULL)
+	root->left = rootL->right;
+	//root->right
+	if (root->left != NULL)
 	{
-		root->L->P = root;
+		root->left->P = root;
 	}
 
-	rootL->R = root;
+	rootL->right = root;
 	//rootL->P
-	//rootL->L
+	//rootL->left
 
 	return ROOT;
 }
@@ -515,10 +515,10 @@ RBT * rotate_R(RBT *ROOT, RBT *root)
 inline RBT *SUCCESSOR(RBT * Z)
 {
 	//调用者保证Z不空，且有右子树
-	Z = Z->R;
-	while (Z->L)
+	Z = Z->right;
+	while (Z->left)
 	{
-		Z = Z->L;
+		Z = Z->left;
 	}
 
 	return Z;
@@ -528,10 +528,10 @@ inline RBT *SUCCESSOR(RBT * Z)
 inline RBT *PRECEDENT(RBT * Z)
 {
 	//调用者保证Z不空，且有左子树
-	Z = Z->L;
-	while (Z->R)
+	Z = Z->left;
+	while (Z->right)
 	{
-		Z = Z->R;
+		Z = Z->right;
 	}
 
 	return Z;
@@ -550,18 +550,18 @@ RBT * deletetarget(RBT *ROOT, int target)
 
 	while (Z)
 	{
-		if (Z->var == target)
+		if (Z->val == target)
 		{
 			break;
 		}
 
-		if (Z->var > target)
+		if (Z->val > target)
 		{
-			Z = Z->L;
+			Z = Z->left;
 		}
 		else
 		{
-			Z = Z->R;
+			Z = Z->right;
 		}
 	}
 
@@ -573,7 +573,7 @@ RBT * deletetarget(RBT *ROOT, int target)
 
 
 	RBT *Y;
-	if (Z->L == NULL || Z->R == NULL)
+	if (Z->left == NULL || Z->right == NULL)
 	{
 		//Z有：左、右、无儿子节点
 		Y = Z;
@@ -587,13 +587,13 @@ RBT * deletetarget(RBT *ROOT, int target)
 	//Y的值将被复制到Z，Y的内存对象将要被释放
 
 	RBT *X;//X是Y仅有的子节点
-	if (Y->L)
+	if (Y->left)
 	{
-		X = Y->L;
+		X = Y->left;
 	}
 	else
 	{
-		X = Y->R;
+		X = Y->right;
 	}
 
 	//X可能是NULL ，1 successor中发生	2 y==z本身没有子节点
@@ -613,20 +613,20 @@ RBT * deletetarget(RBT *ROOT, int target)
 		ROOT = X;//有删除点Z==Y 要删除的是根节点，
 	}
 	else
-		if (Y == Y->P->L)
+		if (Y == Y->P->left)
 		{
-		Y->P->L = X;
+		Y->P->left = X;
 		}
 		else
 		{
-			Y->P->R = X;
+			Y->P->right = X;
 		}
 	//以上将Y从树中取出，并处理上:Y->P,X:下 连接关系
 
 	if (Y != Z)//Y==Z发生于：Z只有左节点或者只有右节点，Y！=Z说明Y有两个子节点
 	{
 		//copy y's value to z
-		Z->var = Y->var;
+		Z->val = Y->val;
 	}
 
 	if (Y->color == black)//如果要删除的Y是红色，性质没有改变
@@ -668,70 +668,70 @@ RBT * deletefixup(RBT *ROOT, RBT *X)
 	RBT *W;
 	while (X != ROOT && X->color == black)
 	{
-		if (X == X->P->L)
+		if (X == X->P->left)
 		{
-			W = X->P->R;
+			W = X->P->right;
 
 			if (W->color == red)//case 1
 			{
 				W->color = black;
 				X->P->color = red;
 				ROOT = rotate_L(ROOT, X->P);
-				W = X->P->R;
+				W = X->P->right;
 			}
 
-			if (W->L->color == black &&  W->R->color == black)//case 2
+			if (W->left->color == black &&  W->right->color == black)//case 2
 			{
 				W->color = red;
 				X = X->P;
 			}
 			else
 			{
-				if (W->R->color == black)//case 3
+				if (W->right->color == black)//case 3
 				{
-					W->L->color = black;
+					W->left->color = black;
 					W->color = red;
 					ROOT = rotate_R(ROOT, W);
-					W = X->P->R;
+					W = X->P->right;
 				}
 
 				W->color = X->P->color;//case 4
 				X->P->color = black;
-				W->R->color = black;
+				W->right->color = black;
 				ROOT = rotate_L(ROOT, X->P);
 				X = ROOT;
 			}
 		}
-		else//X==X->P->L
+		else//X==X->P->left
 		{
-			W = X->P->L;
+			W = X->P->left;
 
 			if (W->color == red)//case 1
 			{
 				W->color = black;
 				X->P->color = red;
 				ROOT = rotate_R(ROOT, X->P);
-				W = X->P->L;
+				W = X->P->left;
 			}
 
-			if (W->R->color == black &&  W->L->color == black)//case 2
+			if (W->right->color == black &&  W->left->color == black)//case 2
 			{
 				W->color = red;
 				X = X->P;
 			}
 			else
 			{
-				if (W->L->color == black)//case 3
+				if (W->left->color == black)//case 3
 				{
-					W->R->color = black;
+					W->right->color = black;
 					W->color = red;
 					ROOT = rotate_L(ROOT, W);
-					W = X->P->L;
+					W = X->P->left;
 				}
 
 				W->color = X->P->color;//case 4
 				X->P->color = black;
-				W->L->color = black;
+				W->left->color = black;
 				ROOT = rotate_R(ROOT, X->P);
 				X = ROOT;
 			}
@@ -746,13 +746,13 @@ RBT * deletefixup(RBT *ROOT, RBT *X)
 
 inline RBT * brather(RBT * N)
 {
-	if (N == N->P->L)
+	if (N == N->P->left)
 	{
-		return N->P->R;
+		return N->P->right;
 	}
 	else
 	{
-		return N->P->L;
+		return N->P->left;
 	}
 }
 
@@ -794,12 +794,12 @@ void   postra(RBT *root)
 {
 	if (root)
 	{
-		postra(root->L);
+		postra(root->left);
 
-		postra(root->R);
+		postra(root->right);
 
 		cout.width(4);
-		cout << root->var;
+		cout << root->val;
 		if (root->color == black)
 		{
 			cout << 'b';
@@ -818,7 +818,7 @@ void  pretra(RBT *root)
 	if (root)
 	{
 		cout.width(4);
-		cout << root->var;
+		cout << root->val;
 		if (root->color == black)
 		{
 			cout << 'b';
@@ -828,9 +828,9 @@ void  pretra(RBT *root)
 			cout << 'r';
 		}
 
-		pretra(root->L);
+		pretra(root->left);
 
-		pretra(root->R);
+		pretra(root->right);
 	}
 }
 
@@ -840,10 +840,10 @@ void  midtra(RBT *root)
 {
 	if (root)
 	{
-		midtra(root->L);
+		midtra(root->left);
 
 		cout.width(4);
-		cout << root->var;
+		cout << root->val;
 		if (root->color == black)
 		{
 			cout << 'b';
@@ -852,7 +852,7 @@ void  midtra(RBT *root)
 		{
 			cout << 'r';
 		}
-		midtra(root->R);
+		midtra(root->right);
 	}
 }
 
@@ -864,8 +864,8 @@ int Depth(RBT *root)
 		return 0;
 	}
 
-	int l = Depth(root->L);
-	int r = Depth(root->R);
+	int l = Depth(root->left);
+	int r = Depth(root->right);
 
 	return  1 + (l>r ? l : r);
 
@@ -880,7 +880,7 @@ bool isBalanced(RBT *root)
 	Given a binary tree, determine if it is height-balanced.
 
 	For this problem, a height-balanced binary tree is defined as a binary tree
-	in which the depth of the two subtrees of every node never differ by more than 1.
+	in which the depth of the two subtrees of every ListNode never differ by more than 1.
 	*/
 
 	/*
@@ -889,11 +889,11 @@ bool isBalanced(RBT *root)
 
 	if (root == NULL)
 		return true;
-	int v = Depth(root->L) - Depth(root->R);
+	int v = Depth(root->left) - Depth(root->right);
 	if (v>1 || v<-1)
 		return false;
 	else
-		return isBalanced(root->L) && isBalanced(root->R);
+		return isBalanced(root->left) && isBalanced(root->right);
 
 	return false;
 }
@@ -917,31 +917,31 @@ RBT *insert_rbt(RBT * root, int target)
 	RBT *p = NULL;//记录插入点的parent
 	while (root)
 	{
-		if (root->var == target)
+		if (root->val == target)
 		{
 			return NULL;//无需插入
 		}
 
 		p = root;
-		if (root->var  < target)
+		if (root->val  < target)
 		{
-			root = root->R;
+			root = root->right;
 		}
 		else
 		{
-			root = root->L;
+			root = root->left;
 		}
 
 	}
 
 	RBT *tmp = new RBT(target, red);
-	if (p->var > target)
+	if (p->val > target)
 	{
-		p->L = tmp;
+		p->left = tmp;
 	}
 	else
 	{
-		p->R = tmp;
+		p->right = tmp;
 	}
 
 	tmp->P = p;

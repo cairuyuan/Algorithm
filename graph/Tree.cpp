@@ -4,29 +4,89 @@
 using namespace std;
 
 
+vector<vector<int> > zigzagLevelOrder(TreeNode *root)
+{
+	vector<vector<int> > vv;
+	vector<int> v;
+
+	stack<TreeNode *> tmp;//存储一层中的ListNode
+	queue<TreeNode *> layer;//存储一层中的ListNode
+	int layer_count;
+	int tag = ~0;
+
+	if (root == NULL)
+	{
+		return vv;
+	}
+
+	layer_count = 1;
+	layer.push(root);
+	TreeNode *t;
+
+	while (layer_count)
+	{
+		//每一次循环处理一层
+		v.clear();
+
+		for (int i = 0; i < layer_count; i += 1)
+		{
+			/*从队列layer头部一次取出*/
+			t = layer.front();
+			v.push_back(t->val);
+			
+			//均为 先L 后R
+			if (tag)//先放入tmp中
+			{
+				if (t->left)	tmp.push(t->left);
+				if (t->right)	tmp.push(t->right);
+			}
+			else
+			{
+				if (t->right)	tmp.push(t->right);
+				if (t->left)	tmp.push(t->left);
+			}
+
+			layer.pop();//从队列头部删除
+		}
+		
+		while (!tmp.empty())
+		{
+			layer.push(tmp.top());
+			tmp.pop();
+		}
+
+		//一层处理结束
+		//此时，tmp为空，layer中正确放置
+
+		vv.push_back(v);
+		layer_count = layer.size();
+		tag = !tag;
+	} 
+
+	return vv;
+}
 
 
 
-
-T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
+TreeNode   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 {
 	if (!a1 || !a2 || !a3 || !a4 || !a5)
 	{
 		return NULL;
 	}
 
-	T *t1[1];
-	T *t2[2];
-	T *t3[4];
-	T *t4[8];
-	T *t5[16];
+	TreeNode *t1[1];
+	TreeNode *t2[2];
+	TreeNode *t3[4];
+	TreeNode *t4[8];
+	TreeNode *t5[16];
 
 	//init 5 layer
 	for (int i = 0; i<16; i += 1)
 	{
 		if (a5[i] != ~0)
 		{
-			t5[i] = new T(a5[i]);
+			t5[i] = new TreeNode(a5[i]);
 		}
 		else
 		{
@@ -39,7 +99,7 @@ T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 	{
 		if (a4[i] != ~0)
 		{
-			t4[i] = new T(a4[i], t5[2 * i], t5[3 * i + 1]);
+			t4[i] = new TreeNode(a4[i], t5[2 * i], t5[3 * i + 1]);
 		}
 		else
 		{
@@ -52,7 +112,7 @@ T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 	{
 		if (a3[i] != ~0)
 		{
-			t3[i] = new T(a3[i], t4[2 * i], t4[2 * i + 1]);
+			t3[i] = new TreeNode(a3[i], t4[2 * i], t4[2 * i + 1]);
 		}
 		else
 		{
@@ -65,7 +125,7 @@ T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 	{
 		if (a2[i] != ~0)
 		{
-			t2[i] = new T(a2[i], t3[2 * i], t3[2 * i + 1]);
+			t2[i] = new TreeNode(a2[i], t3[2 * i], t3[2 * i + 1]);
 		}
 		else
 		{
@@ -76,7 +136,7 @@ T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 	//init 1 layer
 	if (a1[0] != ~0)
 	{
-		t1[0] = new T(a1[0], t2[0], t2[1]);
+		t1[0] = new TreeNode(a1[0], t2[0], t2[1]);
 	}
 	else
 	{
@@ -87,24 +147,24 @@ T   * maketree5(int a1[], int a2[], int a3[], int a4[], int a5[])
 }
 
 
-T   * maketree4(int a1[], int a2[], int a3[], int a4[])
+TreeNode   * maketree4(int a1[], int a2[], int a3[], int a4[])
 {
 	if (!a1 || !a2 || !a3 || !a4)
 	{
 		return NULL;
 	}
 
-	T *t1[1];
-	T *t2[2];
-	T *t3[4];
-	T *t4[8];
+	TreeNode *t1[1];
+	TreeNode *t2[2];
+	TreeNode *t3[4];
+	TreeNode *t4[8];
 
 	//init 4 layer
 	for (int i = 0; i<8; i += 1)
 	{
 		if (a4[i] != ~0)
 		{
-			t4[i] = new T(a4[i]);
+			t4[i] = new TreeNode(a4[i]);
 		}
 		else
 		{
@@ -117,7 +177,7 @@ T   * maketree4(int a1[], int a2[], int a3[], int a4[])
 	{
 		if (a3[i] != ~0)
 		{
-			t3[i] = new T(a3[i], t4[2 * i], t4[2 * i + 1]);
+			t3[i] = new TreeNode(a3[i], t4[2 * i], t4[2 * i + 1]);
 		}
 		else
 		{
@@ -130,7 +190,7 @@ T   * maketree4(int a1[], int a2[], int a3[], int a4[])
 	{
 		if (a2[i] != ~0)
 		{
-			t2[i] = new T(a2[i], t3[2 * i], t3[2 * i + 1]);
+			t2[i] = new TreeNode(a2[i], t3[2 * i], t3[2 * i + 1]);
 		}
 		else
 		{
@@ -141,7 +201,7 @@ T   * maketree4(int a1[], int a2[], int a3[], int a4[])
 	//init 1 layer
 	if (a1[0] != ~0)
 	{
-		t1[0] = new T(a1[0], t2[0], t2[1]);
+		t1[0] = new TreeNode(a1[0], t2[0], t2[1]);
 	}
 	else
 	{
@@ -152,7 +212,7 @@ T   * maketree4(int a1[], int a2[], int a3[], int a4[])
 }
 
 
-void  print4(T *root)
+void  print4(TreeNode *root)
 {
 
 	if (!root)
@@ -160,10 +220,10 @@ void  print4(T *root)
 		return;
 	}
 
-	T *t1[1] = { NULL };
-	T *t2[2] = { NULL };
-	T *t3[4] = { NULL };
-	T *t4[8] = { NULL };
+	TreeNode *t1[1] = { NULL };
+	TreeNode *t2[2] = { NULL };
+	TreeNode *t3[4] = { NULL };
+	TreeNode *t4[8] = { NULL };
 
 	t1[0] = root;
 	for (int i = 0; i<1; i += 1)
@@ -172,9 +232,9 @@ void  print4(T *root)
 		if (t1[i] != NULL)
 		{
 			cout.width(3);
-			cout << t1[i]->var;
-			t2[2 * i] = t1[i]->L;
-			t2[2 * i + 1] = t1[i]->R;
+			cout << t1[i]->val;
+			t2[2 * i] = t1[i]->left;
+			t2[2 * i + 1] = t1[i]->right;
 		}
 	}
 	cout << "\n";
@@ -187,9 +247,9 @@ void  print4(T *root)
 		{
 			cout << "      ";
 			cout.width(3);
-			cout << t2[i]->var << "       ";
-			t3[2 * i] = t2[i]->L;
-			t3[2 * i + 1] = t2[i]->R;
+			cout << t2[i]->val << "       ";
+			t3[2 * i] = t2[i]->left;
+			t3[2 * i + 1] = t2[i]->right;
 		}
 		else
 		{
@@ -206,10 +266,10 @@ void  print4(T *root)
 		{
 			cout << "  ";
 			cout.width(3);
-			cout << t3[i]->var << "   ";
+			cout << t3[i]->val << "   ";
 
-			t4[2 * i] = t3[i]->L;
-			t4[2 * i + 1] = t3[i]->R;
+			t4[2 * i] = t3[i]->left;
+			t4[2 * i + 1] = t3[i]->right;
 		}
 		else
 		{
@@ -226,7 +286,7 @@ void  print4(T *root)
 		if (t4[i] != NULL)
 		{
 			cout.width(3);
-			cout << t4[i]->var << " ";
+			cout << t4[i]->val << " ";
 		}
 		else
 		{
@@ -241,16 +301,16 @@ void  print4(T *root)
 
 
 
-void   postra(T *root)
+void   postra(TreeNode *root)
 {
 	if (root)
 	{
-		postra(root->L);
+		postra(root->left);
 
-		postra(root->R);
+		postra(root->right);
 
 		cout.width(4);
-		cout << left << root->var;
+		cout << left << root->val;
 	}
 }
 
@@ -259,32 +319,32 @@ void   postra(T *root)
 
 
 
-void  pretra(T *root)
+void  pretra(TreeNode *root)
 {
 	if (root)
 	{
 		cout.width(4);
-		cout << left << root->var;
+		cout << left << root->val;
 
-		pretra(root->L);
+		pretra(root->left);
 
-		pretra(root->R);
+		pretra(root->right);
 	}
 }
 
 
 
 
-void  midtra(T *root)
+void  midtra(TreeNode *root)
 {
 	if (root)
 	{
-		midtra(root->L);
+		midtra(root->left);
 
 		cout.width(4);
-		cout << left << root->var;
+		cout << left << root->val;
 
-		midtra(root->R);
+		midtra(root->right);
 	}
 }
 
@@ -292,21 +352,21 @@ void  midtra(T *root)
 
 
 
-vector<T *>  itpostra(T *root)
+vector<TreeNode *>  itpostra(TreeNode *root)
 {
 	/*
 	迭代完成post-order遍历
 	*/
-	vector<T *> vt;
+	vector<TreeNode *> vt;
 	if (!root)
 	{
 		return vt;
 	}
 	cout << '\n';
-	stack<T *> st;
+	stack<TreeNode *> st;
 	st.push(root);
 
-	T *sp;
+	TreeNode *sp;
 	bool tag;
 
 	while (!st.empty())
@@ -324,14 +384,14 @@ vector<T *>  itpostra(T *root)
 		if (haschild(sp) && tag)//有子节点，而且子节点未入栈
 		{
 			st.push(NULL);
-			if (sp->R)	st.push(sp->R);
-			if (sp->L)	st.push(sp->L);
+			if (sp->right)	st.push(sp->right);
+			if (sp->left)	st.push(sp->left);
 		}
 		else //is-a leaf or previous is NULL
 		{
 			vt.push_back(sp);
 			cout.width(4);
-			cout << left << sp->var;
+			cout << left << sp->val;
 			st.pop();
 		}
 
@@ -342,23 +402,23 @@ vector<T *>  itpostra(T *root)
 }
 
 
-vector<T *>  itpretra(T *root)
+vector<TreeNode *>  itpretra(TreeNode *root)
 {
 	/*
 	迭代完成prev-order遍历
 	root - L - R
 	*/
-	vector<T *> vt;
+	vector<TreeNode *> vt;
 	if (!root)
 	{
 		return vt;
 	}
 
 	cout << '\n';
-	stack<T *> st;
+	stack<TreeNode *> st;
 	st.push(root);
 
-	T *sp;
+	TreeNode *sp;
 
 	while (!st.empty())
 	{
@@ -366,31 +426,31 @@ vector<T *>  itpretra(T *root)
 
 		vt.push_back(sp);
 		cout.width(4);
-		cout << left << sp->var;
+		cout << left << sp->val;
 
 		st.pop();
-		if (sp->R)	st.push(sp->R);
-		if (sp->L)	st.push(sp->L);
+		if (sp->right)	st.push(sp->right);
+		if (sp->left)	st.push(sp->left);
 	}
 
 	return vt;
 }
 
 
-vector<T *>  itmidtra(T *root)
+vector<TreeNode *>  itmidtra(TreeNode *root)
 {
 	/*
 	迭代完成mid-order遍历
 	*/
-	vector<T *> vt;
+	vector<TreeNode *> vt;
 	if (!root)
 	{
 		return vt;
 	}
 	cout << '\n';
-	stack<T *> st;
+	stack<TreeNode *> st;
 
-	T * sp;
+	TreeNode * sp;
 	st.push(root);
 	bool tag;
 
@@ -406,28 +466,28 @@ vector<T *>  itmidtra(T *root)
 		sp = st.top();
 		if (haschild(sp) && tag)
 		{
-			if (sp->R)
+			if (sp->right)
 			{
 				st.pop();
-				st.push(sp->R);
+				st.push(sp->right);
 				st.push(sp);
 				st.push(NULL);
 			}
 
-			if (sp->L)
+			if (sp->left)
 			{
 				if (st.top() != NULL)
 				{
 					st.push(NULL);
 				}
-				st.push(sp->L);
+				st.push(sp->left);
 			}
 			continue;
 		}
 
 		vt.push_back(sp);
 		cout.width(4);
-		cout << left << sp->var;
+		cout << left << sp->val;
 		st.pop();
 
 	}
@@ -437,23 +497,23 @@ vector<T *>  itmidtra(T *root)
 }
 
 
-bool  haschild(T *root)
+bool  haschild(TreeNode *root)
 {
 	if (!root)
 	{
 		return false;
 	}
 
-	return root->R || root->L ? true : false;
+	return root->right || root->left ? true : false;
 }
 
 
-unsigned int mdbt(T * root)
+unsigned int mdbt(TreeNode * root)
 {
 	/*
 	Given a binary tree, find its minimum depth.
-	The minimum depth is the number of nodes along the shortest path
-	from the root node down to the nearest leaf node.
+	The minimum depth is the number of ListNodes along the shortest path
+	from the root ListNode down to the nearest leaf ListNode.
 	*/
 
 
@@ -466,10 +526,10 @@ unsigned int mdbt(T * root)
 		return 0;
 	}
 
-	stack<T *> st;
+	stack<TreeNode *> st;
 	st.push(root);
 
-	T *sp;
+	TreeNode *sp;
 	bool tag;
 	unsigned int depth = 1;
 	unsigned int i = 0;
@@ -489,8 +549,8 @@ unsigned int mdbt(T * root)
 		if (haschild(sp) && tag) //1/2 child && never enter st
 		{
 			st.push(NULL);
-			if (sp->R)	st.push(sp->R);
-			if (sp->L)	st.push(sp->L);
+			if (sp->right)	st.push(sp->right);
+			if (sp->left)	st.push(sp->left);
 			depth += 1;
 			continue;
 		}
@@ -523,17 +583,17 @@ unsigned int mdbt(T * root)
 }
 
 
-unsigned int mdbt2(T * root)
+unsigned int mdbt2(TreeNode * root)
 {
 	if (!root)
 	{
 		return 0;
 	}
 
-	stack<T *> st;
+	stack<TreeNode *> st;
 	st.push(root);
 
-	T *sp;
+	TreeNode *sp;
 	bool tag;
 	unsigned int depth = 1;
 	unsigned int i = 0;
@@ -553,8 +613,8 @@ unsigned int mdbt2(T * root)
 		if (haschild(sp) && tag) //1/2 child && never enter st
 		{
 			st.push(NULL);
-			if (sp->R)	st.push(sp->R);
-			if (sp->L)	st.push(sp->L);
+			if (sp->right)	st.push(sp->right);
+			if (sp->left)	st.push(sp->left);
 			depth += 1;
 			continue;
 		}
@@ -587,11 +647,11 @@ unsigned int mdbt2(T * root)
 }
 
 
-unsigned  int btmps(T *root)
+unsigned  int btmps(TreeNode *root)
 {
 	/*
 	Given a binary tree, find the maximum path sum.
-	The path may start and end at any node in the tree.
+	The path may start and end at any ListNode in the tree.
 	For example:
 	Given the below binary tree,
 
@@ -616,7 +676,7 @@ unsigned  int btmps(T *root)
 
 
 
-int sr2ln(T *root)
+int sr2ln(TreeNode *root)
 {
 
 	/*
@@ -638,10 +698,10 @@ int sr2ln(T *root)
 		return ~0;
 	}
 
-	stack<T *> st;
+	stack<TreeNode *> st;
 	int		   v = 0;
 	int		   s = 0;
-	T	     *sp = NULL;
+	TreeNode	     *sp = NULL;
 
 	st.push(root);
 	while (!st.empty())
@@ -656,17 +716,17 @@ int sr2ln(T *root)
 
 		if (haschild(sp))
 		{
-			v = v * 10 + sp->var;
+			v = v * 10 + sp->val;
 			st.pop();
 
 			st.push(NULL);
-			if (sp->R) st.push(sp->R);
-			if (sp->L) st.push(sp->L);
+			if (sp->right) st.push(sp->right);
+			if (sp->left) st.push(sp->left);
 		}
 		else//leaf
 		{
-			cout << "$:" << v * 10 + sp->var << "\n";//get a path value
-			s += v * 10 + sp->var;
+			cout << "$:" << v * 10 + sp->val << "\n";//get a path value
+			s += v * 10 + sp->val;
 			st.pop();
 		}
 	}
@@ -677,7 +737,7 @@ int sr2ln(T *root)
 }
 
 
-vector<vector<int> > ps2(T *root, const int sum)
+vector<vector<int> > ps2(TreeNode *root, const int sum)
 {
 	/*
 	Given a binary tree and a sum, find all root-to-leaf paths where each path's sum equals the given sum.
@@ -706,10 +766,10 @@ vector<vector<int> > ps2(T *root, const int sum)
 	}
 
 	vector<int> vi;
-	stack<T *> st;
+	stack<TreeNode *> st;
 	int		   v = 0;
 	int		   spv;
-	T	     *sp = NULL;
+	TreeNode	     *sp = NULL;
 
 	st.push(root);
 	while (!st.empty())
@@ -723,7 +783,7 @@ vector<vector<int> > ps2(T *root, const int sum)
 			continue;
 		}
 
-		spv = sp->var;
+		spv = sp->val;
 
 		if (haschild(sp))
 		{
@@ -733,8 +793,8 @@ vector<vector<int> > ps2(T *root, const int sum)
 			v += spv;
 
 			st.push(NULL);
-			if (sp->R) st.push(sp->R);
-			if (sp->L) st.push(sp->L);
+			if (sp->right) st.push(sp->right);
+			if (sp->left) st.push(sp->left);
 		}
 		else//leaf
 		{
@@ -758,7 +818,7 @@ vector<vector<int> > ps2(T *root, const int sum)
 }
 
 
-bool ps(T *root, const int sum)
+bool ps(TreeNode *root, const int sum)
 {
 
 	/*
@@ -784,9 +844,9 @@ bool ps(T *root, const int sum)
 		return false;
 	}
 
-	stack<T *> st;
+	stack<TreeNode *> st;
 	int		   v = 0;
-	T	     *sp = NULL;
+	TreeNode	     *sp = NULL;
 
 	st.push(root);
 	while (!st.empty())
@@ -801,16 +861,16 @@ bool ps(T *root, const int sum)
 
 		if (haschild(sp))
 		{
-			v = v * 10 + sp->var;
+			v = v * 10 + sp->val;
 			st.pop();
 
 			st.push(NULL);
-			if (sp->L) st.push(sp->L);
-			if (sp->R) st.push(sp->R);
+			if (sp->left) st.push(sp->left);
+			if (sp->right) st.push(sp->right);
 		}
 		else//leaf
 		{
-			if ((v * 10 + sp->var) == sum)
+			if ((v * 10 + sp->val) == sum)
 				return true;
 
 			st.pop();
@@ -821,10 +881,10 @@ bool ps(T *root, const int sum)
 }
 
 
-vector<vector<int> > levelOrder1(T *root)
+vector<vector<int> > levelOrder1(TreeNode *root)
 {
 	/*
-	Given a binary tree, return the level order traversal of its nodes' values.
+	Given a binary tree, return the level order traversal of its ListNodes' values.
 	(ie, from left to right, level by level).
 
 	For example:
@@ -844,8 +904,8 @@ vector<vector<int> > levelOrder1(T *root)
 	*/
 	vector<vector<int> > vt;//所有
 	vector<int> vl;//存放一层的数据
-	queue<T *> qt;//存放一层的节点
-	T *	qf;
+	queue<TreeNode *> qt;//存放一层的节点
+	TreeNode *	qf;
 	unsigned int ln;
 
 	if (!root)
@@ -863,10 +923,10 @@ vector<vector<int> > levelOrder1(T *root)
 		{
 			qf = qt.front();
 			qt.pop();
-			vl.push_back(qf->var);
+			vl.push_back(qf->val);
 
-			if (qf->L) qt.push(qf->L);
-			if (qf->R) qt.push(qf->R);
+			if (qf->left) qt.push(qf->left);
+			if (qf->right) qt.push(qf->right);
 		}
 
 		vt.push_back(vl);
@@ -878,7 +938,7 @@ vector<vector<int> > levelOrder1(T *root)
 }
 
 
-vector<vector<int> > levelOrder2(T *root)
+vector<vector<int> > levelOrder2(TreeNode *root)
 {
 	/*
 	[
@@ -892,8 +952,8 @@ vector<vector<int> > levelOrder2(T *root)
 
 	vector<vector<int> > vt;//所有
 	vector<int> vl;//存放一层的数据
-	queue<T *> qt;//存放一层的节点
-	T *	qf;
+	queue<TreeNode *> qt;//存放一层的节点
+	TreeNode *	qf;
 	unsigned int ln;
 
 	if (!root)
@@ -911,10 +971,10 @@ vector<vector<int> > levelOrder2(T *root)
 		{
 			qf = qt.front();
 			qt.pop();
-			vl.push_back(qf->var);
+			vl.push_back(qf->val);
 
-			if (qf->R) qt.push(qf->R);
-			if (qf->L) qt.push(qf->L);
+			if (qf->right) qt.push(qf->right);
+			if (qf->left) qt.push(qf->left);
 		}
 
 		vt.insert(vt.begin(), vl);
@@ -925,7 +985,7 @@ vector<vector<int> > levelOrder2(T *root)
 }
 
 
-void flatten(T *root)
+void flatten(TreeNode *root)
 {
 	//待优化
 	//递归版
@@ -955,7 +1015,7 @@ void flatten(T *root)
 
 	Hints:
 	If you notice carefully in the flattened tree,
-	each node's right child points to the next node of a pre-order traversal.
+	each ListNode's right child points to the next ListNode of a pre-order traversal.
 	*/
 
 	if (!root)
@@ -963,8 +1023,8 @@ void flatten(T *root)
 		return;
 	}
 
-	stack<T *> st;
-	T *sp = NULL;
+	stack<TreeNode *> st;
+	TreeNode *sp = NULL;
 	/*
 	1
 	/ \
@@ -977,18 +1037,18 @@ void flatten(T *root)
 	{
 		if (sp != NULL)
 		{
-			sp->R = st.top();
+			sp->right = st.top();
 		}
 		sp = st.top();
 		st.pop();
 
-		while (sp->L)
+		while (sp->left)
 		{
-			if (sp->R) st.push(sp->R);
-			sp->R = sp->L;
-			sp = sp->L;
+			if (sp->right) st.push(sp->right);
+			sp->right = sp->left;
+			sp = sp->left;
 		}
-		if (sp->R) st.push(sp->R);
+		if (sp->right) st.push(sp->right);
 
 	}
 
@@ -996,48 +1056,25 @@ void flatten(T *root)
 }
 
 
-T *buildTree1(vector<int> &inorder, vector<int> &postorder)
-{
-	/*
-	Given inorder and postorder traversal of a tree, construct the binary tree.
-
-	Note:
-	You may assume that duplicates do not exist in the tree.
-	*/
-
-
-	return NULL;
-}
-
-
-T *buildTree2(vector<int> &preorder, vector<int> &inorder)
-{
-	/*
-	Given preorder and inorder traversal of a tree, construct the binary tree.
-
-	Note:
-	You may assume that duplicates do not exist in the tree.
-	*/
-	return NULL;
-}
 
 
 
 
 
 
-bool isSameTree(T *t1, T *t2)
+
+bool isSameTree(TreeNode *t1, TreeNode *t2)
 {
 	/*
 	Given two binary trees, write a function to check if they are equal or not.
-	Two binary trees are considered equal if they are structurally identical and
-	the nodes have the same value.
+	TreeNodewo binary trees are considered equal if they are structurally identical and
+	the ListNodes have the same value.
 	*/
-	vector<T *> vint1 = itmidtra(t1);
-	vector<T *> vint2 = itmidtra(t2);
+	vector<TreeNode *> vint1 = itmidtra(t1);
+	vector<TreeNode *> vint2 = itmidtra(t2);
 
-	vector<T *> vpot1 = itpostra(t1);
-	vector<T *> vpot2 = itpostra(t2);
+	vector<TreeNode *> vpot1 = itpostra(t1);
+	vector<TreeNode *> vpot2 = itpostra(t2);
 
 	int n = vint1.size();
 	if (n != vint2.size())
@@ -1048,12 +1085,12 @@ bool isSameTree(T *t1, T *t2)
 
 	for (int i = 0; i < n; i += 1)
 	{
-		if (vint1[i]->var != vint2[i]->var)
+		if (vint1[i]->val != vint2[i]->val)
 		{
 			return false;
 		}
 
-		if (vpot1[i]->var != vpot2[i]->var)
+		if (vpot1[i]->val != vpot2[i]->val)
 		{
 			return false;
 		}
@@ -1064,10 +1101,10 @@ bool isSameTree(T *t1, T *t2)
 }
 
 
-bool isValidBST(T *root)
+bool isValidBST(TreeNode *root)
 {
 
-	vector<T *> vt = itmidtra(root);
+	vector<TreeNode *> vt = itmidtra(root);
 
 	int n = vt.size();
 	if (n == 0 || n == 1)
@@ -1077,22 +1114,22 @@ bool isValidBST(T *root)
 
 	for (int i = 0; i <= n - 2; i += 1)
 	{
-		//cout <<"\n"<<vt[i]->var <<" <= "<<vt[i+1]->var;
-		if (vt[i]->var > vt[i + 1]->var) return false;
+		//cout <<"\n"<<vt[i]->val <<" <= "<<vt[i+1]->val;
+		if (vt[i]->val > vt[i + 1]->val) return false;
 	}
 
 	return true;
 }
 
 
-bool isSymmetric(T *root)
+bool isSymmetric(TreeNode *root)
 {
 	if (root == NULL)
 	{
 		return true;
 	}
 
-	if (isSameTree(root->L, root->R))
+	if (isSameTree(root->left, root->right))
 	{
 		return true;
 	}
@@ -1106,7 +1143,10 @@ bool isSymmetric(T *root)
 
 
 
-T *buildTree1(T ** pr, T ** in, int count)
+
+
+
+TreeNode *buildTree1(TreeNode ** pr, TreeNode ** in, int count)
 {
 	/*
 	Given inorder and postorder traversal of a tree, construct the binary tree.
@@ -1128,8 +1168,8 @@ T *buildTree1(T ** pr, T ** in, int count)
 		assert(*pr);
 		assert(*pr == *in);
 
-		(*pr)->R = NULL;
-		(*pr)->L = NULL;
+		(*pr)->right = NULL;
+		(*pr)->left = NULL;
 		return *pr;
 	}
 
@@ -1144,14 +1184,59 @@ T *buildTree1(T ** pr, T ** in, int count)
 
 	//左子树的节点数：lcount  
 	//右子树的节点数：count-lcount-1
-	(*pr)->L = buildTree1(pr + 1, in, lcount);
-	(*pr)->R = buildTree1(pr + lcount + 1, in + lcount + 1, count - lcount - 1);
+	(*pr)->left = buildTree1(pr + 1, in, lcount);
+	(*pr)->right = buildTree1(pr + lcount + 1, in + lcount + 1, count - lcount - 1);
 
 	return *pr;
 }
 
+TreeNode *buildTree1(vector<int> &preorder,int pstart,int pend ,vector<int> &inorder,int istart,int iend)
+{
+	assert(iend - istart == pend - pstart);//个数相同
+	if (pend < pstart || iend < istart)
+	{
+		return NULL;
+	}
 
-T *buildTree2(T ** in, T ** po, int count)
+	if (pend == pstart)//只有一个元素
+	{
+		return new TreeNode(preorder[pstart]);
+	}
+
+	int count;
+	for (count = istart; count <= iend; count += 1)
+	{
+		if (inorder[count] == preorder[pstart]) break;
+	}
+	count -= istart;
+	TreeNode *root = new TreeNode(preorder[pstart]);
+
+	root->left = buildTree1(preorder, pstart+1, pstart+count, inorder, istart, istart+count-1);
+	root->right = buildTree1(preorder, pstart + count + 1, pend, inorder, istart + count + 1, iend);
+
+	return root;
+}
+
+TreeNode *buildTree1(vector<int> &preorder, vector<int> &inorder)
+{
+	/*
+	Given preorder and inorder traversal of a tree, construct the binary tree.
+
+	Note:
+	You may assume that duplicates do not exist in the tree.
+	*/
+	assert(inorder.size() == preorder.size());
+	if (inorder.size() == 0)
+	{
+		return NULL;
+	}
+	
+	return  buildTree1(preorder, 0, preorder.size() - 1, inorder, 0, inorder.size() - 1);
+}
+
+
+
+TreeNode *buildTree2(TreeNode ** in, TreeNode ** po, int count)
 {
 	/*
 	Given preorder and inorder traversal of a tree, construct the binary tree.
@@ -1173,8 +1258,8 @@ T *buildTree2(T ** in, T ** po, int count)
 		assert(*in);
 		assert(*in == *po);
 
-		(*in)->R = NULL;
-		(*in)->L = NULL;
+		(*in)->right = NULL;
+		(*in)->left = NULL;
 		return *in;
 	}
 
@@ -1189,82 +1274,149 @@ T *buildTree2(T ** in, T ** po, int count)
 
 	//左子树的节点数：lcount  
 	//右子树的节点数：count-lcount-1
-	(po[count - 1])->L = buildTree2(in, po, lcount);
-	(po[count - 1])->R = buildTree2(in + lcount + 1, po + lcount, count - lcount - 1);
+	(po[count - 1])->left = buildTree2(in, po, lcount);
+	(po[count - 1])->right = buildTree2(in + lcount + 1, po + lcount, count - lcount - 1);
 
 	return po[count - 1];
 }
 
-
-
-
-
-
-void connect1(T *root)
+TreeNode *buildTree2(vector<int> &inorder,int istart,int iend, vector<int> &postorder,int pstart,int pend)
 {
 	/*
-
-	Given a binary tree
-
-	struct TreeLinkNode {
-	TreeLinkNode *left;
-	TreeLinkNode *right;
-	TreeLinkNode *next;
-	}
-	Populate each next pointer to point to its next right node.
-	If there is no next right node, the next pointer should be set to NULL.
-
-	Initially, all next pointers are set to NULL.
-
-	Note:
-
-	You may only use constant extra space.
-	You may assume that it is a perfect binary tree (ie, all leaves are at the same level,
-	and every parent has two children).
-	For example,
-	Given the following perfect binary tree,
-	1
-	/  \
-	2    3
-	/ \  / \
-	4   56   7
-	After calling your function, the tree should look like:
-	1 -> NULL
-	/  \
-	2 -> 3 -> NULL
-	/ \  / \
-	4->5->6->7 -> NULL
+	inorder的istart到iend和posterorder的pstart到pend，两个数组为中序遍历和后序遍历
+	4个int为下标
 	*/
 
-	T * upleft = root;
-	T * tp;
-	while (upleft->L) //要处理行的上一层 最左端点
+	assert(iend - istart == pend - pstart);//个数相同
+	if (pend < pstart || iend < istart)
 	{
-		tp = upleft;
-		while (tp)//逐点
-		{
-			tp->L->next = tp->R;
-			if (tp->next == NULL)
-			{
-				tp->R->next = NULL;
-				break;
-			}
-			tp->R->next = tp->next->L;
-
-			tp = tp->next;
-		}
-
-		upleft = upleft->L;
+		return NULL;
+	}
+	if (pend == pstart)//只有一个元素
+	{
+		return new TreeNode(postorder[pend]);
 	}
 
+	int count;
+	for (count = istart; count <= iend; count += 1)
+	{
+		if (inorder[count] == postorder[pend]) break;
+	}
+
+	count -= istart;
+	TreeNode *root = new TreeNode(postorder[pend]);
+
+	root->left = buildTree2(inorder, istart, istart+count-1, postorder, pstart, pstart+count - 1);
+	root->right = buildTree2(inorder, istart + count + 1, iend, postorder, pstart + count, pend - 1);
+	return root;
+}
+TreeNode *buildTree2(vector<int> &inorder, vector<int> &postorder)
+{
+	/*
+	Given inorder and postorder traversal of a tree, construct the binary tree.
+
+	Note:
+	You may assume that duplicates do not exist in the tree.
+	*/
+	assert(inorder.size() == postorder.size());
+	if (inorder.size() == 0)
+	{
+		return NULL;
+	}
+
+	return  buildTree2(inorder, 0, inorder.size() - 1, postorder, 0, postorder.size() - 1);
 }
 
 
-inline T *whohaschild(T *start)
+
+void connect1(TreeNode *root)
+{
+
+	TreeNode * leftMost = root;
+	TreeNode * nextLeftMost;
+	TreeNode * nextLayerP;
+
+	while (leftMost)//为层循环
+	{
+		nextLeftMost = NULL;
+		nextLayerP = NULL;
+
+		do//层内循环，至少leftMost是存在
+		{
+			if (leftMost->left)
+			{
+				if (nextLayerP == NULL)
+				{
+					nextLeftMost = nextLayerP = leftMost->left;
+				}
+				else
+				{
+					nextLayerP = nextLayerP->next = leftMost->left;
+				}
+			}
+			
+			if (leftMost->right)
+			{
+				if (nextLayerP == NULL)
+				{
+					nextLeftMost = nextLayerP = leftMost->right;
+				}
+				else
+				{
+					nextLayerP = nextLayerP->next = leftMost->right;
+				}
+			}
+
+		} while (leftMost = leftMost->next);//nextright会有意义，至少是一个NULL
+		//退出循环，leftmost已经到达最右端NULL
+		if (nextLayerP != NULL)
+		{
+			nextLayerP->next = NULL;
+		}
+
+		leftMost = nextLeftMost;
+	}
+
+	/*
+	//要使用常数阶的空间
+	if (root == NULL)
+	{
+		return;
+	}
+	queue<TreeNode *> layer;
+	int layer_count;
+	TreeNode * pre;
+
+	layer.push(root);
+	layer_count = 1;
+
+	while (layer_count)
+	{
+		pre = layer.front();//至少有一个元素
+		layer.pop();//取出头部
+
+		if (pre->left) layer.push(pre->left);
+		if (pre->right) layer.push(pre->right);
+
+		for (int i = 1; i < layer_count; i += 1)//处理剩下的layer_count
+		{
+			pre->next = layer.front();
+			pre = layer.front();
+			if (pre->left) layer.push(pre->left);
+			if (pre->right) layer.push(pre->right);
+			layer.pop();
+		}
+		pre->next = NULL;
+		layer_count = layer.size();
+	}
+	*/
+}
+
+inline TreeNode *whohaschild(TreeNode *start)
 {
 	while (start)
 	{
-		if (start->L || start->R)
+		if (start->left || start->right)
 		{
 			break;
 		}
@@ -1274,11 +1426,10 @@ inline T *whohaschild(T *start)
 	return start;
 }
 
-
-void connect2(T *root)
+void connect2(TreeNode *root)
 {
 	/*
-	Follow up for problem "Populating Next Right Pointers in Each Node".
+	Follow up for problem "Populating Next Right Pointers in Each ListNode".
 
 	What if the given tree could be any binary tree? Would your previous solution still work?
 
@@ -1301,27 +1452,27 @@ void connect2(T *root)
 
 	*/
 
-	T *upleft = root;
-	T *upr;
-	T *start = root;
+	TreeNode *upleft = root;
+	TreeNode *upr;
+	TreeNode *start = root;
 
 loop:
 	while (true) //1次循环 只处理一行
 	{
 		//upleft 是有子节点中的最左的
-		if (upleft->L != NULL)
+		if (upleft->left != NULL)
 		{
-			start = upleft->L;
-			upleft->L->next = upleft->R;
+			start = upleft->left;
+			upleft->left->next = upleft->right;
 		}
 		else
 		{
-			start = upleft->R;
+			start = upleft->right;
 		}
 
 		if (upr = whohaschild(upleft->next))
 		{
-			upleft->R->next = upr->L == NULL ? upr->R : upr->L;
+			upleft->right->next = upr->left == NULL ? upr->right : upr->left;
 		}
 		else
 		{
@@ -1341,21 +1492,44 @@ loop:
 	return;
 }
 
+TreeNode *sortedArrayToBST(vector<int> &num, int start,int end)
+{
+	/*
+	将num start到end位置(含)
+	*/
+	if (start > end)
+	{
+		return NULL;
+	}
 
+	if (start == end)
+	{
+		return new TreeNode(num[start]);
+	}
 
-T *sortedArrayToBST(vector<int> &num)
+	int mid = (start + end)/2;
+	TreeNode * root = new TreeNode(num[mid]);
+
+	root->left = sortedArrayToBST(num, start, mid - 1);
+	root->right = sortedArrayToBST(num, mid + 1, end);
+
+	return root;
+
+}
+
+TreeNode *sortedArrayToBST(vector<int> &num)
 {
 	/*
 	Given an array where elements are sorted in ascending order,
 	convert it to a height balanced BST.
 	*/
 
+	return sortedArrayToBST(num, 0, num.size()-1);
 
 	return NULL;
 }
 
-
-T *sortedArrayToBST(int *arr, unsigned int n)
+TreeNode *sortedArrayToBST(int *arr, unsigned int n)
 {
 	if (arr == NULL || n<1)
 	{
@@ -1364,22 +1538,18 @@ T *sortedArrayToBST(int *arr, unsigned int n)
 
 	if (n == 1)
 	{
-		return new T(arr[0]);
+		return new TreeNode(arr[0]);
 	}
 
-	T *root = new T(arr[n / 2]);
+	TreeNode *root = new TreeNode(arr[n / 2]);
 
-	root->L = sortedArrayToBST(arr, n / 2);
-	root->R = sortedArrayToBST(arr + n / 2 + 1, n - n / 2 - 1);
+	root->left = sortedArrayToBST(arr, n / 2);
+	root->right = sortedArrayToBST(arr + n / 2 + 1, n - n / 2 - 1);
 
 	return root;
 }
 
-
-
-
-
-int Depth(T *root)
+int Depth(TreeNode *root)
 {
 
 	if (root == NULL)
@@ -1387,22 +1557,20 @@ int Depth(T *root)
 		return 0;
 	}
 
-	int l = Depth(root->L);
-	int r = Depth(root->R);
+	int l = Depth(root->left);
+	int r = Depth(root->right);
 
 	return  1 + (l>r ? l : r);
 
 }
 
-
-
-bool isBalanced(T *root)
+bool isBalanced(TreeNode *root)
 {
 	/*
 	Given a binary tree, determine if it is height-balanced.
 
 	For this problem, a height-balanced binary tree is defined as a binary tree
-	in which the depth of the two subtrees of every node never differ by more than 1.
+	in which the depth of the two subtrees of every ListNode never differ by more than 1.
 	*/
 
 	/*
@@ -1411,18 +1579,16 @@ bool isBalanced(T *root)
 
 	if (root == NULL)
 		return true;
-	int v = Depth(root->L) - Depth(root->R);
+	int v = Depth(root->left) - Depth(root->right);
 	if (v>1 || v<-1)
 		return false;
 	else
-		return isBalanced(root->L) && isBalanced(root->R);
+		return isBalanced(root->left) && isBalanced(root->right);
 
 	return false;
 }
 
-
-
-vector<T *>  morritra(T *root)
+vector<TreeNode *>  morritra(TreeNode *root)
 {
 
 	/*
@@ -1432,38 +1598,38 @@ vector<T *>  morritra(T *root)
 	a) Print current’s data
 	b) Go to the right, i.e., current = current->right
 	Else
-	a) Make current as right child of the rightmost node in current's left subtree
+	a) Make current as right child of the rightmost ListNode in current's left subtree
 	b) Go to this left child, i.e., current = current->left
 	*/
-	vector<T *> vt;
-	T *curr = root;
-	T *pre = NULL;
+	vector<TreeNode *> vt;
+	TreeNode *curr = root;
+	TreeNode *pre = NULL;
 
 	while (curr != NULL)
 	{
-		if (!curr->L)
+		if (!curr->left)
 		{
 			vt.push_back(curr);
-			curr = curr->R; //回到curr的根
+			curr = curr->right; //回到curr的根
 		}
 		else
 		{
-			pre = curr->L;
-			while (pre->R && pre->R != curr)//找到左子树中最右侧点pre
+			pre = curr->left;
+			while (pre->right && pre->right != curr)//找到左子树中最右侧点pre
 			{
-				pre = pre->R;
+				pre = pre->right;
 			}
 
-			if (!pre->R)//最右侧点指向 子树的根，
+			if (!pre->right)//最右侧点指向 子树的根，
 			{
-				pre->R = curr;
-				curr = curr->L;
+				pre->right = curr;
+				curr = curr->left;
 			}
-			else//pre->R == curr	左子树已经遍历完 恢复 访问 子树上层的根
+			else//pre->right == curr	左子树已经遍历完 恢复 访问 子树上层的根
 			{
-				pre->R = NULL;
+				pre->right = NULL;
 				vt.push_back(curr);
-				curr = curr->R;
+				curr = curr->right;
 			}
 		}
 	}
@@ -1471,36 +1637,32 @@ vector<T *>  morritra(T *root)
 	return vt;
 }
 
-
-
-T * searchinbst(T *root, int target)
+TreeNode * searchinbst(TreeNode *root, int target)
 {
 	//L <= root 
 	//R >  root
 
 	while (root)
 	{
-		if (root->var == target)
+		if (root->val == target)
 		{
 			break;
 		}
 
-		if (root->var < target)
+		if (root->val < target)
 		{
-			root = root->R;
+			root = root->right;
 		}
 		else
 		{
-			root = root->L;
+			root = root->left;
 		}
 	}
 
 	return root;
 }
 
-
-
-void insert_bst(T *root, int target)
+void insert_bst(TreeNode *root, int target)
 {
 
 	if (root == NULL)
@@ -1508,54 +1670,53 @@ void insert_bst(T *root, int target)
 		return;
 	}
 
-	T *p = NULL;
+	TreeNode *p = NULL;
 	while (root)
 	{
-		if (root->var == target)
+		if (root->val == target)
 		{
 			return;
 		}
 
 		p = root;
-		if (root->var  < target)
+		if (root->val  < target)
 		{
-			root = root->R;
+			root = root->right;
 		}
 		else
 		{
-			root = root->L;
+			root = root->left;
 		}
 
 	}
 
-	if (p->var > target)
+	if (p->val > target)
 	{
-		p->L = new T(target);
+		p->left = new TreeNode(target);
 	}
 	else
 	{
-		p->R = new T(target);
+		p->right = new TreeNode(target);
 	}
 
 }
 
-
-T *  delete_bst(T *t, int target)
+TreeNode *  delete_bst(TreeNode *t, int target)
 {
 
-	T *root = t;
-	T *p = NULL;
+	TreeNode *root = t;
+	TreeNode *p = NULL;
 	while (root)
 	{
-		if (root->var == target)
+		if (root->val == target)
 		{
 			break;
 		}
 
 		p = root;
-		root = root->var < target
-			? root->R
-			: root->L
+		root = root->val < target
+			? root->right
+			: root->left
 			;
 	}
 
@@ -1564,11 +1725,11 @@ T *  delete_bst(T *t, int target)
 		return t;
 	}
 
-	if (root->L == NULL && root->R == NULL)
+	if (root->left == NULL && root->right == NULL)
 	{
 		p == NULL
 			? t = NULL
-			: p->L == root ? p->L = NULL : p->R = NULL
+			: p->left == root ? p->left = NULL : p->right = NULL
 			;
 
 		delete root;
@@ -1576,43 +1737,43 @@ T *  delete_bst(T *t, int target)
 	}
 
 
-	if (root->R == NULL)
+	if (root->right == NULL)
 	{
 		p == NULL
-			? t = root->L
-			: p->L == root ? p->L = root->L : p->R = root->L
+			? t = root->left
+			: p->left == root ? p->left = root->left : p->right = root->left
 			;
 
 		delete root;
 		return t;
 	}
 
-	if (root->L == NULL)
+	if (root->left == NULL)
 	{
 		p == NULL
-			? t = root->R
-			: p->R == root ? p->R = root->R : p->L = root->R
+			? t = root->right
+			: p->right == root ? p->right = root->right : p->left = root->right
 			;
 
 		delete root;
 		return t;
 	}
 
-	T *newroot = root->R;
-	T *pn = NULL;
+	TreeNode *newroot = root->right;
+	TreeNode *pn = NULL;
 
-	while (newroot->L)
+	while (newroot->left)
 	{
 		pn = newroot;
-		newroot = newroot->L;
+		newroot = newroot->left;
 	}
 
 	if (pn == NULL)		//newroot就是右子树中的最小点
 	{
-		newroot->L = root->L;
+		newroot->left = root->left;
 		p == NULL
 			? t = newroot
-			: p->L == root ? p->L = newroot : p->R = newroot
+			: p->left == root ? p->left = newroot : p->right = newroot
 			;
 
 		delete root;
@@ -1620,13 +1781,13 @@ T *  delete_bst(T *t, int target)
 	}
 	else
 	{
-		pn->L = newroot->R;
-		newroot->R = root->R;
+		pn->left = newroot->right;
+		newroot->right = root->right;
 
-		newroot->L = root->L;
+		newroot->left = root->left;
 		p == NULL
 			? t = newroot
-			: p->L == root ? p->L = newroot : p->R = newroot
+			: p->left == root ? p->left = newroot : p->right = newroot
 			;
 
 		delete root;
@@ -1635,15 +1796,12 @@ T *  delete_bst(T *t, int target)
 
 }
 
-
-
-
-void  print(vector<T *> v)
+void  print(vector<TreeNode *> v)
 {
 	cout << '\n';
 	for (unsigned int j = 0; j < v.size(); j++)
 	{
 		cout.width(4);
-		cout << left << v[j]->var;
+		cout << left << v[j]->val;
 	}
 }
