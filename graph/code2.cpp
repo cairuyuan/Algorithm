@@ -587,27 +587,6 @@ int divide(int dividend, int divisor)
 }
 
 
-string multiply(string num1, string num2)
-{
-	/*
-	Given two numbers represented as strings, return multiplication of the numbers as a string.
-	Note: The numbers can be arbitrarily large and are non-negative.
-	*/
-	/*
-	num1
-	*	num2
-	-----------
-	sum
-	*/
-
-	//已通过下面的char版本实现
-	const int length = num1.size() + num2.size();
-	string sum(length, '\0');
-
-
-	return sum;
-}
-
 
 char *multiply(char * num1, char *num2)
 {
@@ -670,14 +649,6 @@ char *multiply(char * num1, char *num2)
 	return sum;
 }
 
-
-vector<vector<int> > subsets(vector<int> &S)
-{
-	vector<vector<int> > vv;
-	//[1,2,3,4,5,6]
-
-	return vv;
-}
 
 
 int minimumTotal(vector<vector<int> > &vv)
@@ -775,23 +746,6 @@ int singleNumber1(int a[], int n)
 }
 
 
-int singleNumber3(int A[], int n)
-{
-	/*
-	Given an array of integers, every element appears three times except for one.
-	Find that
-
-	single one.
-
-	Note:
-	Your algorithm should have a linear runtime complexity.
-	Could you implement it without using extra memory?
-	*/
-
-	return 0;
-}
-
-
 int qpart(int *a, int length)
 {
 	if (a == NULL || length == 1)
@@ -845,64 +799,6 @@ void qsort(int *a, int length)
 	int i = qpart(a, length);
 	qsort(a, i + 1);
 	qsort(a + i + 1, length - i - 1);
-}
-
-
-vector<int> twoSum(vector<int> &numbers, int target)
-{
-	/*
-	Given an array of integers,
-	find two numbers such that they add up to a specific target number.
-	The function twoSum should return indices of the two numbers such that they add up to the target,
-	where index1 must be less than index2.
-	Please note that your returned answers (both index1 and index2) are not zero-based.
-	You may assume that each input would have exactly one solution.
-	Input: numbers={2, 7, 11, 15}, target=9
-	Output: index1=1, index2=2
-	*/
-
-
-	/*
-	逐个搜索
-	最快1次
-	最慢 (n-1)+(n-2).....(2)  =(n-1-2+1)*(n-1+2)/2=(n-2)(n+1)/2
-	*/
-
-	/*
-	1 排序 nlgn
-	2 确定范围 n
-	3 逐个二分查找
-
-	nlgn + n +nlgn --> nlgn
-	*/
-	vector<int> vi(2, 0);
-	//int len = numbers.size();
-	//assert(len >=2);
-	//vector<int> vi(2,0);
-
-	//map<int,int> m;
-	//vector<int ,int> mul(len,0);
-
-	//for (int i = 0; i < len; i++)
-	//{
-	// mul[i]=(target-numbers[i])*numbers[i];
-
-	// if (m[mul[i]] > 0)
-	// {
-	//	 if (numbers[i] + numbers[m[mul[i]]] == target)
-	//	 {
-	//		 vi[0]=m[mul[i]];
-	//		 vi[1]=i+1;
-	//		 break;
-	//	 }
-	// }
-	// else
-	// {
-	//	 m[mul[i]] = i + 1;
-	// }
-	//}
-
-	return vi;
 }
 
 
@@ -1188,22 +1084,6 @@ vector<vector<int> > permute(vector<int> &num)
 }
 
 
-vector<vector<int> > permuteUnique(vector<int> &num)
-{
-	/*
-	Given a collection of numbers that might contain duplicates, return all possible unique permutations.
-
-	For example,
-	[1,1,2] have the following unique permutations:
-	[1,1,2], [1,2,1], and [2,1,1].
-	*/
-
-	vector<vector<int> > vv;
-
-	return vv;
-}
-
-
 bool isPalindrome(int x)
 {
 	/*
@@ -1294,18 +1174,6 @@ int search(int A[], int n, int target)
 		}
 	}
 	return -1;
-}
-
-
-bool search2(int A[], int n, int target)
-{
-	/*
-	Follow up for "Search in Rotated Sorted Array":
-	What if duplicates are allowed?
-	Would this affect the run-time complexity? How and why?
-	Write a function to determine if a given target is in the array.
-	*/
-	return false;
 }
 
 
@@ -1553,61 +1421,6 @@ int C(int n, int m)
 	return u / d;
 }
 
-
-
-char *intToRoman(int num)
-{
-	/*
-	Given an integer, convert it to a roman numeral.
-	Input is guaranteed to be within the range from 1 to 3999.
-	*/
-	return NULL;
-}
-
-
-int romanToInt(char *)
-{
-	/*
-	Given a roman numeral, convert it to an integer.
-	Input is guaranteed to be within the range from 1 to 3999.
-	*/
-	/*
-	相同的数字连写，所表示的数等于这些数字相加得到的数，如：Ⅲ = 3；
-	小的数字在大的数字的右边，所表示的数等于这些数字相加得到的数， 如：Ⅷ = 8；Ⅻ = 12；
-	小的数字，（限于Ⅰ、X 和C）在大的数字的左边，所表示的数等于大数减小数得到的数，如：Ⅳ= 4；Ⅸ= 9；
-
-	基本数字Ⅰ、X 、C 中的任何一个，自身连用构成数目，或者放在大数的右边连用构成数目，都不能超过三个；
-	放在大数的左边只能用一个。
-	不能把基本数字V 、L 、D 中的任何一个作为小数放在大数的左边采用相减的方法构成数目；
-	放在大数的右边采用相加的方式构成数目，只能使用一个。
-	V 和X 左边的小数字只能用Ⅰ。
-	L 和C 左边的小数字只能用X。
-	D 和M 左边的小数字只能用C。
-	*/
-
-
-	return 0;
-}
-
-
-vector<string> generateParenthesis(int n)
-{
-	/*
-	Given n pairs of parentheses,
-	write a function to generate all combinations of well-formed parentheses.
-
-	For example, given n = 3, a solution set is:
-
-	"((()))", "(()())", "(())()", "()(())", "()()()"
-
-	*/
-	vector<string> vs;
-
-
-	return vs;
-}
-
-
 int longestValidParentheses(char * str)
 {
 	/*
@@ -1848,28 +1661,6 @@ end:
 	return vv;
 }
 
-
-int totalNQueens(int n)
-{
-	/*
-	Follow up for N-Queens problem.
-
-	Now, instead outputting board configurations,
-	return the total number of distinct solutions.
-	*/
-
-	/*
-	六皇后问题的解的个数比五皇后问题的解的个数要少。
-	现在还没有已知公式可以对 n 计算 n 皇后问题的解的个数。
-
-	1	2	3	4	5	6	7	8	9	10	 11	    12	    13	    14
-	1	0	0	2	10	4	40	92	352	724	 2,680  14,200	73,712	365,596
-
-	*/
-	return 0;
-}
-
-
 int prestr(char *p, int *pre, int length)
 {
 	if (!p)
@@ -1947,145 +1738,6 @@ int KMPmatch(char *p, char *s)
 }
 
 
-
-vector<string> restoreIpAddresses(string s)
-{
-	/*
-	Given a string containing only digits,
-	restore it by returning all possible valid IP address combinations.
-
-	For example:
-	Given "25525511135",
-
-	return ["255.255.11.135", "255.255.111.35"]. (Order does not matter)
-	*/
-
-	vector<string> vs;
-	return vs;
-}
-
-
-
-
-double findMedianSortedArrays(int *A, int m, int *B, int n)
-{
-	/*
-	There are two sorted arrays A and B of size m and n respectively.
-	Find the median of the two sorted arrays.
-	The overall run time complexity should be O(log (m+n)).
-	*/
-	/*
-	[0  1  4  8  9]			m=5
-	[2  3  5  6  10 11 12]		n=7
-
-	0 1 3 5 7     m=4	中点(不含)以左舍弃  [m/2   m-1]
-	0 2 4 6 8	  n=5   中点(不含)以右舍弃	[0     m/2]
-	(m+n)/2 -1
-
-	0 2 3 4 5 7 3.5
-
-	mid=(a[m/2] + a[(m-1)/2])/2
-	*/
-	/*
-	01357	357  35  3
-	02468	024  24  4
-
-	0135	35	3	3
-	03468	034	34
-
-	不含边界值 m/2+1
-	123		3		NULL
-	4567	45		4
-	123		3
-	456		4
-	*/
-
-	if (!A || !B)
-	{
-		return DBL_MIN;
-	}
-
-
-	if (m == 1 && n == 1)
-	{
-		return (0.0 + *A + *B) / 2;
-	}
-	if (m == 1 && n == 0)
-	{
-		return *A;
-	}
-	if (m == 0 && n == 1)
-	{
-		return *B;
-	}
-
-	double ma = DBL_MIN;
-	double mb = DBL_MIN;
-
-	if (m != 0)
-	{
-		ma = (0.0 + A[m / 2] + A[(m - 1) / 2]) / 2;
-	}
-
-	if (n != 0)
-	{
-		mb = (0.0 + B[n / 2] + B[(n - 1) / 2]) / 2;
-	}
-
-	//print(A,m);cout<<" ma="<<ma;
-	//print(B,n);cout<<" mb="<<mb;
-
-	if (ma == mb)
-	{
-		return ma;
-	}
-
-	int acount;
-	int bcount;
-	int *a;
-	int *b;
-	if (ma > mb)
-	{
-		acount = m / 2;//留A的前半部分 2  1
-		bcount = n / 2;//留B的后半部分 1  0
-
-		//中值较小的数组 要包含边界值：
-		//是偶数个则包含中间两个，是奇数个则包含最中间的一个
-
-		if ((m + n) % 4 != 3)
-		{
-			b = B + bcount;
-			bcount = bcount + 1;
-		}
-		else
-		{
-			b = B + n - bcount;
-		}
-		a = A;
-
-	}
-	else
-	{
-		acount = m / 2;//留A的后半部分
-		bcount = n / 2;//留B的前半部分
-
-		if ((m + n) % 4 != 3)
-		{
-			a = A + acount;
-			acount = acount + 1;
-		}
-		else
-		{
-			a = A + m - acount;
-		}
-		b = B;
-
-	}
-
-	return  findMedianSortedArrays(a, acount, b, bcount);
-}
-
-
 int nextpeak(int a[], int i, int n)
 {
 	/*
@@ -2124,52 +1776,6 @@ int nextpeak(int a[], int i, int n)
 
 	return i;
 
-}
-
-
-int trap(int A[], int n)
-{
-	/*
-	Given n non-negative integers representing an elevation map where the width of each bar is 1,
-	compute how much water it is able to trap after raining.
-
-	For example,
-	Given [0,1,0,2,1,0,1,3,2,1,2,1], return 6.
-
-
-	The above elevation map is represented by array [0,1,0,2,1,0,1,3,2,1,2,1].
-	In this case, 6 units of rain water (blue section) are being trapped.
-	Thanks Marcos for contributing this image!
-	*/
-
-
-	int j;
-	int m;
-	int i = nextpeak(A, 0, n);
-	int sum = 0;
-	while (j = nextpeak(A, i, n))
-	{
-		if (A[i]>A[j])
-		{
-			m = A[j];
-		}
-		else
-		{
-			m = A[i];
-		}
-
-		for (int k = 1; k <= j - i + 1 - 2; k++)
-		{
-			if (m - (A + i)[k] >0)
-			{
-				sum += m - (A + i)[k];
-			}
-		}
-
-		i = j;
-	}
-
-	return sum;
 }
 
 
@@ -2233,39 +1839,6 @@ int *findkin2sortedarr(int *a, int la, int *b, int lb, int k)
 	return NULL;
 }
 
-
-
-int numTrees(int n)
-{
-	/*
-	Given n, how many structurally unique BST's (binary search trees) that store values 1...n?
-
-	For example,
-	Given n = 3, there are a total of 5 unique BST's.
-
-	1         3     3      2      1
-	\       /     /      / \      \
-	3     2     1      1   3      2
-	/     /       \                 \
-	2     1         2                 3
-
-
-	令h(0)=1,h(1)=1，catalan数满足
-	递推式[1]：
-	h(n)= h(0)*h(n-1)+h(1)*h(n-2) + ... + h(n-1)h(0) (n>=2)
-	例如：h(2)=h(0)*h(1)+h(1)*h(0)=1*1+1*1=2
-	h(3)=h(0)*h(2)+h(1)*h(1)+h(2)*h(0)=1*2+1*1+2*1=5
-
-	递推式[2]：
-	h(n)=h(n-1)*(4*n-2)/(n+1);
-	递推关系的解为：
-	h(n)=C(2n,n)/(n+1) (n=0,1,2,...)
-	递推关系的另类解为：
-	h(n)=c(2n,n)-c(2n,n+1)(n=0,1,2,...)
-	*/
-
-	return C(2 * n, n) / (n + 1);
-}
 
 
 
@@ -2386,29 +1959,6 @@ int evalRPN(vector<string> &tokens)
 }
 
 
-char *getPermutation(int n, int k)
-{
-	/*
-	The set [1,2,3,…,n] contains a total of n! unique permutations.
-
-	By listing and labeling all of the permutations in order,
-	We get the following sequence (ie, for n = 3):
-
-	"123"
-	"132"
-	"213"
-	"231"
-	"312"
-	"321"
-	Given n and k, return the kth permutation sequence.
-
-	Note: Given n will be between 1 and 9 inclusive.
-	*/
-
-	return NULL;
-}
-
-
 int firstMissingPositive(int A[], int length)
 {
 	/*
@@ -2519,33 +2069,6 @@ int maxSubArray(int A[], int n)
 }
 
 
-vector<Interval> merge(vector<Interval> &intervals)
-{
-	/*
-	Given a collection of intervals, merge all overlapping intervals.
-
-	For example,
-	Given [1,3],[2,6],[8,10],[15,18],
-	return [1,6],[8,10],[15,18].
-	*/
-
-	/*
-	要假设，区间的左端是递增的？
-	否则，排序？
-	*/
-
-	for (unsigned int i = 0; i < intervals.size() - 1; i += 1)
-	{
-		if (intervals[i].end >= intervals[i + 1].start)//need merge
-		{
-			intervals[i].end = intervals[i + 1].end;
-			intervals.erase(intervals.begin() + i + 1);
-			i -= 1;
-		}
-	}
-
-	return intervals;
-}
 
 
 vector<vector<int> > generateMatrix(int n)
@@ -2633,59 +2156,87 @@ vector<vector<int> > generateMatrix(int n)
 
 vector<int> spiralOrder(vector<vector<int> > &matrix)
 {
-	/*
-	Given a matrix of m x n elements (m rows, n columns),
-	return all elements of the matrix in spiral order.
 
-	For example,
-	Given the following matrix:
 
-	[
-	[ 1, 2, 3 ],
-	[ 4, 5, 6 ],
-	[ 7, 8, 9 ]
-	]
-	You should return [1,2,3,6,9,8,7,4,5].
-	*/
 	vector<int> vi;
 
-	int x = 0, xs = 0, xl = matrix[0].size() - 1;
-	int y = 0, ys = 0, yl = matrix.size() - 1;
-	int n = (yl + 1)*(xl + 1);
-
-	while (n>0)
+	int down = matrix.size()-1;
+	if (down == -1)
 	{
-		y = ys;
-		x = xs;
-		for (; x <= xl; x += 1)
+		return vi;
+	}
+	int right = matrix[0].size()-1;//down若不为0，则right 至少为1;
+	int left = 0;
+	int up = 0;
+	int i, j;
+	/*
+			up
+	left			right
+			down
+	以上四个为下标的边界
+	*/
+
+	while (left < right && up < down)
+	{
+		/*
+		每个循环绕一圈
+		*/
+		i = up;//一圈中，顶层
+		j = left;
+		for (; j < right; j += 1)//最后一个不读，作为另一条边的开始
 		{
-			vi.push_back(matrix[y][x]);
-			n -= 1;
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
 		}
 
-		for (y += 1, x -= 1; y <= yl; y += 1)
+		i = up;
+		j = right;
+		for (; i < down; i += 1)
 		{
-			vi.push_back(matrix[y][x]);
-			n -= 1;
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
+		}
+		i = down;
+		j = right;
+		for (;  j > left; j -= 1)
+		{
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
 		}
 
-		for (x -= 1, y -= 1; x >= xs; x -= 1)
+		i = down;
+		j = left;
+		for (; i > up; i -= 1)
 		{
-			vi.push_back(matrix[y][x]);
-			n -= 1;
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
 		}
 
-		for (y -= 1, x += 1; y>ys; y -= 1)
+		left += 1;
+		right -= 1;
+		up += 1;
+		down -= 1;
+	}
+
+
+	if (down == up) //只有1层
+	{
+		for (i = down,j = left; j <= right; j += 1)
 		{
-			vi.push_back(matrix[y][x]);
-			n -= 1;
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
 		}
+		return vi;
+	}
 
-		xs += 1;
-		ys += 1;
-
-		xl -= 1;
-		yl -= 1;
+	if (right == left)//竖条
+	{
+		for (j = right,i = up; i <= down; i += 1)
+		{
+			vi.push_back(matrix[i][j]);
+			cout << matrix[i][j] << " ";
+		}
+		return vi;
 	}
 
 	return vi;
@@ -2742,70 +2293,6 @@ int largestRectangleArea(vector<int> &hist)
 }
 
 
-void setZeroes(vector<vector<int> > &matrix)
-{
-	/*
-	Given a m x n matrix, if an element is 0,
-	set its entire row and column to 0. Do it in place.
-
-	click to show follow up.
-
-	Follow up:
-	Did you use extra space?
-	A straight forward solution using O(mn) space is probably a bad idea.
-	A simple improvement uses O(m + n) space,
-	but still not the best solution.
-	Could you devise a constant space solution?
-	*/
-	unsigned int x, y;
-	for (y = 0; y < matrix.size(); y++)
-	{
-		for (x = 0; x < matrix[0].size(); x++)
-		{
-			if (matrix[y][x] == 0)
-			{
-				break;
-			}
-		}
-
-		if (x == matrix[0].size())
-		{
-			continue;
-		}
-
-		//set this row  1-->0  0 -->~0
-		for (x = 0; x < matrix[0].size(); x++)
-		{
-			matrix[y][x] = matrix[y][x] == 1 ? 0 : ~0;
-		}
-
-	}
-
-	for (x = 0; x < matrix[0].size(); x++)
-	{
-		for (y = 0; y < matrix.size(); y++)
-		{
-			if (matrix[y][x] == ~0)
-			{
-				break;
-			}
-		}
-
-		if (y == matrix.size())
-		{
-			continue;
-		}
-
-		//set this row  all 0
-		for (y = 0; y < matrix.size(); y++)
-		{
-			matrix[y][x] = 0;
-		}
-	}
-
-}
-
-
 void rotate(vector<vector<int> > &matrix)
 {
 	/*
@@ -2847,233 +2334,6 @@ void rotate(vector<vector<int> > &matrix)
 		}
 
 	}
-}
-
-
-int maximalRectangle(vector<vector<char> > &matrix)
-{
-	/*
-	Given a 2D binary matrix filled with 0's and 1's,
-	find the largest rectangle containing all ones and return its area.
-	*/
-
-	return 0;
-}
-
-
-
-int candy(vector<int> &ratings)
-{
-	/*
-	There are N children standing in a line. Each child is assigned a rating value.
-
-	You are giving candies to these children subjected to the following requirements:
-
-	Each child must have at least one candy.
-	Children with a higher rating get more candies than their neighbors.
-	What is the minimum candies you must give?
-	*/
-	return 0;
-}
-
-
-void solve(vector<vector<char>> &board)
-{
-	/*
-	Given a 2D board containing 'X' and 'O', capture all regions surrounded by 'X'.
-	A region is captured by flipping all 'O's into 'X's in that surrounded region .
-	For example,
-	X X X X
-	X O O X
-	X X O X
-	X O X X
-	After running your function, the board should be:
-	X X X X
-	X X X X
-	X X X X
-	X O X X
-	*/
-
-
-}
-
-
-int longestConsecutive(vector<int> &num)
-{
-	/*
-	Given an unsorted array of integers,
-	find the length of the longest consecutive elements sequence.
-	For example,
-	Given [100, 12, 200, 13, 11, 14],
-	The longest consecutive elements sequence is [11, 12, 13, 14].
-	Return its length: 4.
-	Your algorithm should run in O(n) complexity.
-	*/
-	/*
-	将数组中所有元素放到HashSet中，
-	然后对Set中的元素进行遍历，
-	遍历每个元素时查看与它相邻的数字（递增与递减两个方向）是否存在Set中，
-	如果存在则将连续序列的长度+1，
-	同时将该相邻数字从Set中删除。
-	遍历完整个Set即可得到最大长度。
-	实现的时候通过使用Iterator来在遍历的时候实现删除，
-	但是使用这种方法删除相邻元素仍然有困难（不知道怎样得到相邻元素的iterator）
-	改用了HashMap来放置所有元素，
-	通过0,1来表示该元素是否已经被访问过
-	*/
-
-
-	return 0;
-}
-
-
-bool isInterleave(string s1, string s2, string s3)
-{
-	/*
-	Given s1, s2, s3, find whether s3 is formed by the interleaving of s1 and s2.
-
-	For example,
-	Given:
-	s1 = "aabcc",
-	s2 = "dbbca",
-
-	When s3 = "aadbbcbcac", return true.
-	When s3 = "aadbbbaccc", return false.
-	*/
-
-	return false;
-}
-
-
-int numDecodings(string s)
-{
-	/*
-	A message containing letters from A-Z is being encoded to numbers using the following mapping:
-
-	'A' -> 1
-	'B' -> 2
-	...
-	'Z' -> 26
-	Given an encoded message containing digits, determine the total number of ways to decode it.
-
-	For example,
-	Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12).
-
-	The number of ways decoding "12" is 2.
-	*/
-	return 0;
-}
-
-
-bool searchMatrix(vector<vector<int> > &matrix, int target)
-{
-	/*
-	Write an efficient algorithm that searches for a value in an m x n matrix.
-	This matrix has the following properties:
-	Integers in each row are sorted from left to right.
-	The first integer of each row is greater than the last integer of the previous row.
-	For example,
-
-	Consider the following matrix:
-
-	[
-	[1,   3,  5,  7],
-	[10, 11, 16, 20],
-	[23, 30, 34, 50]
-	]
-	Given target = 3, return true.
-	*/
-	int i = 0;
-	int j = matrix.size() - 1;
-	int m;
-	while (i <= j)
-	{
-		m = (i + j) / 2;
-		if (matrix[m][0] == target)
-		{
-			i = m;
-			break;
-		}
-
-		matrix[m][0] <target ? i = m + 1 : j = m - 1;
-
-	}
-	//i : i-1行找
-
-	if (matrix[i][0] == target)
-	{
-		return true;
-	}
-
-	if (i == 0)
-	{
-		return false;
-	}
-
-	int n = i - 1;
-	i = 0;
-	j = matrix[n].size();
-	while (i <= j)
-	{
-		m = (i + j) / 2;
-		if (matrix[n][m] == target)
-		{
-			i = m;
-			break;
-		}
-
-		matrix[n][m] <target ? i = m + 1 : j = m - 1;
-
-	}
-
-	if (matrix[n][i] == target)
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-}
-
-
-vector<string> fullJustify(vector<string> &words, int L)
-{
-	/*
-	Given an array of words and a length L,
-	format the text such that each line has exactly L characters and is fully (left and right) justified.
-
-	You should pack your words in a greedy approach;
-	that is, pack as many words as you can in each line. Pad extra spaces ' '
-	when necessary so that each line has exactly L characters.
-
-	Extra spaces between words should be distributed as evenly as possible.
-	If the number of spaces on a line do not divide evenly between words,
-	the empty slots on the left will be assigned more spaces than the slots on the right.
-
-	For the last line of text,
-	it should be left justified and no extra space is inserted between words.
-
-	For example,
-	words: ["This", "is", "an", "example", "of", "text", "justification."]
-	L: 16.
-
-	Return the formatted lines as:
-	[
-	"This    is    an",
-	"example  of text",
-	"justification.  "
-	]
-	Note: Each word is guaranteed not to exceed L in length.
-
-	click to show corner cases.
-
-	Corner Cases:
-	A line other than the last line might contain only one word.
-	What should you do in this case?
-	In this case, that line should be left-justified.
-	*/
-	return words;
 }
 
 
@@ -3169,10 +2429,13 @@ int jump(int A[], int n)
 }
 
 
-
 int searchInsert2(int A[], int n, float target)
 {
-	//变体
+	/*
+	A已经排好序
+	如果找到target，则返回的是其下标
+	如果没有找到，返回的是应该插入的下标，此下标后的元素相应后移
+	*/
 	if (A == NULL)
 	{
 		return -1;
@@ -3185,18 +2448,12 @@ int searchInsert2(int A[], int n, float target)
 	while (i <= j)
 	{
 		m = (i + j) / 2;
-		if (A[m] == target)
-		{
-			return m;
-		}
-
+		if (A[m] == target) return m;
 		A[m] <target ? i = m + 1 : j = m - 1;
 	}
 
 	return i;
 }
-
-
 
 vector<int> searchRange(int A[], int n, int target)
 {

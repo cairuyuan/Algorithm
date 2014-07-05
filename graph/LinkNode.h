@@ -46,7 +46,11 @@ ListNode *reorder(ListNode *list1, ListNode *list2); //µ÷ÕûË³Ğò,ÏêÏ¸:º¯ÊıÌåÖĞËµÃ
 ListNode *get_inv_tail(ListNode *list);//½«Á´±í´ÓµÚ m=n/2+2¸öÔªËØ´¦(º¬)²ğ¿ª£¬²¢½«ºóÃæµÄ·´Ïò£¬·µ»Ø
 ListNode *inorder(ListNode *list);//½«Á´±í·´Ïò
 ListNode *reverseBetween(ListNode *head, int m, int n);//½«µÚmµ½µÚn¸ö½ÚµãÖ®¼ä(º¬)·´Ğò----------------22
+
+ListNode *reverse(ListNode * head);
 ListNode *reverseKGroup(ListNode *head, int k);//Reverse ListNodes in k-Group --------------------------36
+
+
 ListNode *swapPairs(ListNode *head);//Swap ListNodes in Pairs --------------------------------------------35
 ListNode *makelist(const int *arr, const unsigned int length);//ÒÔÊı×é¹¹ÔìÁ´±í
 ListNode *makelist(const vector<int> vi);//ÒÔÊı×é¹¹ÔìÁ´±í
@@ -56,10 +60,11 @@ ListNode *mergeTwoLists(ListNode *l1, ListNode *l2);//Á½¸öÒÑÅÅĞòÁ´±íºÏ²¢--------
 ListNode *addTwoNumbers(ListNode *l1, ListNode *l2);//Á½¸öÁ´±íÏà¼Ó----------------------------------------31
 ListNode *copyRandomList(ListNode *head);//-----------------------------------------------------------72
 ListNode *sortlist2(ListNode *list); //ÅÅĞò Ã°Åİn*n
+
 ListNode *partition(ListNode *head, int x);//¾ÙÀıËÆºõÓĞÎó£¬¶Ô±ÈÁ´±í¿ìËÙÅÅĞòÖĞµÄ·Ö¸ôËã·¨
 ListNode *Qpart(ListNode * &list, ListNode *fron = NULL, ListNode *tail = NULL);//¿ìËÙÅÅĞò·Ö¸î----------------------56
-
-
+ListNode *sortList(ListNode *head);
+ListNode *merge(ListNode *head1, ListNode *head2);
 
 void  rdfsl1(ListNode *list); //È¥µôÖØ¸´£¬Ö»ÁôÒ»¸ö-------------------------------------------------6
 void  rdfsl2(ListNode * &list);//È¥µôÖØ¸´£¬²»Áô±¾Éí------------------------------------------------7
@@ -74,9 +79,5 @@ unsigned int getsize(ListNode *list);//·µ»Ø½ÚµãÊı
 
 int  makecycle(ListNode *list, unsigned int nth);//Î²²¿Ö¸Ïònth£¬¹¹Ôì»·
 int  ifcycle1(ListNode *list);//²âÊÔÊÇ·ñÓĞ»·£¬·µ»Ø1/0----------------------------------------------8
-
-
-
-
-
+ListNode *sortList(ListNode *head);
 #endif

@@ -7,6 +7,95 @@
 using namespace std;
 
 
+
+
+ListNode *merge(ListNode *head1, ListNode *head2)
+{
+	/*
+	head1和head2已经排好，合并
+	*/
+
+	ListNode *head = NULL;
+	ListNode *p;
+
+	if (head1 == NULL) return head2; 
+	if (head2 == NULL) return head1; 
+	/*两个链表均不为空*/
+
+	if (head1->val > head2->val)
+	{
+		head = p = head2;
+		head2 = head2->next;
+	}
+	else
+	{
+		head = p = head1;
+		head1 = head1->next;
+	}//提出来减小系数
+
+	while (head1 && head2)
+	{
+		if (head1->val > head2->val)
+		{
+			p->next = head2;
+			head2 = head2->next;
+		}
+		else
+		{
+			p->next = head1;
+			head1 = head1->next;
+		}
+		p = p->next;
+	}
+
+	/*
+	一个链表已经为NULL
+	这个链表是上一次移动的
+	p在这个空链表的前一个节点
+	*/
+	p->next = head1 ? head1 : head2;
+	return head;
+}
+
+
+ListNode * mergeSort(ListNode *head)
+{
+	if (!head || !head->next)	return head;
+
+	ListNode *p = head, *q = head, *pre = NULL;
+	while (q&&q->next != NULL)
+	{
+		q = q->next->next;
+		pre = p;
+		p = p->next;  
+	}
+	pre->next = NULL;
+
+	ListNode *lhalf = mergeSort(head);
+	ListNode *rhalf = mergeSort(p);  
+	return merge(lhalf, rhalf); 
+}
+
+ListNode *sortList(ListNode *head)
+{
+	if (!head || !head->next)	return head;
+
+	ListNode *p = head, *q = head, *pre = NULL;
+	while (q&&q->next != NULL)
+	{
+		q = q->next->next;
+		pre = p;
+		p = p->next;
+	}
+	pre->next = NULL;
+
+	ListNode *lhalf = sortList(head);
+	ListNode *rhalf = sortList(p);
+	return merge(lhalf, rhalf);
+}
+
+
+
 ListNode* makelist(const int *arr, const unsigned int length)
 {
 
@@ -20,8 +109,8 @@ ListNode* makelist(const int *arr, const unsigned int length)
 
 	for (unsigned int i = 1; i < length; i += 1)
 	{
-		p->setnext(new ListNode(arr[i]));
-		p = p->getnext();
+		p->next=(new ListNode(arr[i]));
+		p = p->next;
 	}
 
 	return head;
@@ -42,8 +131,8 @@ ListNode* makelist(const vector<int> vi)
 
 	for (int i = 1; i < length; i += 1)
 	{
-		p->setnext(new ListNode(vi[i]));
-		p = p->getnext();
+		p->next=(new ListNode(vi[i]));
+		p = p->next;
 	}
 
 	return head;
@@ -58,8 +147,8 @@ void print(ListNode *head)
 	while (head)
 	{
 		std::cout.width(4);
-		std::cout << left << head->getval();
-		head = head->getnext();
+		std::cout << left << head->val;
+		head = head->next;
 	}
 }
 
@@ -71,11 +160,11 @@ void print(ListNode *list, unsigned int M)
 	for (unsigned int i = 0; i<M; i += 1)
 	{
 		std::cout.width(4);
-		std::cout << left << list->getval();
+		std::cout << left << list->val;
 
-		if (list->getnext())
+		if (list->next)
 		{
-			list = list->getnext();
+			list = list->next;
 		}
 
 	}
@@ -94,42 +183,42 @@ void sortlist1(ListNode * &list)
 	ListNode *sp;
 	ListNode *tail = list;
 
-	while (p = tail->getnext())
+	while (p = tail->next)
 	{
 		/*
 		tail是已经排序部分的最后一个元素
 		p是未排序部分第一个元素
 		*/
 
-		if (p->getval() >= tail->getval())
+		if (p->val >= tail->val)
 		{
 			//p大于等于最大，插到尾部
 			tail = p;
 			continue;
 		}
 
-		if (p->getval() <= list->getval())
+		if (p->val <= list->val)
 		{
 			//p小于等于最小，查到首部
-			tail->setnext(p->getnext());
-			p->setnext(list);
+			tail->next=(p->next);
+			p->next=(list);
 			list = p;
 			continue;
 		}
 
 		//插到中间，sp点之后
 		sp = list;
-		while ((sp->getnext())->getval()<p->getval())
+		while ((sp->next)->val<p->val)
 		{
 			//找到要插入的点，之前的点记录为sp
-			sp = sp->getnext();
+			sp = sp->next;
 			//在排序部分查找元素
 		}
 
-		tail->setnext(p->getnext());//tail指向。。。更换p
+		tail->next=(p->next);//tail指向。。。更换p
 
-		p->setnext(sp->getnext());
-		sp->setnext(p);
+		p->next=(sp->next);
+		sp->next=(p);
 
 	}
 
@@ -140,7 +229,7 @@ ListNode* sortlist2(ListNode *list)
 {
 	//冒泡
 
-	if (!list || !list->getnext())
+	if (!list || !list->next)
 	{
 		return list;
 	}
@@ -156,38 +245,38 @@ ListNode* sortlist2(ListNode *list)
 		//print(Head);
 
 		post = Head;
-		curr = post->getnext();
-		prev = curr->getnext();
+		curr = post->next;
+		prev = curr->next;
 
-		if (curr->getval()<post->getval())
+		if (curr->val<post->val)
 		{
-			curr->setnext(post);
-			post->setnext(prev);
+			curr->next=(post);
+			post->next=(prev);
 
 			//rename
 			post = curr;
-			curr = post->getnext();
+			curr = post->next;
 
 			Head = post;
 		}
 
 		while (prev)//冒泡一轮
 		{
-			if (prev->getval()<curr->getval())
+			if (prev->val<curr->val)
 			{
 				//exchange
-				curr->setnext(prev->getnext());
-				prev->setnext(curr);
-				post->setnext(prev);
+				curr->next=(prev->next);
+				prev->next=(curr);
+				post->next=(prev);
 
 				//re name
 				curr = prev;
-				prev = curr->getnext();
+				prev = curr->next;
 			}
 
 			post = curr;
 			curr = prev;
-			prev = prev->getnext();
+			prev = prev->next;
 		}
 
 
@@ -207,17 +296,17 @@ void  rdfsl1(ListNode *list)
 	*/
 
 	ListNode *pre, *t;
-	while (list && (pre = list->getnext()))
+	while (list && (pre = list->next))
 	{
-		while (pre && (list->getval()) == pre->getval())
+		while (pre && (list->val) == pre->val)
 		{
 			t = pre;
-			pre = pre->getnext();
+			pre = pre->next;
 			delete t;
 		}
 
-		list->setnext(pre);
-		list = list->getnext();
+		list->next=(pre);
+		list = list->next;
 
 	}
 
@@ -302,7 +391,7 @@ void  rdfsl2(ListNode * & list)
 
 
 
-	if (!list || !list->getnext())// 0 or 1 
+	if (!list || !list->next)// 0 or 1 
 	{
 		return;
 	}
@@ -320,17 +409,17 @@ void  rdfsl2(ListNode * & list)
 	temp = p;
 	int count = 1;
 
-	while (p = p->getnext())
+	while (p = p->next)
 	{
-		if (p->getval() != temp->getval())
+		if (p->val != temp->val)
 		{
 			if (count == 1)
 			{
 				if (!Head)	Head = temp;
-				else		h->setnext(temp);
+				else		h->next=(temp);
 
 				h = temp;
-				h->setnext(NULL);
+				h->next=(NULL);
 			}
 
 			count = 1;
@@ -349,9 +438,9 @@ void  rdfsl2(ListNode * & list)
 		}
 		else
 		{
-			h->setnext(temp);
-			h = h->getnext();
-			h->setnext(NULL);
+			h->next=(temp);
+			h = h->next;
+			h->next=(NULL);
 		}
 	}
 
@@ -370,7 +459,7 @@ unsigned int getsize(ListNode *list)
 	while (list)
 	{
 		n += 1;
-		list = list->getnext();
+		list = list->next;
 	}
 
 	return n;
@@ -391,14 +480,14 @@ int   ifcycle1(ListNode *list)
 	ListNode *t;
 	while (p2)
 	{
-		p1 = p1->getnext();
-		t = p2->getnext();
+		p1 = p1->next;
+		t = p2->next;
 		if (!t)
 		{
 			break;
 		}
 
-		p2 = t->getnext();
+		p2 = t->next;
 
 		if (p1 == p2)
 		{
@@ -433,7 +522,7 @@ ListNode *find(ListNode *list, unsigned int nth)
 	*/
 	while (list)
 	{
-		list = list->getnext();
+		list = list->next;
 		if (--nth == 1)
 		{
 			return list;
@@ -455,12 +544,12 @@ int makecycle(ListNode *list, unsigned int nth)
 		return 0;//nth too big
 	}
 
-	while (list->getnext())
+	while (list->next)
 	{
-		list = list->getnext();
+		list = list->next;
 	}
 
-	list->setnext(t);
+	list->next=(t);
 	return 1;
 
 }
@@ -479,7 +568,7 @@ ListNode *Qpart(ListNode * &list, ListNode *fron, ListNode *tail)
 		return NULL;
 	}
 
-	if (list->getnext() == tail) //list==fron->getnext()  :
+	if (list->next == tail) //list==fron->next  :
 	{
 		return NULL;
 	}
@@ -489,12 +578,12 @@ ListNode *Qpart(ListNode * &list, ListNode *fron, ListNode *tail)
 	ListNode *p = list;
 	ListNode *pp;
 
-	while ((pp = p->getnext()) != tail)
+	while ((pp = p->next) != tail)
 	{
-		if (pp->getval()<mid->getval())//取出pp
+		if (pp->val<mid->val)//取出pp
 		{
-			p->setnext(pp->getnext());
-			pp->setnext(list);
+			p->next=(pp->next);
+			pp->next=(list);
 			list = pp;
 		}
 		else
@@ -505,12 +594,12 @@ ListNode *Qpart(ListNode * &list, ListNode *fron, ListNode *tail)
 
 	if (fron)
 	{
-		fron->setnext(list);
+		fron->next=(list);
 	}
 
 	if (tail)
 	{
-		p->setnext(tail);
+		p->next=(tail);
 	}
 
 	return mid;
@@ -525,7 +614,7 @@ void Qsort(ListNode * &list, ListNode *fron, ListNode *tail)
 	ListNode *midn;
 	if (mid)
 	{
-		midn = mid->getnext();
+		midn = mid->next;
 
 		Qsort(list, fron, mid);
 		Qsort(midn, mid, tail);
@@ -557,14 +646,14 @@ ListNode *reorder(ListNode *h1, ListNode *h2)
 	while (h2)
 	{
 		//对于每一个h2，插入到h1之后
-		t = h1->getnext();
-		h1->setnext(h2);
-		h1 = h1->getnext();
+		t = h1->next;
+		h1->next=(h2);
+		h1 = h1->next;
 
-		h2 = h2->getnext();
+		h2 = h2->next;
 
-		h1->setnext(t);
-		h1 = h1->getnext();
+		h1->next=(t);
+		h1 = h1->next;
 	}
 
 	return head;
@@ -584,12 +673,12 @@ ListNode *get_inv_tail(ListNode *list)
 
 	for (unsigned int i = 1; i<m - 1; i += 1)
 	{
-		list = list->getnext();
+		list = list->next;
 	}
 
 	ListNode *t = list;
-	list = list->getnext();
-	t->setnext(NULL);
+	list = list->next;
+	t->next=(NULL);
 
 	return inorder(list);
 }
@@ -604,9 +693,9 @@ ListNode *inorder(ListNode *list)
 	while (list)
 	{
 		t = list;
-		list = list->getnext();
+		list = list->next;
 
-		t->setnext(head);
+		t->next=(head);
 		head = t;
 	}
 
@@ -637,7 +726,7 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 	ListNode *p = head;
 	for (int i = 1; i < m - 1; i += 1)
 	{
-		p = p->getnext();
+		p = p->next;
 		if (!p)	return head; //m过大 
 	}
 
@@ -649,7 +738,7 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 	else
 	{
 		prev = p;
-		p = prev->getnext();
+		p = prev->next;
 	}
 
 	ListNode *h = NULL;
@@ -658,13 +747,13 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 	{
 		if (p == NULL)	break;//p指向要反转部分第一个节点
 		t = p;
-		p = p->getnext();
-		t->setnext(h);
+		p = p->next;
+		t->next=(h);
 		h = t;
 	}
 
-	ListNode *tail = (prev == NULL ? head : prev->getnext());
-	tail->setnext(p);		//处理尾部
+	ListNode *tail = (prev == NULL ? head : prev->next);
+	tail->next=(p);		//处理尾部
 
 	if (prev == NULL)			//处理开头
 	{
@@ -672,7 +761,7 @@ ListNode *reverseBetween(ListNode *head, int m, int n)
 	}
 	else
 	{
-		prev->setnext(h);
+		prev->next=(h);
 	}
 
 	return head;
@@ -716,7 +805,7 @@ void  rnfel(ListNode * & head, unsigned int nth)
 		已处理
 		*/
 		ListNode *p = list;
-		list = list->getnext();
+		list = list->next;
 		delete p;
 
 		if (n == 1)
@@ -729,17 +818,17 @@ void  rnfel(ListNode * & head, unsigned int nth)
 
 	for (unsigned int i = 0; i<(n - nth - 1); i += 1)
 	{
-		list = list->getnext();
+		list = list->next;
 	}
 
-	ListNode *p = list->getnext();
+	ListNode *p = list->next;
 	if (nth == 1)
 	{
-		list->setnext(NULL);
+		list->next=(NULL);
 	}
 	else
 	{
-		list->setnext(p->getnext());
+		list->next=(p->next);
 	}
 	delete p;
 }
@@ -771,10 +860,10 @@ ListNode *rotateRight(ListNode *list, int k)
 
 	int n = 1;
 	ListNode *p = list;
-	while (p->getnext())
+	while (p->next)
 	{
 		n += 1;
-		p = p->getnext();
+		p = p->next;
 	}
 
 
@@ -782,10 +871,10 @@ ListNode *rotateRight(ListNode *list, int k)
 	j = j>0 ? j : N + j;
 	for (int i = 0; i < j; i += 1)
 	{
-		p->setnext(list);
-		list = list->getnext();
-		p = p->getnext();
-		p->setnext(NULL);
+		p->next=(list);
+		list = list->next;
+		p = p->next;
+		p->next=(NULL);
 	}
 
 
@@ -804,35 +893,35 @@ ListNode *mergeTwoLists(ListNode *l1, ListNode *l2)
 	ListNode *head;
 	ListNode *tail;
 
-	if (l1->getval() < l2->getval())
+	if (l1->val < l2->val)
 	{
 		head = tail = l1;
-		l1 = l1->getnext();
+		l1 = l1->next;
 	}
 	else
 	{
 		head = tail = l2;
-		l2 = l2->getnext();
+		l2 = l2->next;
 	}
 
 	while (l1&&l2)
 	{
-		if (l1->getval()<l2->getval())
+		if (l1->val<l2->val)
 		{
-			tail->setnext(l1);
-			l1 = l1->getnext();
+			tail->next=(l1);
+			l1 = l1->next;
 
 		}
 		else
 		{
-			tail->setnext(l2);
-			l2 = l2->getnext();
+			tail->next=(l2);
+			l2 = l2->next;
 		}
 
-		tail = tail->getnext();
+		tail = tail->next;
 	}
 
-	l1 == NULL ? tail->setnext(l2) : tail->setnext(l1);
+	l1 == NULL ? tail->next=(l2) : tail->next=(l1);
 
 	return head;
 }
@@ -860,19 +949,19 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 	while (l1&&l2)
 	{
 
-		sum = l1->getval() + l2->getval();
+		sum = l1->val + l2->val;
 		vi.push_back(c + sum % 10);
 		c = (sum >= 10 ? 1 : 0);
 
-		l1 = l1->getnext();
-		l2 = l2->getnext();
+		l1 = l1->next;
+		l2 = l2->next;
 	}
 	ListNode * p = (l1 == NULL ? l2 : l1);
 
 	while (p)
 	{
-		vi.push_back(p->getval() + c);
-		p = p->getnext();
+		vi.push_back(p->val + c);
+		p = p->next;
 		c = 0;
 	}
 
@@ -883,30 +972,88 @@ ListNode *addTwoNumbers(ListNode *l1, ListNode *l2)
 
 	return makelist(vi);
 }
+ListNode *reverse(ListNode * head)
+{
+	/*
+	把head 开头的链表反向
+	返回新的链表头部
+	在调用函数中，原来的head此时在链表的尾部
+	*/
+	
+	ListNode * p;
+	ListNode * pp;
 
+	if (head == NULL || head->next == NULL)
+	{
+		return head;
+	}
 
-
-
+	p = head->next;
+	head->next = NULL;
+	while (pp = p->next)
+	{
+		p->next = head;
+		head = p;
+		p = pp;
+	}
+	p->next = head;
+	return p;
+}
 
 ListNode *reverseKGroup(ListNode *head, int k)
 {
 	/*
-	Given a linked list, reverse the ListNodes of a linked list k at a time and return its modified list.
-
-	If the number of ListNodes is not a multiple of k then left-out ListNodes in the end should remain as it is.
-
-	You may not alter the values in the ListNodes, only ListNodes itself may be changed.
-
-	Only constant memory is allowed.
-
-	For example,
-	Given this linked list: 1->2->3->4->5
-
-	For k = 2, you should return: 2->1->4->3->5
-
-	For k = 3, you should return: 3->2->1->4->5
+	首先处理前面K个节点，消除特殊情况
+	然后向后，要注意记录处理段的
+	前一个节点，头节点，尾节点，下一个节点
+	*/
+	
+	/*
+	由于不满K的部分不能反转，所以需要额外的代价：首先计数
 	*/
 
+	ListNode * previous = NULL, *start = head, *tail = NULL, *theNext = head;
+	ListNode * p;
+	ListNode * ret = head;
+	int i;
+
+	while (true)
+	{
+		previous = tail;
+		start = theNext;//从前一段的尾部，提取起始信息
+
+		p = start;
+		i = 0;
+		while (p && ++i < k)
+		{
+			p = p->next;
+		}
+
+		if (i < k)
+		{
+			if (previous != NULL)
+			{
+				previous->next = start;
+			}
+			break;
+		}
+		
+		tail = start;
+		theNext = p->next;
+
+		p->next = NULL;
+		if (previous != NULL)
+		{
+			previous->next = reverse(start);//连接前一段
+		}
+		else
+		{
+			ret = reverse(start);
+		}
+	}
+
+	return ret;
+	/*
 	ListNode *p = head;//即将处理的点
 	ListNode *tail;//k-group中已反序部分的尾部
 	ListNode *rest;//未反序部分的头
@@ -949,8 +1096,12 @@ ListNode *reverseKGroup(ListNode *head, int k)
 
 		prev = tail;
 	}
-
 	return list;
+
+	*/
+
+
+	
 }
 
 

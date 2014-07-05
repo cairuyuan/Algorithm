@@ -5,32 +5,16 @@
 using namespace std;
 
 
-
-struct Interval
-{
-public:
-	int start;
-	int end;
-	Interval() : start(0), end(0) {}
-	Interval(int s, int e) : start(s), end(e) {}
-};
-
-
 int minPathSum(vector<vector<int> > &grid);//
-vector<string> restoreIpAddresses(string s);//************************************************
 vector<string> generateParenthesis(int n);//**************************************************
 char *intToRoman(int num);//******************************************************************
 int   romanToInt(char *); //******************************************************************
 vector<vector<int> > permuteUnique(vector<int> &num);//***************************************
 vector<vector<int> > permute(vector<int> &num);//*********************************************
-char *getPermutation(int n, int k);//********************************************************
 int numTrees(int n);//***********************************************************************
 int maximalRectangle(vector<vector<char> > &matrix);//****************************************
 vector<vector<int> > subsets(vector<int> &S);//***********************************************
 int candy(vector<int> &ratings);//************************************************************
-void solve(vector<vector<char>> &board);//****************************************************
-int longestConsecutive(vector<int> &num);//**************************************************
-int numDecodings(string s);//*****************************************************************
 bool isInterleave(string s1, string s2, string s3);//*****************************************
 vector<string> fullJustify(vector<string> &words, int L);//***********************************
 double pows(double x, int n);//---------------------------------------------------------------48
@@ -46,7 +30,6 @@ int  magicindex(int A[], int length);
 void wangwochufa(int A[], int B[], const int length);
 int jump(int A[], int n);//-------------------------------------------------------------------82
 bool canJump(int A[], int n);//---------------------------------------------------------------81
-bool searchMatrix(vector<vector<int> > &matrix, int target);//--------------------------------83
 vector<int> searchRange(int A[], int n, int target);//----------------------------------------84
 void  print(vector<vector<int> > vv);
 void  print(vector<int> v);
@@ -55,7 +38,6 @@ void  msa(int a[], unsigned int m, int b[], unsigned int n);//两个已排序数组合并
 void  setZeroes(vector<vector<int> > &matrix);//----------------------------------------------78
 void  rotate(vector<vector<int> > &matrix);//-------------------------------------------------79
 void  qsort(int *a, int length);//数组快速排序
-int  trap(int A[], int n); //-----------------------------------------------------------------62
 int  *randarr(int *arr, const unsigned int N, const int X = 100);//随机数填充arr
 int  firstMissingPositive(int A[], int n);//--------------------------------------------------71
 int  revint(int x);//十进制数反转-------------------------------------------------------------11
@@ -70,8 +52,6 @@ int  Factorial(int n);
 int  C(int n, int m);
 int  removeElement(int A[], int n, int elem);//删除数组中，等于elem的所有元素-----------------34
 int  evalRPN(vector<string> &tokens);//-------------------------------------------------------68
-int  longestValidParentheses(char * s);//----------------------------------------------------57
-int  searchInsert(int A[], int n, int target);//----------------------------------------------58
 int  prestr(char *, int *, int); //***
 int  KMPmatch(char *, char *);//***
 unsigned int  invertint(unsigned int);//------------------------------------------------------61
@@ -89,7 +69,6 @@ vector<int> twoSum(vector<int> &numbers, int target);//Two Sum -----------------
 vector<int> plusOne(vector<int> &digits);//--------------------------------------------------44
 vector<int> spiralOrder(vector<vector<int> > &matrix);//--------------------------------------73
 vector<vector<string> > solveNQueens(int n);//------------------------------------------------53
-vector<Interval> merge(vector<Interval> &intervals);//----------------------------------------74
 char *addBinary(char *s1, char *s2);//二进制字符相加-------------------------------------------43
 char *simplifypath(char * path);//------------------------------------------------------------55
 string simplifyPath2(string path);//------------------------------------------------------------55
