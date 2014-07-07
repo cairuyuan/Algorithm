@@ -45,6 +45,7 @@ int maxProfit(vector<int> &prices);
 int maxProfit2(vector<int> &prices);
 int maxProfit3(vector<int> &prices);
 
+void sortColors(int A[], int n);
 
 int _tmain(int argc, _TCHAR* argv[])
 {
@@ -59,12 +60,49 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	//root = reverseKGroup(root ,2);
 	//print(root);
-	vector<int> prices;
-	prices.push_back(1);
-	prices.push_back(2);
-	int x = maxProfit2(prices);
+	//vector<int> prices;
+	//prices.push_back(1);
+	//prices.push_back(2);
+	//int x = maxProfit2(prices);
+
+	int A[] = {0,2,0,0};
+	sortColors(A,4);
 	return 0;   
 }
+void sortColors(int A[], int n)
+{
+	int i0 = -1, i1 = -1, i2 = -1;
+
+	/*
+	简介*/
+	for (int j = 0; j < n; ++j)
+	{
+		switch (A[j])
+		{
+
+		case 0:
+			A[++i0] = 0;
+			i1 == i0 - 1 ? i1 += 1 : A[++i1] = 1;
+			i2 == i1 - 1 ? i2 += 1 : A[++i2] = 2;//反超情况，由于上一步产生
+			break;
+
+		case 1:
+			A[++i1] = 1;
+			i2 == i1 - 1 ? i2 += 1 : A[++i2] = 2;
+			break;
+
+		case 2:
+			++i2;
+			break;
+
+		default:
+			break;
+		}
+
+
+	}
+}
+
 int maxProfit2(vector<int> &prices)
 {
  
