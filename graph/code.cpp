@@ -47,6 +47,8 @@ int maxProfit3(vector<int> &prices);
 
 void sortColors(int A[], int n);
 
+vector<vector<int> > combine(int n, int k);
+
 int _tmain(int argc, _TCHAR* argv[])
 {
 	//int A[] = {5, 4, 1 ,2};
@@ -65,10 +67,40 @@ int _tmain(int argc, _TCHAR* argv[])
 	//prices.push_back(2);
 	//int x = maxProfit2(prices);
 
-	int A[] = {0,2,0,0};
-	sortColors(A,4);
+	//int A[] = {0,2,0,0};
+	//sortColors(A,4);
+	vector<vector<int> > x = combine(4, 3);
+
 	return 0;   
 }
+
+void solve(vector<vector<int> > &ret, vector<int> &a, int dep, int maxDep, int n, int start)
+{
+	if (dep == maxDep)
+	{
+		ret.push_back(a);
+		return;
+	 }
+	
+	for (int i = start; i <= n; i++)
+	{
+		a[dep] = i;
+		solve(ret,a,dep + 1, maxDep, n, i + 1);
+	 }
+
+}
+
+vector<vector<int> > combine(int n, int k)
+{
+	vector<vector<int> > ret;
+	vector<int> a;
+
+	a.resize(k);
+	solve(ret, a, 0, k, n, 1);
+
+	return ret;
+}
+
 void sortColors(int A[], int n)
 {
 	int i0 = -1, i1 = -1, i2 = -1;
