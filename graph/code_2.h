@@ -18,7 +18,6 @@ public:
 	Interval(int s, int e) : start(s), end(e) {}
 };
 
-bool wordBreak(string s, unordered_set<string> &dic);
 int decode(string s);
 int lengthOfLastWord(const char *s);
 bool isMatch(const char *s, const char *p);

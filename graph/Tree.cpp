@@ -443,17 +443,12 @@ vector<TreeNode *>  itmidtra(TreeNode *root)
 	迭代完成mid-order遍历
 	*/
 	vector<TreeNode *> vt;
-	if (!root)
-	{
-		return vt;
-	}
-	cout << '\n';
-	stack<TreeNode *> st;
+	if (!root) return vt; 
 
+	stack<TreeNode *> st;
 	TreeNode * sp;
 	st.push(root);
 	bool tag;
-
 	while (!st.empty())
 	{
 		tag = true;
@@ -462,7 +457,6 @@ vector<TreeNode *>  itmidtra(TreeNode *root)
 			st.pop();
 			tag = false;
 		}
-
 		sp = st.top();
 		if (haschild(sp) && tag)
 		{
@@ -473,7 +467,6 @@ vector<TreeNode *>  itmidtra(TreeNode *root)
 				st.push(sp);
 				st.push(NULL);
 			}
-
 			if (sp->left)
 			{
 				if (st.top() != NULL)
@@ -484,15 +477,11 @@ vector<TreeNode *>  itmidtra(TreeNode *root)
 			}
 			continue;
 		}
-
 		vt.push_back(sp);
 		cout.width(4);
 		cout << left << sp->val;
 		st.pop();
-
 	}
-
-
 	return vt;
 }
 

@@ -129,7 +129,7 @@ int maxProfit3(vector<int> &prices)
 
 	int start = prices[0];
 	int profit = 0;
-	for (int i = 1; i < prices.size(); i++)
+	for (unsigned int i = 1; i < prices.size(); i++)
 	{
 		if (prices[i] >= prices[i - 1])  continue;
 
@@ -724,53 +724,6 @@ bool isMatch(const char *s, const char *p)
 	return s[i] ? false : true;
 }
 
-bool wordBreak(string s, unordered_set<string> &dic)
-{
-
-	std::unordered_set<std::string>::const_iterator get;
-	int sLength = s.size();
-	int right = 0;
-	string tmp;
-	stack<int> index;
-	int start;
-
-	while (true)
-	{
-		
-		tmp += s[right];
-		//cout<< tmp.size()<<'\t'<< index.size() << '\n';
-		get = dic.find(tmp);
-		if (get != dic.end())
-		{
-			//匹配
-			index.push(right);
-			tmp.clear();
-
-			if (right == sLength - 1)
-			{
-				return true;
-			}
-		}
-
-		if (right == sLength - 1)
-		{
-			if (index.empty())
-			{
-				return false;
-			}
-
-			right = index.top();
-			index.pop();
-			start = index.empty() ? 0 : index.top() + 1;
-
-			tmp = string(s, start, right - start + 1);//从index[top]+1下表开始(包含) 复制right - index[top]个
-
-		}
-
-		right += 1;
-	}
-}
-
 
 int decode(string s)
 {
@@ -931,7 +884,7 @@ bool comp(const Interval &lhs, const Interval &rhs)
 
 vector<Interval> merge(vector<Interval> &intervals)
 {
-	int k = 0;
+	unsigned int k = 0;
 
 	if (intervals.size()<2) return intervals;
 

@@ -4,11 +4,7 @@
 #include "head.h"
 using namespace std;
 
-
-int minPathSum(vector<vector<int> > &grid);//
 vector<string> generateParenthesis(int n);//**************************************************
-char *intToRoman(int num);//******************************************************************
-int   romanToInt(char *); //******************************************************************
 vector<vector<int> > permuteUnique(vector<int> &num);//***************************************
 vector<vector<int> > permute(vector<int> &num);//*********************************************
 int numTrees(int n);//***********************************************************************
@@ -53,7 +49,6 @@ int  C(int n, int m);
 int  removeElement(int A[], int n, int elem);//删除数组中，等于elem的所有元素-----------------34
 int  evalRPN(vector<string> &tokens);//-------------------------------------------------------68
 int  prestr(char *, int *, int); //***
-int  KMPmatch(char *, char *);//***
 unsigned int  invertint(unsigned int);//------------------------------------------------------61
 unsigned int rdfsa(int * arr, unsigned int length);//去掉已排序数组中重复元素-----------------12
 bool isaPalindrome(char *s);//回文------------------------------------------------------------14
