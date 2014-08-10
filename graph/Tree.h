@@ -91,6 +91,8 @@ vector<vector<int> > zigzagLevelOrder(TreeNode *root);
 
 
 
+void recoverTree(TreeNode* root);
+int   maxPathSum(TreeNode* root);
 
 
 #endif

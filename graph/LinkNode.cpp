@@ -1053,69 +1053,12 @@ ListNode *reverseKGroup(ListNode *head, int k)
 	}
 
 	return ret;
-	/*
-	ListNode *p = head;//即将处理的点
-	ListNode *tail;//k-group中已反序部分的尾部
-	ListNode *rest;//未反序部分的头
-	ListNode *thehead = NULL;//k-group已反序部分的头
-	ListNode *list = NULL;//总体的头
-	ListNode *prev = NULL;//k-group的前一个点
-
-	if (k <= 1)
-	{
-		return head;
-	}
-
-	while (p)
-	{
-		tail = p;//一个K-group中的第一个元素（未反序）
-		thehead = prev;
-		for (int i = 0; i < k; i += 1)
-		{
-			if (p == NULL)
-			{
-				break;
-			}
-			rest = p->next;
-			p->next = thehead;
-			thehead = p;
-			p = rest;
-		}
-		//prev ->[tail <- ..... <-thehead] p(=rest)
-		if (list == NULL)
-		{
-			list = thehead;//剩下部分 以p为首
-			head->next = p;
-
-			prev = tail;//=head
-			continue;
-		}
-		//prev ->[<-tail <- ..... <-thehead] p(=rest)  
-		prev->next = thehead;
-		tail->next = p;
-
-		prev = tail;
-	}
-	return list;
-
-	*/
-
-
 	
 }
 
 
 ListNode *swapPairs(ListNode *head)
 {
-	/*
-	Given a linked list, swap every two adjacent ListNodes and return its head.
-
-	For example,
-	Given 1->2->3->4, you should return the list as 2->1->4->3.
-
-	Your algorithm should use only constant space.
-	You may not modify the values in the list, only ListNodes itself can be changed.
-	*/
 	if (!head || !head->next) // 0 / 1
 	{
 		return head;
@@ -1210,72 +1153,8 @@ int lengthof(ListNode * head)
 	return i;
 }
 
-/*
-T *sortedListToBST_(ListNode *head, int n)
-{
-	if (head == NULL || n <= 0)
-	{
-		return NULL;
-	}
-
-	if (n == 1)
-	{
-		return new T(head->val);
-	}
-
-	T *root;
-	ListNode *parent = head;
-	for (int i = 0; i < n / 2; i += 1)
-	{
-		parent = parent->next;
-	}
-
-	root = new T(parent->val);
-
-	root->left = sortedListToBST_(head, n / 2);
-	root->right = sortedListToBST_(parent->next, n - n / 2 - 1);
-
-	return root;
-}
-
-
-T *sortedListToBST(ListNode *head)
-{
-	/*
-	Given a singly linked list where elements are sorted in ascending order,
-	convert it to a         height-balanced         BST.
-
-	The worst-case time of build_binary_tree is O(n^{2})—if you feed it a sorted list of values,
-	it chains them into a linked list with no left subtrees.
-	For example, build_binary_tree([1, 2, 3, 4, 5]) yields the tree (1 (2 (3 (4 (5))))).
-
-	树排序的问题使得CPU Cache性能较差，特别是当节点是动态内存分配时。
-	堆排序的CPU Cache性能较好。
-	
-
-	return sortedListToBST_(head, lengthof(head));
-}
-
-*/
-
-
-
-
-
-
 void recoverTree(ListNode *root)
 {
-	/*
-	Two elements of a binary search tree (BST) are swapped by mistake.
-
-	Recover the tree without changing its structure.
-
-	Note:
-	A solution using O(n) space is pretty straight forward.
-	Could you devise a constant space solution?
-	confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
-	*/
-
 }
 
 ListNode *partition(ListNode *head, int x)
@@ -1342,20 +1221,6 @@ ListNode *partition(ListNode *head, int x)
 
 vector<ListNode *> generateTrees(int n)
 {
-	/*
-	Given n, generate all structurally unique BST's (binary search trees) that store values 1...n.
-
-	For example,
-	Given n = 3, your program should return all 5 unique BST's shown below.
-
-	1         3     3      2      1
-	\       /     /      / \      \
-	3     2     1      1   3      2
-	/     /       \                 \
-	2     1         2                 3
-	confused what "{1,#,2,3}" means? > read more on how binary tree is serialized on OJ.
-	*/
-
 	vector<ListNode *> vn;
 
 	return vn;

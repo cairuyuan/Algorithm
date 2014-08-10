@@ -1,98 +1,152 @@
 
 #include "stdafx.h"
-#include "head.h"
-#include "Tree.h"
-#include "LinkNode.h"
-#include "code_2.h"
-
- struct UndirectedGraphNode 
- {
-	int label;
-	vector<UndirectedGraphNode *> neighbors;
-	UndirectedGraphNode(int x) : label(x) {};
-	
-};
- vector<vector<int> > ret;
+#include "code_3.h"
 
 
-bool isValidSudoku(vector<vector<char> > &board);
 
-UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node);
-vector<int> twoSum(vector<int> &numbers, int target);
-string convert(string s, int nRows);
-void comb(int m, int n, vector<int> &S);
-vector<string> fullJustify(vector<string> &words, int L);
-
-vector<vector<int> > combinationSum(vector<int> &nums, int target);
-vector<string> anagrams(vector<string> &strs);
-
-bool exist(vector<vector<char> > &board, string word);
-char *strStr(char *haystack, char *needle);
-
-string getNext(const string &s);
-int numDistinct(const string &S, const string &T);
-int numDistinct2(const string &S, const string &T);
-
-bool wordBreak(string s,unordered_set<string> & dic);
-bool wordBreak2(string s, unordered_set<string> &dict);
-
-int minPathSum(vector<vector<int> > &grid);
-
-
-int romanToInt(string s);
-string intToRoman(int num);
-
-
-bool isInterleave(string s1, string s2, string s3);
-
-
-int _tmain(int argc, _TCHAR* argv[])
+int candy(vector<int> &ratings) 
 {
-	//vector<int> S = { 3,2 };
-	//sort(S.begin(), S.end());
-
-	//vector<int> x =  twoSum(numbers, 0);
-	//comb(2, 2, S); 
-
-	//vector<string> words = { "This", "is", "an", "example", "of", "text", "justification." };
-	//fullJustify(words, 16);
-	/*vector<int> nums = {1,1,6};
+	const int n = ratings.size();
+	int result = n;
+	vector<int> increment(n, 0);
 	
-	vector<vector<int> >  ret = combinationSum(nums, 8);*/
+	for (int i = 1, inc = 1; i < n; i++)
+	{
+		if (ratings[i - 1] < ratings[i])
+		{
+			increment[i] = inc;//max(inc, increment[i])
+			inc += 1;
+		}
+		else
+		{
+			inc = 1;
+		}
+	}
 
-	//int x = KMPmatch("qwe","uyrtqwe");
+	for (int i = n - 2, inc = 1; i >= 0; i--)
+	{
+		if (ratings[i] > ratings[i + 1])
+		{
+			increment[i] = max(inc, increment[i]);
+			inc += 1;
+		}
+		else
+		{
+			inc = 1;
+		}
+	}
 
-	//vector<vector<char> > board(3);
-	//board[0].push_back('A');
-	//board[0].push_back('B');
-	//board[0].push_back('C');
-	//board[0].push_back('E');
+	for (int i = 0; i < n; i++)
+	{
+		result += increment[i];
+	}
 
-	//board[1].push_back('S');
-	//board[1].push_back('F');
-	//board[1].push_back('C');
-	//board[1].push_back('S');
-
-	//board[2].push_back('A');
-	//board[2].push_back('D');
-	//board[2].push_back('E');
-	//board[2].push_back('E');
-
-	//board[0].push_back('a');
-	//board[0].push_back('b');
-	//board[1].push_back('c');
-	//board[1].push_back('d');
-	//bool ret = exist(board , "ABCCED");
-	//getNext("1211");
-
-	int x = numDistinct("rabbbit", "rabit");
-
-	return 0;
+	return result;
 }
 
 
+
+bool search_2(int A[], int n, int target)
+{
+	int first = 0, last = n, mid;
+
+	while (first != last) 
+	{
+		mid = (first + last) / 2;
+
+		if (A[mid] == target) return true;
+
+		if (A[first] < A[mid]) 
+		{
+			if (A[first] <= target && target < A[mid])
+			{
+				last = mid;
+			}
+			else
+			{
+				first = mid + 1;
+			}
+		}
+		else if (A[first] > A[mid])
+		{
+			if (A[mid] <= target && target <= A[last - 1])
+			{
+				first = mid + 1;
+			}
+			else
+			{
+				last = mid;
+			}
+		}
+		else
+		{
+			first++;
+		}
+	}
+
+	return false;
+}
+
+int search(int A[], int n, int target)
+{
+	/*
+	Suppose a sorted array is rotated at some pivot unknown to you beforehand.
+	(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 - 0 1 2).
+	You are given a target value to search. If found in the array return its index,
+	otherwise return -1.
+	You may assume no duplicate exists in the array.
+	Discuss
+	*/
+	/*
+	a sorted array is rotated
+
+	没有想同元素
+	右边属于rotated部分均比A[0]小
+	部分升序不变
+	*/
+
+	int i = 0;
+	int j = n - 1;
+	int m;
+
+	while (i <= j)
+	{
+		m = (i + j) / 2;
+
+		if (A[m] == target)
+		{
+			return m;
+		}
+
+		if (A[i] <= A[m])//m在上半区
+		{
+			if (A[m] > target && A[i] <= target)// i-m段
+			{
+				j = m - 1;
+			}
+			else//	A[m] <= target || A[i] >target
+			{
+				i = m + 1;
+			}
+		}
+		else//m在下半区
+		{
+			if (A[m] < target && A[j] >= target)//m-j段
+			{
+				i = m + 1;
+			}
+			else// A[m] >= target || A[j] < target
+			{
+				j = m - 1;
+			}
+		}
+	}
+	return -1;
+}
+
 bool isInterleave(string s1, string s2, string s3) 
 {
+	return false;
 
 }
 
@@ -182,34 +236,14 @@ int minPathSum(vector<vector<int> > &grid)
 }
 
 
-int max_sum;
-int maxPathSum(TreeNode *root) 
-{
-	max_sum = INT_MIN;
-	dfs(root);
-	return max_sum;
-}
-int dfs(const TreeNode *root)
-{
-	if (root == nullptr) return 0;
 
-	int l = dfs(root->left);
-	int r = dfs(root->right);
-	int sum = root->val;
-
-	if (l > 0) sum += l;
-	if (r > 0) sum += r;
-
-	max_sum = max(max_sum, sum);
-	return max(r, l) > 0 ? max(r, l) + root->val : root->val;
-}
 
 
 bool wordBreak2(string s, unordered_set<string> &dict) 
 {
 	vector<bool> f(s.size() + 1, false);
 	f[0] = true; // 空字符串
-	for (int i = 1; i <= s.size(); ++i) 
+	for (unsigned int i = 1; i <= s.size(); ++i) 
 	{
 		for (int j = i - 1; j >= 0; --j)
 		{
@@ -246,6 +280,7 @@ bool wordBreak(string s, unordered_set<string> &dict)
 	length = s.size();
 	return dfs_break(0, dict);
 }
+
 
 string getNext(const string &s) 
 {
@@ -304,7 +339,7 @@ int numDistinct(const string &S, const string &T)
 {
 	vector<int> f(T.size() + 1);
 	f[0] = 1;
-	for (int i = 0; i < S.size(); ++i) 
+	for (size_t i = 0; i < S.size(); ++i) 
 	{
 		for (int j = T.size() - 1; j >= 0; --j) 
 		{

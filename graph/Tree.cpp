@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "Tree.h"
 
-using namespace std;
 
 
 vector<vector<int> > zigzagLevelOrder(TreeNode *root)
@@ -1793,4 +1792,82 @@ void  print(vector<TreeNode *> v)
 		cout.width(4);
 		cout << left << v[j]->val;
 	}
+}
+
+
+
+void detect(pair<TreeNode*, TreeNode*>& broken, TreeNode* prev, TreeNode* current)
+{
+	if (prev != nullptr && prev->val > current->val)
+	{
+		if (broken.first == nullptr)
+		{
+			broken.first = prev;
+		}
+		broken.second = current;
+	}
+}
+
+
+void recoverTree(TreeNode* root)
+{
+	pair<TreeNode *, TreeNode *> broken;
+	TreeNode* prev = nullptr;
+	TreeNode* cur = root;
+	while (cur != nullptr) //morris
+	{
+		if (cur->left == nullptr)//左支空，访问根节点
+		{
+			detect(broken, prev, cur);
+			prev = cur;
+			cur = cur->right;
+		}
+		else
+		{
+			auto node = cur->left;
+			while (node->right != nullptr && node->right != cur)
+			{
+				node = node->right;
+			}
+
+			if (node->right == nullptr)//node在cur左子树的最右侧点，中序左子树最后一个点
+			{
+				node->right = cur;
+				cur = cur->left;
+			}
+			else //node->right == cur ,第二次访问
+			{
+				detect(broken, prev, cur);
+				node->right = nullptr;
+				prev = cur;
+				cur = cur->right;
+			}
+		}
+	}
+	swap(broken.first->val, broken.second->val);
+}
+
+
+
+int max_sum;
+
+int dfs(const TreeNode *root)
+{
+	if (root == nullptr) return 0;
+
+	int l = dfs(root->left);
+	int r = dfs(root->right);
+	int sum = root->val;
+
+	if (l > 0) sum += l;
+	if (r > 0) sum += r;
+
+	max_sum = max(max_sum, sum);
+	return max(r, l) > 0 ? max(r, l) + root->val : root->val;
+}
+int maxPathSum(TreeNode *root)
+{
+	max_sum = INT_MIN;
+	dfs(root);
+	return max_sum;
 }

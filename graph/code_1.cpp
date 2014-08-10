@@ -1,6 +1,4 @@
 ﻿#include "stdafx.h"
-#include "head.h"
-
 #include "code_1.h"
 
 using namespace std;
@@ -1119,62 +1117,7 @@ bool isPalindrome(int x)
 }
 
 
-int search(int A[], int n, int target)
-{
-	/*
-	Suppose a sorted array is rotated at some pivot unknown to you beforehand.
-	(i.e., 0 1 2 4 5 6 7 might become 4 5 6 7 - 0 1 2).
-	You are given a target value to search. If found in the array return its index,
-	otherwise return -1.
-	You may assume no duplicate exists in the array.
-	Discuss
-	*/
-	/*
-	a sorted array is rotated
 
-	没有想同元素
-	右边属于rotated部分均比A[0]小
-	部分升序不变
-	*/
-
-	int i = 0;
-	int j = n - 1;
-	int m;
-
-	while (i <= j)
-	{
-		m = (i + j) / 2;
-
-		if (A[m] == target)
-		{
-			return m;
-		}
-
-		if (A[i] <= A[m])//m在上半区
-		{
-			if (A[m] > target && A[i] <= target)// i-m段
-			{
-				j = m - 1;
-			}
-			else//	A[m] <= target || A[i] >target
-			{
-				i = m + 1;
-			}
-		}
-		else//m在下半区
-		{
-			if (A[m] < target && A[j] >= target)//m-j段
-			{
-				i = m + 1;
-			}
-			else// A[m] >= target || A[j] < target
-			{
-				j = m - 1;
-			}
-		}
-	}
-	return -1;
-}
 
 
 

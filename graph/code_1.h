@@ -19,8 +19,6 @@ int    largestRectangleArea(vector<int> &height);//-----------------------------
 void   OutputSubset(int set[], int length);//-----------------------------------------********70
 void   shellsort(int *data, size_t size);//
 double findMedianSortedArrays(int *A, int m, int *B, int n);//--------------------------------63
-int  search(int A[], int n, int target);//---------------------------------------------------52
-bool search2(int A[], int n, int target);//------------------------------------------------***85
 int maxSubArray(int A[], int n);//------------------------------------------------------------75
 int  magicindex(int A[], int length);
 void wangwochufa(int A[], int B[], const int length);
