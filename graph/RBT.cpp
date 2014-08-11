@@ -1,14 +1,7 @@
 #include "stdafx.h"
 #include "RBT.h"
 
-using namespace std;
-
-
-
-
-
-
-
+RBT * nil = new RBT();
 
 
 void  print4_(RBT *root)

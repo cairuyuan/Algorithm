@@ -3,34 +3,8 @@
 #define __RBT_
 
 
-#include <iostream>
-#include <assert.h>
-#include <ctime>
-#include <stack>
-#include <queue>
-#include <map>
-
-#define black 0
-#define red   1
-
-
-class RBT
-{
-public:
-	int val;
-	RBT *left;
-	RBT *right;
-	RBT *P;
-	bool color;
-public:
-	RBT(void) :val(0), left(NULL), right(NULL), P(NULL), color(black){};
-	RBT(int x, bool c) :val(x), left(NULL), right(NULL), P(NULL), color(c){};
-	RBT(int x, RBT *l, RBT *r, bool c) :val(x), left(l), right(r), P(NULL), color(c){};
-	RBT(int x, RBT *l, RBT *r, RBT *p, bool c) :val(x), left(l), right(r), P(p), color(c){};
-	~RBT(void){};
-};
-RBT *nil = new RBT(~0, black);
-
+#include "head.h"
+using namespace std;
 
 
 inline RBT *gp(RBT *root);//

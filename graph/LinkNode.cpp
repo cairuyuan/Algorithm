@@ -2,13 +2,6 @@
 
 #include "LinkNode.h"
 
-#include "head.h"
-
-using namespace std;
-
-
-
-
 ListNode *merge(ListNode *head1, ListNode *head2)
 {
 	/*

@@ -84,25 +84,29 @@
     <ClInclude Include="code_2.h" />
     <ClInclude Include="code_3.h" />
     <ClInclude Include="code_4.h" />
+    <ClInclude Include="code_5.h" />
     <ClInclude Include="head.h" />
     <ClInclude Include="LinkNode.h" />
     <ClInclude Include="RBT.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Tree.h" />
+    <ClInclude Include="Tree_1.h" />
+    <ClInclude Include="Tree_2.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="code_2.cpp" />
     <ClCompile Include="code_1.cpp" />
     <ClCompile Include="code_3.cpp" />
     <ClCompile Include="code_4.cpp" />
+    <ClCompile Include="code_5.cpp" />
     <ClCompile Include="LinkNode.cpp" />
     <ClCompile Include="RBT.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="Tree.cpp" />
+    <ClCompile Include="Tree_1.cpp" />
+    <ClCompile Include="Tree_2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -30,9 +30,6 @@
     <ClInclude Include="LinkNode.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Tree.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="head.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -48,6 +45,15 @@
     <ClInclude Include="code_4.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="code_5.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree_1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree_2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -57,9 +63,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="LinkNode.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Tree.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="code_2.cpp">
@@ -72,6 +75,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="code_4.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="code_5.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree_1.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree_2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

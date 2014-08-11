@@ -263,7 +263,7 @@ int length;
 bool dfs_break(int i, unordered_set<string>  &dic)
 {
 	string tmp;
-	while (i<length)
+	while (i < length)
 	{
 		tmp += S[i++];
 		if (dic.count(tmp) && dfs_break(i, dic))
@@ -1078,3 +1078,106 @@ bool isValidSudoku(vector<vector<char> > &board)
 	return true;
 }
 
+vector<int> findSubstring(string s, vector<string> &dict) 
+{
+	/*
+	You are given a string, S, and a list of words, L, that are all of the same length. 
+	Find all starting indices of substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
+	For example, given:
+	S: "barfoothefoobarman"
+	L: ["foo", "bar"]
+	You should return the indices: [0,9].
+	(order does not matter).
+	*/
+
+	size_t wordLength = dict.front().length();
+	size_t catLength = wordLength * dict.size();
+	vector<int> result;
+
+	if (s.length() < catLength)
+	{
+		return result;
+	}
+
+	unordered_map<string, int> wordCount;
+	for (auto const& word : dict)
+	{
+		++wordCount[word];
+	}
+
+	for (auto i = begin(s); i <= prev(end(s), catLength); ++i) 
+	{
+		unordered_map<string, int> unused(wordCount);
+
+		for (auto j = i; j != next(i, catLength); j += wordLength) 
+		{
+			auto pos = unused.find(string(j, next(j, wordLength)));
+
+			if (pos == unused.end() || pos->second == 0)
+			{
+				break;
+			}
+
+			if (--pos->second == 0)
+			{
+				unused.erase(pos);
+			}
+		}
+
+		if (unused.size() == 0)
+		{
+			result.push_back(distance(begin(s), i));
+		}
+
+	}
+	return result;
+}
+
+
+string preProcess(string s) 
+{
+	int n = s.length();
+	if (n == 0) return "^$";
+
+	string ret = "^";
+	for (int i = 0; i < n; i++) 
+		ret += "#" + s.substr(i, 1);
+
+	return ret += "#$";
+}
+string longestPalindrome(string s) 
+{ 
+	string T = preProcess(s); 
+	const int n = T.length(); 
+	
+	int C = 0;//两侧回文覆盖当前点i的最长回文子串的中心点
+	int R = 0;//C的半径，只包含本身为0，3个元素为1
+	int *P = new int[n]; 
+	for (int i = 1; i < n - 1; i++) 
+	{ 
+		int i_mirror = 2 * C - i;  
+		P[i] = (R > i) ? min(R - i, P[i_mirror]) : 0; 
+		 
+		while (T[i + 1 + P[i]] == T[i - 1 - P[i]])
+		{
+			P[i] += 1;
+		}
+
+		if (i + P[i] > R) 
+		{ 
+			C = i; 
+			R = i + P[i]; 
+		} 
+	}  
+	 
+	int max = 0;
+	for (int i = 1; i < n - 1; i++)  
+	{ 
+		if (P[i] > P[max]) 
+		{ 
+			max = i;
+		} 
+	}
+
+	return s.substr((max - 1 - P[max]) / 2, P[max]);
+} 

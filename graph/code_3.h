@@ -4,8 +4,6 @@
 #include "head.h"
 
 
-using namespace std;
-
 
 struct UndirectedGraphNode
 {
@@ -50,5 +48,5 @@ bool isInterleave(string s1, string s2, string s3);
 int search(int A[], int n, int target);
 bool search_2(int A[], int n, int target);
 int candy(vector<int> &ratings);
-
+vector<int> findSubstring(string S, vector<string> &L);
 #endif

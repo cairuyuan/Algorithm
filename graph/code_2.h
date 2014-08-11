@@ -1,14 +1,9 @@
 #ifndef __CODE_2_H__
 #define __CODE_2_H__
 
-
-#include "stdafx.h"
 #include "head.h"
-#include "Tree.h"
-#include "LinkNode.h"
-#include "code_1.h"
 
-using namespace std;
+
 struct Interval
 {
 public:

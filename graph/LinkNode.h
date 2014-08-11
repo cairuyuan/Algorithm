@@ -2,36 +2,8 @@
 #ifndef __LINKListNode_
 #define __LINKListNode_
 
-#include <iostream>
-#include <assert.h>
-#include <ctime>
-#include <stack>
-#include <queue>
-#include <map>
-
+#include "head.h"
 using namespace std;
-
-
-class ListNode
-{
-public:
-	int  val;
-	ListNode *next;
-	ListNode *random;
-
-public:
-	ListNode(int x) :val(x), next(NULL), random(NULL){}
-	ListNode(){}
-	//~ListNode(){cout<<"dead ";};
-
-public:
-	ListNode *getnext()const{ return next; }
-	void  setnext(ListNode *pnext){ next = pnext; }
-
-	int   getval()const{ return val; }
-	void  setval(int x){ val = x; }
-};
-
 
 void  print(ListNode *head);//打印
 
@@ -74,7 +46,6 @@ void  rnfel(ListNode * & list, unsigned int nth);//去掉倒数第n个节点------------
 void  Qsort(ListNode * &list, ListNode *fron = NULL, ListNode *tail = NULL);//快速排序-单向链表------------------4
 void  sortlist1(ListNode * & list); //排序 插入排序-----------------------------------------------16
 unsigned int getsize(ListNode *list);//返回节点数
-
 
 
 int  makecycle(ListNode *list, unsigned int nth);//尾部指向nth，构造环
