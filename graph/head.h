@@ -11,6 +11,9 @@
 #include <unordered_set> 
 #include <unordered_map> 
 #include <set>
+#include <list>
+#include <iterator> 
+
 
 using namespace std;
 
@@ -67,6 +70,25 @@ public:
 	~RBT(void){};
 };
 
+
+
+struct UndirectedGraphNode
+{
+	int label;
+	vector<UndirectedGraphNode *> neighbors;
+	UndirectedGraphNode(int x) : label(x) {};
+
+};
+
+
+struct Interval
+{
+public:
+	int start;
+	int end;
+	Interval() : start(0), end(0) {}
+	Interval(int s, int e) : start(s), end(e) {}
+};
 
 
 

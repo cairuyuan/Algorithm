@@ -281,7 +281,7 @@ int removeElement(int a[], int n, int elem)
 
 
 
-vector<vector<int> > permute(vector<int> &num)
+vector<vector<int> > permute_2(vector<int> &num)
 {
 	/*
 	Given a collection of numbers, return all possible permutations.
@@ -329,7 +329,7 @@ vector<vector<int> > permute(vector<int> &num)
 
 	for (unsigned int i = 0; i < n; i++)
 	{
-		vector<vector<int> > vvn_i = permute(pa[i]); //n个子集 每个含有n-1个元素 做全排
+		vector<vector<int> > vvn_i = permute_2(pa[i]); //n个子集 每个含有n-1个元素 做全排
 		for (unsigned int j = 0; j < (n - 1)*(n - 2); j++)//n-1个节点 (n-1)*(n-2)个排列
 		{
 			vvn_i[j].push_back(num[i]);
@@ -608,76 +608,6 @@ long Factorial(long n)
 }
 
 
-
-
-int longestValidParentheses(char * str)
-{
-	/*
-	Given a string containing just the characters '(' and ')',
-	find the length of the longest valid (well-formed) parentheses substring.
-
-	For "(()", the longest valid parentheses substring is "()", which has length = 2.
-
-	Another example is ")()())", where the longest valid parentheses substring is "()()", which has length = 4.
-	*/
-
-	//		" ) ( ) ( ) ) "      "( ( ) ) ( ( ) "
-	//        -         -                 -
-	//cout<<longestValidParentheses(")()())") ;//"( ( ) ) ( ( ) "
-	if (str == NULL || *str == '\0')
-	{
-		return 0;
-	}
-
-	char c = '#';
-	char *s = str;
-	stack<char *> sc;
-	sc.push(&c);
-
-	while (*s)
-	{
-		if (*sc.top() == '(' && *s == ')')
-		{
-			sc.pop();
-		}
-		else
-		{
-			sc.push(s);
-		}
-		s += 1;
-	}
-	// s在 '\0'
-	int n = sc.size();
-	if (n == 1)
-	{
-		return s - str;
-	}
-
-	//  ) ( ) ( ) ) \0
-	//  -         -
-	//()()
-	// # ( ) ( 0
-	// -     - s
-	int length = s - sc.top();
-	for (int i = 2; i < n; i++)
-	{
-		s = sc.top();
-		sc.pop();
-		if (s - sc.top() > length)
-		{
-			length = s - sc.top();
-		}
-	}
-
-	if (sc.top() - (str - 1) > length)
-	{
-		length = sc.top() - (str - 1);
-	}
-
-	return length - 1;
-}
-
-
 int searchInsert(int A[], int n, int target)
 {
 	/*
@@ -893,23 +823,7 @@ int nextpeak(int a[], int i, int n)
 }
 
 
-unsigned int  invertint(unsigned int i)
-{
-	/*
-	二进制反转
-	*/
 
-	unsigned int y = 0;
-	int n = sizeof(int) * 8;
-	for (int j = 1; j <= n; j++)
-	{
-		y = y << 1;
-		y += i&(0x01);
-		i = i >> 1;
-	}
-
-	return i;
-}
 
 
 int *findkin2sortedarr(int *a, int la, int *b, int lb, int k)
@@ -1026,7 +940,6 @@ int compute(int first, int second, char op)
 	}
 }
 
-
 int evalRPN(vector<string> &tokens)
 {
 	/*
@@ -1070,38 +983,4 @@ int evalRPN(vector<string> &tokens)
 	}
 
 	return si.top();
-}
-
-
-int firstMissingPositive(int A[], int length)
-{
-	/*
-	Given an unsorted integer array, find the first missing positive integer.
-	For example,
-	Given [1,2,0] return 3,
-	and [3,4,-1,1] return 2.
-
-	Your algorithm should run in O(n) time and uses constant space.
-	*/
-	if (A == NULL)
-	{
-		return 0;
-	}
-	int t;
-	int i;
-	for (i = 0; i < length; i++)
-	{
-		if (A[i] <= length && A[i] >0 && A[i] != i + 1 && A[i] != (A[A[i] - 1]))
-		{
-			t = A[A[i] - 1]; A[A[i] - 1] = A[i]; A[i] = t;
-			i -= 1;
-		}
-	}
-
-	for (i = 0; i < length && A[i] == i + 1; i += 1)
-	{
-		;
-	}
-
-	return i + 1;
 }

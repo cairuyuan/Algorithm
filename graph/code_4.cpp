@@ -89,100 +89,6 @@ bool isaPalindrome(char * str)
 
 }
 
-bool isValid(char * s)
-{
-	/*
-	Given a string containing just the characters '(', ')', '{', '}', '[' and ']',
-	determine if the input string is valid.
-	The brackets must close in the correct order,
-	"()" and "()[]{}" are all valid but "(]" and "([)]" are not.
-	*/
-
-#define mactch(c)  {if (sc.top()==c){sc.pop();break;} else return false;}
-
-	stack<char> sc;
-	sc.push('#');
-
-	while (*s)
-	{
-		switch (*s)
-		{
-		case '(':
-		case '[':
-		case '{':
-			sc.push(*s);
-			break;
-
-		case ')':
-			mactch('(');
-		case ']':
-			mactch('[');
-		case '}':
-			mactch('{');
-
-		default:
-			break;
-		}
-
-		s += 1;
-	}
-
-	if (sc.top() == '#')
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
-	//#undef  mactch(c)
-}
-
-
-double pows(double x, int n)
-{
-	/*
-	Implement pow(x, n).
-	*/
-
-	assert(!(x == 0 && n == 0));
-
-	double s = 1.0;
-	do
-	{
-		if (n & 0x01)
-		{
-			s *= x;
-		}
-
-		x = x*x;
-	} while (n = n >> 1);
-
-	return s;
-}
-
-
-float invsqrts(float x)
-{
-	/*
-	Implement int sqrt(int x).
-	Compute and return the square root of x.
-	*/
-
-	//C数学函数库中的sqrt具有理想的精度，但速度太慢
-
-	float xhalf = 0.5f*x;
-	int i = *(int*)&x;
-	i = 0x5f3759df - (i >> 1);        // 计算第一个近似根
-	x = *(float*)&i;
-	x = x*(1.5f - xhalf*x*x);       // 牛顿迭代法
-
-	return x;
-}
-
-
-
 int rdfsa2(int * arr, int length)
 {
 	/*
@@ -622,34 +528,6 @@ vector<int> plusOne(vector<int> &digits)
 }
 
 
-int climbStairs(int n)
-{
-	/*
-	You are climbing a stair case. It takes n steps to reach to the top.
-
-	Each time you can either climb 1 or 2 steps.
-	In how many distinct ways can you climb to the top?
-	*/
-	if (n <= 0)
-	{
-		return -1;
-	}
-	int s = 0;
-	int x;
-	for (int i = 0; i <= n / 2; i += 1)
-	{
-		//2 :i
-		//1 :j=n-i*2
-		//m=i+j
-		//C(i,m)=C(i,(i+n-i*2))=C(i,n-i);
-		x = C(n - i, i);
-		s += x;
-	}
-
-	return s;
-}
-
-
 char *simplifypath(char * path)
 {
 	/*
@@ -1064,4 +942,31 @@ int C(int n, int m)
 		d *= j + 1;
 	}
 	return u / d;
+}
+
+int climbStairs(int n)
+{
+	/*
+	You are climbing a stair case. It takes n steps to reach to the top.
+
+	Each time you can either climb 1 or 2 steps.
+	In how many distinct ways can you climb to the top?
+	*/
+	if (n <= 0)
+	{
+		return -1;
+	}
+	int s = 0;
+	int x;
+	for (int i = 0; i <= n / 2; i += 1)
+	{
+		//2 :i
+		//1 :j=n-i*2
+		//m=i+j
+		//C(i,m)=C(i,(i+n-i*2))=C(i,n-i);
+		x = C(n - i, i);
+		s += x;
+	}
+
+	return s;
 }

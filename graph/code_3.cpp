@@ -236,6 +236,53 @@ int minPathSum(vector<vector<int> > &grid)
 }
 
 
+void gen_path(const string &s, const vector<vector<bool> > &prev, int cur, vector<string> &path, vector<string> &result)
+{
+	if (cur == 0)
+	{
+		string tmp;
+		for (auto iter = path.crbegin(); iter != path.crend(); ++iter)
+		{
+			tmp += *iter + " ";
+		}
+
+		tmp.erase(tmp.end() - 1);
+		result.push_back(tmp);
+	}
+	for (size_t i = 0; i < s.size(); ++i)
+	{
+		if (prev[cur][i])
+		{
+			path.push_back(s.substr(i, cur - i));
+			gen_path(s, prev, i, path, result);
+			path.pop_back();
+		}
+	}
+}
+
+
+vector<string> wordBreak3(string s, unordered_set<string> &dict) 
+{
+	vector<bool> f(s.length() + 1, false);
+	vector<vector<bool> > prev(s.length() + 1, vector<bool>(s.length()));
+
+	f[0] = true;
+	for (size_t i = 1; i <= s.length(); ++i) 
+	{
+		for (int j = i - 1; j >= 0; --j)
+		{
+			if (f[j] && dict.find(s.substr(j, i - j)) != dict.end()) 
+			{
+				f[i] = true;
+				prev[i][j] = true;
+			}
+		}
+	}
+	vector<string> result;
+	vector<string> path;
+	gen_path(s, prev, s.length(), path, result);
+	return result;
+}
 
 
 
@@ -258,82 +305,28 @@ bool wordBreak2(string s, unordered_set<string> &dict)
 }
 
 
-string S;
-int length;
-bool dfs_break(int i, unordered_set<string>  &dic)
-{
-	string tmp;
-	while (i < length)
-	{
-		tmp += S[i++];
-		if (dic.count(tmp) && dfs_break(i, dic))
-		{
-			return true;
-		}
-	}
-	return dic.count(tmp) == 1;
-}
-
 bool wordBreak(string s, unordered_set<string> &dict)
 {
-	S = s;
-	length = s.size();
-	return dfs_break(0, dict);
-}
 
+	vector<bool> f(s.size() + 1, false);
+	f[0] = true; // 空字符串
 
-string getNext(const string &s) 
-{
-	/*
-	扫描s，将结果写入tmp，交换到s
-	*/
-	
-	string tmp;
-	
-	int s_length = s.size();
-	int i;
-
-	char num = s[0];
-	int count = 1;
-	for (i = 1; i < s_length; i += 1)
+	for (int i = 1; i <= s.size(); ++i)
 	{
-		if (s[i] == num)
+		for (int j = i - 1; j >= 0; --j) 
 		{
-			count += 1;
-		}
-		else
-		{
-			/*扫描到和之前不一样*/
-			tmp += count + '0';
-			tmp += num;
-			num = s[i];
-			count = 1;
+			if (f[j] && dict.find(s.substr(j, i - j)) != dict.end()) 
+			{
+				f[i] = true;
+				break;
+			}
 		}
 	}
-
-	if (count)
-	{
-		tmp += count + '0';
-		tmp += num;
-	}
-
-	return tmp;
+	return f[s.size()];
 }
 
 
-string countAndSay(int n)
-{
-	if (n <= 0) return string();
 
-	string say = "1";
-
-	for (int i = 1; i < n; ++i)
-	{
-		say = getNext(say);
-	}
-
-	return say;
-}
 
 int numDistinct(const string &S, const string &T)
 {
@@ -569,29 +562,6 @@ int KMPmatch(char *p, char *s)
 	return 0;
 }
 
-
-
-int uniquePathsWithObstacles(vector<vector<int> > &obstacleGrid)
-{
-	const int m = obstacleGrid.size();
-	const int n = obstacleGrid[0].size();
-
-	if (obstacleGrid[0][0] || obstacleGrid[m - 1][n - 1]) return 0;
-
-	vector<int> f(n, 0);
-	f[0] = obstacleGrid[0][0] ? 0 : 1;
-	for (int i = 0; i < m; i += 1)//行
-	{
-		for (int j = 1; j < n; j += 1)//列
-		{
-			f[j] = obstacleGrid[i][j] ? 0  : f[j - 1] + f[j];
-		}
-	}
-
-	return f[n - 1];
-}
-
-
 vector<string> anagrams(vector<string> &strs) 
 {
 	unordered_map<string, vector<string> > group;
@@ -749,64 +719,6 @@ void comb(int m, int n, vector<int> &S)
 	}
 }
 
-
-string convert(string s, int nRows)
-{
-	if (nRows <= 1 || s.size() <= 1) return s;
-
-	string result;
-	
-	for (int i = 0; i < nRows; i++) 
-	{
-		for (unsigned int j = 0, index = i; index < s.size(); j++, index = (2 * nRows - 2) * j + i)
-		{
-			result.append(1, s[index]); // 垂直元素
-			if (i == 0 || i == nRows - 1) continue; // 斜对角元素
-
-			if (index + (nRows - i - 1) * 2 < s.size())
-			{
-				result.append(1, s[index + (nRows - i - 1) * 2]);
-			}
-		}
-	}
-
-	return result;
-}
-
-vector<int> twoSum(vector<int> &numbers, int target)
-{
-	unordered_map<int, int> mapping;
-	vector<int> result;
-	int gap;
-	unsigned int j;
-	for (unsigned int i = 0; i < numbers.size(); i++)
-	{
-		mapping[numbers[i]] = i;
-	}
-
-	for (unsigned int i = 0; i < numbers.size(); i++)
-	{
-		gap = target - numbers[i];
-		if (mapping.find(gap) != mapping.end())
-		{
-			j = mapping[gap];
-			
-			if (i == j)
-			{
-				continue;
-			}
-
-			result.push_back(i + 1);
-			result.push_back(j + 1);
-			break;
-			
-		}
-	}
-	return result;
-}
-
-
-
 UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node)
 {
 	if (node == nullptr) return nullptr;
@@ -957,181 +869,6 @@ vector<vector<string> > findLadders(string start, string end, const unordered_se
 	return result;
 }
 
-bool isValidSudoku(vector<vector<char> > &board)
-{
-
-	/*
-	Sudoku规则：
-	在一个9 * 9的区域内，
-	每行1 - 9出现且只出现一次，
-	每列1 - 9出现且只出现一次，
-	在9个子3 * 3的区域内1 - 9出现且只出现一次。
-
-	这题允许填空('.')，所以不必要每个数字都出现。
-
-	*/
-
-	int count[9];
-	int j;
-	int i;
-	char c;
-	int bi, bj;/*box 的左上角坐标*/
-
-
-	/*验证行有效*/
-	for (i = 0; i < 9; i += 1)
-	{
-		for (j = 0; j < 9; j += 1)
-		{
-			count[j] = 0;
-		}
-		for (j = 0; j < 9; j += 1)
-		{
-			c = board[i][j];
-			if (c == '.')
-			{
-				continue;
-			}
-
-			c -= '1';
-			if (count[c] == 1)
-			{
-				return false;
-			}
-			else
-			{
-				count[c] = 1;
-			}
-		}
-
-	}
-
-
-	/*验证列有效*/
-	for (j = 0; j < 9; j += 1)
-	{
-		for (i = 0; i < 9; i += 1)
-		{
-			count[i] = 0;
-		}
-		for (i = 0; i < 9; i += 1)
-		{
-			c = board[i][j];
-			if (c == '.')
-			{
-				continue;
-			}
-
-			c -= '1';
-			if (count[c] == 1)
-			{
-				return false;
-			}
-			else
-			{
-				count[c] = 1;
-			}
-
-		}
-
-	}
-
-	
-
-	for (bi = 0; bi < 9; bi += 3)
-	{
-		for (bj = 0; bj < 9; bj += 3)/*board[bi][bj]是左上角*/
-		{
-			/*验证一个盒子*/
-			for (i = 0; i < 9; i += 1)
-			{
-				count[i] = 0;
-			}
-			for (i = 0; i < 3; i += 1)
-			{
-				for (j = 0; j < 3; j += 1)
-				{
-					c = board[bi + i][bj + j];
-					if (c == '.')
-					{
-						continue;
-					}
-
-					c -= '1';
-					if (count[c] == 1)
-					{
-						return false;
-					}
-					else
-					{
-						count[c] = 1;
-					}
-				}
-			}
-
-			/*一个循环，为一个3*3*/
-
-		}
-
-	}
-
-	return true;
-}
-
-vector<int> findSubstring(string s, vector<string> &dict) 
-{
-	/*
-	You are given a string, S, and a list of words, L, that are all of the same length. 
-	Find all starting indices of substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
-	For example, given:
-	S: "barfoothefoobarman"
-	L: ["foo", "bar"]
-	You should return the indices: [0,9].
-	(order does not matter).
-	*/
-
-	size_t wordLength = dict.front().length();
-	size_t catLength = wordLength * dict.size();
-	vector<int> result;
-
-	if (s.length() < catLength)
-	{
-		return result;
-	}
-
-	unordered_map<string, int> wordCount;
-	for (auto const& word : dict)
-	{
-		++wordCount[word];
-	}
-
-	for (auto i = begin(s); i <= prev(end(s), catLength); ++i) 
-	{
-		unordered_map<string, int> unused(wordCount);
-
-		for (auto j = i; j != next(i, catLength); j += wordLength) 
-		{
-			auto pos = unused.find(string(j, next(j, wordLength)));
-
-			if (pos == unused.end() || pos->second == 0)
-			{
-				break;
-			}
-
-			if (--pos->second == 0)
-			{
-				unused.erase(pos);
-			}
-		}
-
-		if (unused.size() == 0)
-		{
-			result.push_back(distance(begin(s), i));
-		}
-
-	}
-	return result;
-}
 
 
 string preProcess(string s) 
@@ -1181,3 +918,57 @@ string longestPalindrome(string s)
 
 	return s.substr((max - 1 - P[max]) / 2, P[max]);
 } 
+vector<int> findSubstring(string s, vector<string> &dict)
+{
+	/*
+	You are given a string, S, and a list of words, L, that are all of the same length.
+	Find all starting indices of substring(s) in S that is a concatenation of each word in L exactly once and without any intervening characters.
+	For example, given:
+	S: "barfoothefoobarman"
+	L: ["foo", "bar"]
+	You should return the indices: [0,9].
+	(order does not matter).
+	*/
+
+	size_t wordLength = dict.front().length();
+	size_t catLength = wordLength * dict.size();
+	vector<int> result;
+
+	if (s.length() < catLength)
+	{
+		return result;
+	}
+
+	unordered_map<string, int> wordCount;
+	for (auto const& word : dict)
+	{
+		++wordCount[word];
+	}
+
+	for (auto i = begin(s); i <= prev(end(s), catLength); ++i)
+	{
+		unordered_map<string, int> unused(wordCount);
+
+		for (auto j = i; j != next(i, catLength); j += wordLength)
+		{
+			auto pos = unused.find(string(j, next(j, wordLength)));
+
+			if (pos == unused.end() || pos->second == 0)
+			{
+				break;
+			}
+
+			if (--pos->second == 0)
+			{
+				unused.erase(pos);
+			}
+		}
+
+		if (unused.size() == 0)
+		{
+			result.push_back(distance(begin(s), i));
+		}
+
+	}
+	return result;
+}

@@ -13,7 +13,7 @@ void  msa(int a[], unsigned int m, int b[], unsigned int n);//两个已排序数组合并
 void  setZeroes(vector<vector<int> > &matrix);//----------------------------------------------78
 
 int  *randarr(int *arr, const unsigned int N, const int X = 100);//随机数填充arr
-int  firstMissingPositive(int A[], int n);//--------------------------------------------------71
+
 int  revint(int x);//十进制数反转-------------------------------------------------------------11
 
 int  rdfsa2(int * arr, int length);//去掉已排序数组中重复元素----------------------------------43
@@ -22,9 +22,8 @@ int  totalNQueens(int n);//-----------------------------------------------------
 int  Factorial(int n);
 
 int  removeElement(int A[], int n, int elem);//删除数组中，等于elem的所有元素-----------------34
-int  evalRPN(vector<string> &tokens);//-------------------------------------------------------68
+
 int  prestr(char *, int *, int); //***
-unsigned int  invertint(unsigned int);//------------------------------------------------------61
 unsigned int rdfsa(int * arr, unsigned int length);//去掉已排序数组中重复元素-----------------12
 
 bool isNumber(const char *s);//---------------------------------------------------------------------69

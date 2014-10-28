@@ -2,14 +2,6 @@
 #include "code_5.h"
 
 
-
-
-int main(int argc, char * argv)
-{
-
-	return 0;
-}
-
 void OutputSubset(int set[], int length)
 {
 	char *flag = (char *)malloc(sizeof(char) * length);
@@ -307,50 +299,6 @@ int largestRectangleArea(vector<int> &hist)
 
 
 	return max;
-}
-
-
-void rotate(vector<vector<int> > &matrix)
-{
-	/*
-	You are given an n x n 2D matrix representing an image.
-
-	Rotate the image by 90 degrees (clockwise).
-
-	0 1 2 3    c 8 4 0
-	4 5 6 7    d 9 5 1
-	8 9 a b    e a 6 2
-	c d e f    f b 7 3
-
-	Follow up:
-	Could you do this in-place?
-	*/
-	//n x n
-	/*
-
-	[i][j]
-
-	[n-1-j][i]	  [j][n-1-i]
-
-	[n-1-i][n-1-j]
-
-	*/
-	int tmp;
-	const int n = matrix.size();
-	for (int i = 0; i < n / 2; i++) //层
-	{
-		//第i层 单侧n-i*2个元素
-		for (int j = i; j < n - 1 - i; j++)
-		{
-			tmp = matrix[i][j];
-
-			matrix[i][j] = matrix[n - 1 - j][i];
-			matrix[n - 1 - j][i] = matrix[n - 1 - i][n - 1 - j];
-			matrix[n - 1 - i][n - 1 - j] = matrix[j][n - 1 - i];
-			matrix[j][n - 1 - i] = tmp;
-		}
-
-	}
 }
 
 
@@ -664,4 +612,339 @@ string simplifyPath2(string path)
 	}
 
 	return ret;
+}
+
+
+
+vector<vector<int>> threeSum(vector<int>& num)
+{
+	//a + b + c = 0; 
+	vector<vector<int>> result;
+	if (num.size() < 3) return result;
+
+	sort(num.begin(), num.end());
+
+	const int target = 0;
+	auto last = num.end();
+	for (auto a = num.begin(); a < prev(last, 2); a = upper_bound(a, prev(last, 2), *a)) 
+	{
+		for (auto b = next(a); b < prev(last); b = upper_bound(b, prev(last), *b)) //使用upper_bound逃过重复部分
+		{
+			const int c = target - *a - *b;
+			if (binary_search(next(b), last, c))
+			{
+				result.push_back(vector < int > { *a, *b, c });
+			}
+		}
+	}
+	
+	return result;
+}
+
+
+int threeSumClosest(vector<int>& num, int target) 
+{
+	int result = 0;
+	int min_gap = INT_MAX;
+	int sum, gap;
+
+	sort(num.begin(), num.end());
+
+	for (auto a = num.begin(); a != prev(num.end(), 2); a = upper_bound(a, prev(num.end(), 2), *a))
+	{
+		auto b = next(a);
+		auto c = prev(num.end());
+		while (b < c) 
+		{
+			sum = *a + *b + *c;
+			gap = abs(sum - target);
+			if (gap < min_gap) 
+			{
+				result = sum;
+				min_gap = gap;
+			}
+			//sum < target ? ++b : --c;
+			if (sum < target)
+			{
+				b = upper_bound(b, c, *b);
+			}
+			else
+			{
+				c = prev(lower_bound(b, c, *c));
+			}
+		}
+	}
+	return result;
+}
+
+vector<vector<int> > fourSum(vector<int> &num, int target)
+{
+	if (num.size() < 4) return vector<vector<int> >();
+
+	sort(num.begin(), num.end());
+	map<int, vector<pair<int, int> > > cache;
+
+	for (size_t a = 0; a < num.size(); ++a) 
+	{
+		for (size_t b = a + 1; b < num.size(); ++b) 
+		{
+			cache[num[a] + num[b]].push_back(pair<int, int>(a, b));
+		}
+	}
+
+	set<vector<int>> result; // 去重，因为num 里有重复元素
+	for (size_t c = 2; c < num.size(); ++c) 
+	{
+		for (size_t d = c + 1; d < num.size(); ++d) 
+		{
+			const int key = target - num[c] - num[d];
+			if (cache.find(key) != cache.end()) 
+			{
+				for (size_t k = 0; k < cache[key].size(); ++k) 
+				{
+					if (c <= cache[key][k].second) continue; // 有重叠
+
+					result.insert(vector < int > {num[cache[key][k].first], num[cache[key][k].second], num[c], num[d]});
+				}
+			}
+		}
+	}
+	return vector<vector<int> >(result.begin(), result.end());
+}
+
+
+int num_size;
+vector<int> A;
+list<int> index;
+
+void  getPermutation2(vector<vector<int> > &ret,vector<int> &num, int n,int k)//n的阶乘的第k个
+{
+	list<int> C(index);
+
+	vector<int>  s;
+	int x;
+	int m = n;
+	for (int i = 0; i < m; i += 1)
+	{
+		x = k / A[n - 1];
+		auto it = next(C.begin(),x);
+		s.push_back(num[*it]);//s.push_back(num[C[x]])
+		C.erase(it);//C.erase(C.begin() + x);
+
+		k %= A[n - 1];
+		n -= 1;
+	}
+
+	ret.push_back(s);
+}
+
+
+vector<vector<int> > permute(vector<int> &num) 
+{
+	vector<vector<int> > ret;
+	num_size = num.size();
+	
+	if (num_size == 0)
+	{
+		return ret;
+	}
+	A.push_back(1);
+	index.push_back(0);
+
+	int i;
+	for (i = 1; i <= num_size; i++)
+	{
+		index.push_back(i);
+		A.push_back(i* A[i - 1]);
+	}
+	for (i = 0; i < A[num_size]; i += 1)
+	{
+		getPermutation2(ret, num, num_size, i);
+	}
+
+	return ret;
+}
+
+
+void setZeroes(vector<vector<int> > &matrix) 
+{
+	const size_t m = matrix.size();
+	const size_t n = matrix[0].size();
+
+	bool row_has_zero = false; // 第一行是否存在0
+	bool col_has_zero = false; // 第一列是否存在0
+
+	for (size_t i = 0; i < n; i++)//第一行
+	{
+		if (matrix[0][i] == 0)
+		{
+			row_has_zero = true;
+			break;
+		}
+	}
+	for (size_t i = 0; i < m; i++)//第一列
+	{
+		if (matrix[i][0] == 0)
+		{
+			col_has_zero = true;
+			break;
+		}
+	}
+
+
+	for (size_t i = 1; i < m; i++)
+	{
+		for (size_t j = 1; j < n; j++)//扫描1,1以后的点，用第一行/列记录
+		{
+			if (matrix[i][j] == 0)
+			{
+				matrix[0][j] = 0;
+				matrix[i][0] = 0;
+			}
+		}
+	}
+
+
+	for (size_t i = 1; i < m; i++)//内部置零
+	{
+		for (size_t j = 1; j < n; j++)
+		{
+			if (matrix[i][0] == 0 || matrix[0][j] == 0)
+			{
+				matrix[i][j] = 0;
+			}
+		}
+	}
+
+
+	if (row_has_zero)
+	{
+		for (size_t i = 0; i < n; i++)
+		{
+			matrix[0][i] = 0;
+		}
+	}
+
+	if (col_has_zero)
+	{
+		for (size_t i = 0; i < m; i++)
+		{
+			matrix[i][0] = 0;
+		}
+	}
+
+}
+
+
+template<typename BidiIt>
+bool next_permutation_(BidiIt first, BidiIt last)
+{
+
+	const auto rfirst = reverse_iterator<BidiIt>(last);
+	const auto rlast = reverse_iterator<BidiIt>(first);
+
+	auto pivot = next(rfirst);
+
+	while (pivot != rlast && !(*pivot < *prev(pivot)))
+	{
+		++pivot;
+	}
+
+	if (pivot == rlast) 
+	{
+		reverse(rfirst, rlast);
+		return false;
+	}
+
+	auto change = find_if(rfirst, pivot, bind1st(less<int>(), *pivot));
+	swap(*change, *pivot);
+	reverse(rfirst, pivot);
+	return true;
+}
+
+
+void nextPermutation2(vector<int> &num)
+{
+	int num_size = num.size();
+	if (num_size <= 1) return;
+
+	int i = num_size - 1;
+	int j = num_size - 1;
+	int ii = 0;
+
+	while (i >= 1 && num[i - 1] >= num[i]) i -= 1;
+
+	if (i)
+	{
+		ii = i--;
+		while (num[i] >= num[j]) j -= 1;
+		swap(num[i], num[j]);
+	}
+
+	for (int k = 0; k<(num_size - ii) / 2; k++)
+	{
+		swap(num[ii + k], num[num_size - 1 - k]);
+	}
+}
+
+
+
+bool nextPermutation(vector<int> &num)
+{
+	/*
+	函数实现原理如下：
+	在当前序列中，从尾端往前寻找两个相邻元素，前一个记为*i，后一个记为*ii，并且满足*i < *ii。
+	然后再从尾端寻找另一个元素*j，满足*i < *j，将第i个元素与第j个元素对调，
+	并将第ii个元素之后（包括ii）的所有元素颠倒排序，即求出下一个序列了。
+	*/
+	int num_size = num.size();
+
+	int i = num_size - 1;
+	int j = num_size - 1;
+	int ii = 0;
+
+	if (num_size <= 1) return false;
+
+	while (i >= 1 && num[i - 1] >= num[i]) i -= 1;
+
+	if (!i)
+	{
+		return false;
+	}
+
+	ii = i--;
+	while (num[i] >= num[j]) j -= 1;
+	swap(num[i], num[j]);
+
+	for (int k = 0; k < (num_size - ii) / 2; k++)
+	{
+		swap(num[ii + k], num[num_size - 1 - k]);
+	}
+
+	return true;
+}
+
+
+vector<vector<int> > permuteUnique(vector<int> &num)
+{
+	vector<vector<int> > ret;
+	sort(num.begin(),num.end());
+	do
+	{
+		ret.push_back(num);
+	} while (nextPermutation(num));
+
+	return ret;
+}
+
+
+vector<vector<int> > subsetsWithDup(vector<int> &S)
+{
+	unsigned int S_size = S.size();
+
+	for (size_t i = 0; i <= S_size; i += 1)
+	{
+		//不同元素个数
+	}
+	return vector < vector<int> > {};
 }

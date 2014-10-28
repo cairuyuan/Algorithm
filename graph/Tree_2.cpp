@@ -1,43 +1,8 @@
 #include "stdafx.h"
 #include "Tree_2.h"
 
-
-
-
-
 void flatten(TreeNode *root)
 {
-	//´ýÓÅ»¯
-	//µÝ¹é°æ
-	/*
-	Given a binary tree, flatten it to a linked list in-place.
-
-	For example,
-	Given
-	1
-	/ \
-	2   5
-	/ \   \
-	3   4   6
-	The flattened tree should look like:
-	1
-	\
-	2
-	\
-	3
-	\
-	4
-	\
-	5
-	\
-	6
-	click to show hints.
-
-	Hints:
-	If you notice carefully in the flattened tree,
-	each ListNode's right child points to the next ListNode of a pre-order traversal.
-	*/
-
 	if (!root)
 	{
 		return;
@@ -919,3 +884,42 @@ vector<vector<int> > levelOrder2(TreeNode *root)
 	return vt;
 
 }
+
+
+vector<TreeNode *> generate(int start, int end)
+{
+	vector<TreeNode*> subTree;
+	if (start > end)
+	{
+		subTree.push_back(nullptr);
+		return subTree;
+	}
+
+	for (int k = start; k <= end; k++)
+	{
+		vector<TreeNode*> leftSubs = generate(start, k - 1);
+		vector<TreeNode*> rightSubs = generate(k + 1, end);
+
+		for (auto i : leftSubs)
+		{
+			for (auto j : rightSubs)
+			{
+				TreeNode *node = new TreeNode(k);
+				node->left = i;
+				node->right = j;
+				subTree.push_back(node);
+			}
+		}
+	}
+
+	return subTree;
+}
+
+vector<TreeNode *> generateTrees(int n)
+{
+	if (n == 0) return generate(1, 0);
+
+	return generate(1, n);
+}
+
+

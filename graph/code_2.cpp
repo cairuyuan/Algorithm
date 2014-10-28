@@ -653,12 +653,15 @@ vector<int> grayCode(int n)
 	return ret;
 }
 
+
+
 string getPermutation(int n, int k)
 {
 	/*
 	1到n（n<10）个数字全排，的第k个
 	*/
 	int A[10];A[0] = 1;
+
 	vector<char> C;
 	for (int i = 1; i < 10; i++)
 	{
@@ -680,6 +683,9 @@ string getPermutation(int n, int k)
 
 	return s;
 }
+
+
+
 bool isMatch(const char *s, const char *p)
 {
 	int i = 0;//s
