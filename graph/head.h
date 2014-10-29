@@ -72,13 +72,14 @@ public:
 
 
 
-struct UndirectedGraphNode
+class UndirectedGraphNode
 {
+public:
 	int label;
 	vector<UndirectedGraphNode *> neighbors;
 	UndirectedGraphNode(int x) : label(x) {};
 
-};
+};;
 
 
 struct Interval

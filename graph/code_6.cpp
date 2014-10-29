@@ -2,14 +2,6 @@
 #include "code_6.h"
 
 
-int main(int argc, char * argv)
-{
-	int A[5] = { 2, 3, -2, 4 ,8};
-
-	int x = maxProduct(A, 5);
-	return 0;
-}
-
 int firstMissingPositive(int A[], int length)
 {
 	/*
@@ -525,9 +517,9 @@ void bub(int a[], int length, int tag)
 	/*
 	*/
 
-	for (size_t i = 0; i < length; i += 1)
+	for (int i = 0; i < length; i += 1)
 	{
-		for (size_t j = 0; j < length - 1 - i; j += 1)
+		for (int j = 0; j < length - 1 - i; j += 1)
 		{
 			if (a[j] > a[j + 1])
 			{
@@ -573,13 +565,13 @@ int maxProduct(int A[], int n)
 }
 
 
-vector<TreeNode *> generateTrees(int n) 
+vector<TreeNode *> generateTrees2(int n) 
 {
-	if (n == 0) return generate(1, 0);
-	return generate(1, n);
+	if (n == 0) return generateT(1, 0);
+	return generateT(1, n);
 }
 
-vector<TreeNode *> generate(int start, int end) 
+vector<TreeNode *> generateT(int start, int end) 
 {
 	vector<TreeNode*> subTree;
 	if (start > end) 
@@ -590,8 +582,8 @@ vector<TreeNode *> generate(int start, int end)
 
 	for (int k = start; k <= end; k++) 
 	{
-		vector<TreeNode*> leftSubs = generate(start, k - 1);
-		vector<TreeNode*> rightSubs = generate(k + 1, end);
+		vector<TreeNode*> leftSubs = generateT(start, k - 1);
+		vector<TreeNode*> rightSubs = generateT(k + 1, end);
 		for (auto left_sub_tree : leftSubs) 
 		{
 			for (auto right_sub_tree : rightSubs) 
@@ -634,7 +626,7 @@ vector<vector<int> > subsets(vector<int> &S)
 	const size_t n = S.size();
 	vector<int> v;
 
-	for (size_t i = 0; i < (1 << n); i++) 
+	for (size_t i = 0; i < ((size_t)1 << n); i++) 
 	{
 		for (size_t j = 0; j < n; j++) 
 		{
@@ -697,50 +689,6 @@ int maxPoints(vector<Point> &points)
 }
 
 
-int maximalRectangle(vector<vector<char> > &matrix) 
-{
-	if (matrix.empty()) return 0;
-	const int m = matrix.size();
-	const int n = matrix[0].size();
-	vector<int> H(n, 0);
-	vector<int> L(n, 0);
-	vector<int> R(n, n);
-	int ret = 0;
-	for (int i = 0; i < m; ++i) 
-	{
-		int left = 0, right = n;
-		// calculate L(i, j) from left to right
-		for (int j = 0; j < n; ++j) 
-		{
-			if (matrix[i][j] == '1')
-			{
-				++H[j];
-				L[j] = max(L[j], left);
-			}
-			else 
-			{
-				left = j + 1;
-				H[j] = 0; L[j] = 0; R[j] = n;
-			}
-		}
-		// calculate R(i, j) from right to left
-		for (int j = n - 1; j >= 0; --j) 
-		{
-			if (matrix[i][j] == '1') 
-			{
-				R[j] = min(R[j], right);
-				ret = max(ret, H[j] * (R[j] - L[j]));
-			}
-			else 
-			{
-				right = j;
-			}
-		}
-	}
-
-	return ret;
-}
-
 bool isInterleave(string s1, string s2, string s3) 
 {
 	if (s1.length() + s2.length() != s3.length())
@@ -760,51 +708,6 @@ bool isInterleave(string s1, string s2, string s3)
 			f[j] = (s1[i - 1] == s3[i + j - 1] && f[j]) || (s2[j - 1] == s3[i + j - 1] && f[j - 1]);
 	}
 	return f[s2.length()];
-}
-
-
-int numDistinct(const string &S, const string &T) 
-{
-	vector<int> f(T.size() + 1);
-	f[0] = 1;
-
-	for (int i = 0; i < S.size(); ++i) 
-	{
-		for (int j = T.size() - 1; j >= 0; --j) 
-		{
-			f[j + 1] += S[i] == T[j] ? f[j] : 0;
-		}
-	}
-	return f[T.size()];
-}
-
-
-
-vector<int> findSubstring(string s, vector<string>& dict) 
-{
-	size_t wordLength = dict.front().length();
-	size_t catLength = wordLength * dict.size();
-	vector<int> result;
-
-	if (s.length() < catLength) return result;
-
-	unordered_map<string, int> wordCount;
-	for (auto const& word : dict) ++wordCount[word];
-
-	for (auto i = begin(s); i <= prev(end(s), catLength); ++i) 
-	{
-		unordered_map<string, int> unused(wordCount);
-		for (auto j = i; j != next(i, catLength); j += wordLength) 
-		{
-			auto pos = unused.find(string(j, next(j, wordLength)));
-
-			if (pos == unused.end() || pos->second == 0) break;
-			if (--pos->second == 0) unused.erase(pos);
-		}
-		if (unused.size() == 0) result.push_back(distance(begin(s), i));
-	}
-
-	return result;
 }
 
 
@@ -872,34 +775,6 @@ int minDistance(const string &word1, const string &word2)
 	return f[n][m];
 }*/
 
-int minDistance(const string &word1, const string &word2)
-{
-	if (word1.length() < word2.length())
-		return minDistance(word2, word1);
-
-	int *f = new int[word2.length() + 1];
-	int upper_left = 0; // 额外用一个变量记录f[i-1][j-1]
-
-	for (size_t i = 0; i <= word2.size(); ++i)
-		f[i] = i;
-
-	for (size_t i = 1; i <= word1.size(); ++i) 
-	{
-		upper_left = f[0];
-		f[0] = i;
-		for (size_t j = 1; j <= word2.size(); ++j) 
-		{
-			int upper = f[j];
-			if (word1[i - 1] == word2[j - 1])
-				f[j] = upper_left;
-			else
-				f[j] = 1 + min(upper_left, min(f[j], f[j - 1]));
-			upper_left = upper;
-		}
-	}
-	return f[word2.length()];
-}
-
 
 int maximalRectangle(vector<vector<char> > &matrix) 
 {
@@ -948,4 +823,96 @@ int maximalRectangle(vector<vector<char> > &matrix)
 	}
 
 	return ret;
+}
+
+vector<vector<int> > rets;
+vector<vector<int> > fourSum(vector<int> &num, int target) {
+	// Start typing your C/C++ solution below
+	// DO NOT write int main() function
+	sort(num.begin(), num.end());
+	rets.clear();
+
+	for (size_t i = 0; i < num.size(); i++)
+	{
+		if (i > 0 && num[i] == num[i - 1]) continue;
+
+		for (size_t j = i + 1; j < num.size(); j++)
+		{
+			if (j > i + 1 && num[j] == num[j - 1]) continue;
+
+			size_t k = j + 1;
+			size_t t = num.size() - 1;
+
+			while (k < t)
+			{
+				if (k > j + 1 && num[k] == num[k - 1])
+				{
+					k++;
+					continue;
+				}
+
+				if (t < num.size() - 1 && num[t] == num[t + 1])
+				{
+					t--;
+					continue;
+				}
+
+				int sum = num[i] + num[j] + num[k] + num[t];
+				if (sum == target)
+				{
+					vector<int> a;
+					a.push_back(num[i]);
+					a.push_back(num[j]);
+					a.push_back(num[k]);
+					a.push_back(num[t]);
+					rets.push_back(a);
+					k++;
+				}
+				else if (sum < target) k++;
+				else t--;
+			}
+		}
+	}
+	return rets;
+}
+
+int findMin(vector<int> &num)
+{
+	size_t i = 0;
+	size_t j = num.size()-1;
+	size_t mid;
+
+	while (i < j && num[i] >= num[j])
+	{
+		mid = (i + j) / 2;
+		if (num[i] < num[mid])
+		{
+			i = mid + 1;
+		}
+		else
+		if (num[i] == num[mid])
+		{
+			i = mid;
+			if (i+1 == j)
+			{
+				return num[i]>num[j] ? num[j] : num[i];
+			}
+		}
+		else
+		{
+			j = mid - 1;
+		}
+	}
+
+	if (j < num.size() - 1 && num[i] > num[j+1])
+	{
+		i = j + 1;
+	}
+
+	if (i < num.size() - 1 && num[i]> num[i + 1])
+	{
+		i += 1;
+	}
+
+	return num[i] > num[0] ?num[0]:num[i];
 }

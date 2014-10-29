@@ -677,42 +677,6 @@ int threeSumClosest(vector<int>& num, int target)
 	return result;
 }
 
-vector<vector<int> > fourSum(vector<int> &num, int target)
-{
-	if (num.size() < 4) return vector<vector<int> >();
-
-	sort(num.begin(), num.end());
-	map<int, vector<pair<int, int> > > cache;
-
-	for (size_t a = 0; a < num.size(); ++a) 
-	{
-		for (size_t b = a + 1; b < num.size(); ++b) 
-		{
-			cache[num[a] + num[b]].push_back(pair<int, int>(a, b));
-		}
-	}
-
-	set<vector<int>> result; // 去重，因为num 里有重复元素
-	for (size_t c = 2; c < num.size(); ++c) 
-	{
-		for (size_t d = c + 1; d < num.size(); ++d) 
-		{
-			const int key = target - num[c] - num[d];
-			if (cache.find(key) != cache.end()) 
-			{
-				for (size_t k = 0; k < cache[key].size(); ++k) 
-				{
-					if (c <= cache[key][k].second) continue; // 有重叠
-
-					result.insert(vector < int > {num[cache[key][k].first], num[cache[key][k].second], num[c], num[d]});
-				}
-			}
-		}
-	}
-	return vector<vector<int> >(result.begin(), result.end());
-}
-
-
 int num_size;
 vector<int> A;
 list<int> index;
@@ -935,16 +899,4 @@ vector<vector<int> > permuteUnique(vector<int> &num)
 	} while (nextPermutation(num));
 
 	return ret;
-}
-
-
-vector<vector<int> > subsetsWithDup(vector<int> &S)
-{
-	unsigned int S_size = S.size();
-
-	for (size_t i = 0; i <= S_size; i += 1)
-	{
-		//不同元素个数
-	}
-	return vector < vector<int> > {};
 }

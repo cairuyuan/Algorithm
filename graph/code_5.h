@@ -2,7 +2,7 @@
 #define __CODE_5_H__
 
 #include "head.h"
-
+;
 using namespace std;
 
 void OutputSubset(int set[], int length);
@@ -27,7 +27,6 @@ vector<vector<int> > permute(vector<int> &num);
 bool nextPermutation(vector<int> &num);
 void nextPermutation2(vector<int> &num);
 vector<vector<int> > permuteUnique(vector<int> &num);
-vector<vector<int> > subsetsWithDup(vector<int> &S);
 
 
 

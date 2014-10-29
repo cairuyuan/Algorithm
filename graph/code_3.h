@@ -2,11 +2,8 @@
 #define __CODE_3_H__
 
 #include "head.h"
-
-vector<vector<int> > ret;
-
+;
 UndirectedGraphNode *cloneGraph(const UndirectedGraphNode *node);
-
 void comb(int m, int n, vector<int> &S);
 vector<string> fullJustify(vector<string> &words, int L);
 
@@ -30,11 +27,9 @@ int minPathSum(vector<vector<int> > &grid);
 int romanToInt(string s);
 string intToRoman(int num);
 
-
-bool isInterleave(string s1, string s2, string s3);
-
 int search(int A[], int n, int target);
 bool search_2(int A[], int n, int target);
 int candy(vector<int> &ratings);
 vector<int> findSubstring(string S, vector<string> &L);
+
 #endif

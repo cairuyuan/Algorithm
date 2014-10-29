@@ -33,10 +33,12 @@ void bub(int a[], int length, int tag = 0);
 int maxProduct(int A[], int n);
 
 
-vector<TreeNode *> generateTrees(int n);
-vector<TreeNode *> generate(int start, int end);
+vector<TreeNode *> generateTrees2(int n);
+vector<TreeNode *> generateT(int start, int end);
+
 int maxPoints(vector<Point> &points);
-int numDistinct(const string &S, const string &T);
 bool isInterleave(string s1, string s2, string s3);
 int maximalRectangle(vector<vector<char> > &matrix);
+
+int findMin(vector<int> &num)
 #endif
