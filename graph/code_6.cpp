@@ -916,3 +916,91 @@ int findMin(vector<int> &num)
 
 	return num[i] > num[0] ?num[0]:num[i];
 }
+
+bool solveSudoku(vector<vector<char> > &board)
+{
+	for (int i = 0; i < 9; ++i)
+	{
+		for (int j = 0; j < 9; ++j)
+		{
+			if (board[i][j] == '.')
+			{
+				for (int k = 0; k < 9; ++k)
+				{
+					board[i][j] = '1' + k;
+					if (isValid(board, i, j) && solveSudoku(board)) 
+						return true;//填了一个点，而且后来的都填对了
+
+					board[i][j] = '.';
+				}
+				return false;//表示在以前填的基础上，怎么填都不对，无解，说明之前是填错了
+			}
+		}
+	}
+	return true;//在此处返回表示，传入的board没有空点，认为是对的，用于最后一步，整体可以返回
+}
+	// 检查(x, y) 是否合法
+bool isValid(const vector<vector<char> > &board, int x, int y)
+{
+	int i, j;
+	for (i = 0; i < 9; i++) // 检查y 列
+		if (i != x && board[i][y] == board[x][y])
+			return false;
+
+	for (j = 0; j < 9; j++) // 检查x 行
+		if (j != y && board[x][j] == board[x][y])
+			return false;
+		
+	for (i = 3 * (x / 3); i < 3 * (x / 3 + 1); i++)
+		for (j = 3 * (y / 3); j < 3 * (y / 3 + 1); j++)
+			if (i != x && j != y && board[i][j] == board[x][y])
+				return false;
+		
+	return true;
+}
+
+
+int maximalRectangle(vector<vector<char> > &matrix)
+{
+	if (matrix.empty()) return 0;
+
+	const int m = matrix.size();
+	const int n = matrix[0].size();
+	vector<int> H(n, 0);
+	vector<int> L(n, 0);
+	vector<int> R(n, n);
+	int ret = 0;
+
+	for (int i = 0; i < m; ++i)
+	{
+		int left = 0, right = n;
+		// calculate L(i, j) from left to right
+		for (int j = 0; j < n; ++j) 
+		{
+			if (matrix[i][j] == '1')
+			{
+				++H[j];
+				L[j] = max(L[j], left);
+			}
+			else 
+			{
+				left = j + 1;
+				H[j] = 0; L[j] = 0; R[j] = n;
+			}
+		}
+		// calculate R(i, j) from right to left
+		for (int j = n - 1; j >= 0; --j)
+		{
+			if (matrix[i][j] == '1')
+			{
+				R[j] = min(R[j], right);
+				ret = max(ret, H[j] * (R[j] - L[j]));
+			}
+			else 
+			{
+				right = j;
+			}
+		}
+	}
+	return ret;
+}

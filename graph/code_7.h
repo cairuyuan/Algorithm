@@ -4,4 +4,7 @@
 #include "head.h"
 
 
+int maximalRectangle(vector<vector<char> > &matrix);
+int RecArea(vector<int>& heights);
+
 #endif
