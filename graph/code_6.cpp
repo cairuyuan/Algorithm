@@ -532,39 +532,6 @@ void bub(int a[], int length, int tag)
 }
 
 
-int maxProduct(int A[], int n)
-{
-	int max_product = 0;
-	int tmp_product = 1;
-	int i = 0;
-
-	while (i < n)
-	{
-		if (A[i] <= 0)
-		{
-			if (max_product < tmp_product && tmp_product!=1)
-			{
-				max_product = tmp_product;
-			}
-			tmp_product = 1;
-		}
-		else
-		{
-			tmp_product *= A[i];
-		}
-
-		i += 1;
-	}
-
-	if (max_product < tmp_product && tmp_product != 1)
-	{
-		max_product = tmp_product;
-	}
-
-	return max_product;
-}
-
-
 vector<TreeNode *> generateTrees2(int n) 
 {
 	if (n == 0) return generateT(1, 0);
@@ -916,3 +883,38 @@ int findMin(vector<int> &num)
 
 	return num[i] > num[0] ?num[0]:num[i];
 }
+
+int findMinD_(vector<int> &num,size_t i , size_t j)
+{
+	while (i < j && num[i] >= num[j])
+	{
+		int m = (i + j) >> 1;
+		if (num[i] < num[m])
+		{
+			i = m + 1;
+		}
+		else
+		if (num[i] > num[m])
+		{
+			j = m;
+		}
+		else
+		{
+			if (i == j-1)
+			{
+				return min(num[i], num[j]);
+			}
+			else
+			{
+				return min(findMinD_(num, i, m), findMinD_(num, m + 1, j));
+			}
+		}
+	}
+	return num[i];
+}
+
+int findMinD(vector<int> &num)
+{
+	return findMinD_(num, 0, num.size() - 1);
+}
+

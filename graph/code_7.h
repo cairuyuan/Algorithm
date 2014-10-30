@@ -3,5 +3,7 @@
 
 #include "head.h"
 
-
+vector<vector<string> > partition(string s);
+int maxProduct(int A[], int n);
+int lengthOfLongestSubstring2(string s);
 #endif

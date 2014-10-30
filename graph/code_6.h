@@ -30,8 +30,6 @@ string countAndSay(int n);
 
 void bub(int a[], int length, int tag = 0);
 
-int maxProduct(int A[], int n);
-
 
 vector<TreeNode *> generateTrees2(int n);
 vector<TreeNode *> generateT(int start, int end);
@@ -40,5 +38,6 @@ int maxPoints(vector<Point> &points);
 bool isInterleave(string s1, string s2, string s3);
 int maximalRectangle(vector<vector<char> > &matrix);
 
-int findMin(vector<int> &num)
+int findMin(vector<int> &num);
+int findMinD(vector<int> &num);
 #endif
