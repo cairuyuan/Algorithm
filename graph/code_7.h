@@ -10,5 +10,5 @@ int lengthOfLongestSubstring2(string s);
 
 int maximalRectangle(vector<vector<char> > &matrix);
 int RecArea(vector<int>& heights);
-
+vector<vector<string>> partition(string s);
 #endif

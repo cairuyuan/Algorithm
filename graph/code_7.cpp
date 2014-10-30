@@ -207,3 +207,42 @@ string minWindow(string S, string T)
 	if (minWidth == INT_MAX) return "";
 	else return S.substr(min_start, minWidth);
 }
+
+
+
+void DFS_p(string &s, int start, vector<string>& output, vector<vector<string>> &result) 
+{
+	if (start == s.size())
+	{
+		result.push_back(output);
+		return;
+	}
+	for (int i = start; i < s.size(); i++) 
+	{
+		if (isPalindrome(s, start, i)) 
+		{ 
+			output.push_back(s.substr(start, i - start + 1));
+			DFS_p(s, i + 1, output, result); 
+			output.pop_back(); // 撤销上一个push_back 的砍
+		}
+	}
+}
+bool isPalindrome(string &s, int start, int end) 
+{
+	while (start < end) 
+	{
+		if (s[start] != s[end]) return false;
+		start += 1;;
+		end -= 1;
+	}
+	return true;
+}
+
+vector<vector<string>> partition(string s) 
+{
+	vector<vector<string>> result;
+	vector<string> output; // 一个partition 方案
+	DFS_p(s, 0, output, result);
+	return result;
+}
+// 搜索必须以s[start] 开头的partition 方案
