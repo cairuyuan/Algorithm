@@ -257,61 +257,58 @@ void  print4(RBT *root)
 
 RBT *gp(RBT *root)
 {
-	return root->P->P;
+	return  (root && root->P) ? root->P->P : NULL;
 }
 
 
 RBT *un(RBT *root)
 {
-	if (root->P == gp(root)->left)
+	RBT * grand = gp(root);
+	if (grand )//grand parent 存在时才会有uncle
 	{
-		return gp(root)->right;
+		return (root->P == grand->left) ? grand->right : grand->left;
 	}
-	else
-	{
-		return gp(root)->left;
-	}
+
+	return NULL;// root 或root->P为NULL，则不可能有uncle
 }
 
-//插入点均默认红色
-RBT * insert_case1(RBT *ROOT, RBT *root)
+
+inline RBT *br(RBT *root)
 {
-	/*
-	新节点N位于树的根上，没有父节点。
-	*/
-	if (root->P == NULL)
+	if (root && root->P)
 	{
-		root->color = black;
-		return ROOT;
+		return (root == root->P->left) ? root->P->right : root->P->left;
 	}
 	else
 	{
-		return insert_case2(ROOT, root);
+		return NULL;
 	}
 }
 
-
-RBT * insert_case2(RBT *ROOT, RBT *root)
+//首先要使用BST的插入法插入新节点，然后涂成红色  插入点肯定在底层，或至多有“侄子”
+void insert_case1(RBT *N)
 {
-	/*
-	新节点的父节点P是黑色
-	*/
-	if (root->P->color == black)
+	if (N->P == NULL)
 	{
-		return ROOT;
+		N->color = black;
+		return;
 	}
-	else
-	{
-		return insert_case3(ROOT, root);
-	}
+	insert_case2(N);
 }
 
+
+void insert_case2(RBT *N)
+{
+	if (N->P->color == black)
+	{
+		return;
+	}
+	insert_case3(N);//case 3 中root->P->color != black,ie, red
+}
 /*
-下面假定新节点的父节点为红色，所以它有祖父节点；
-因为如果父节点是根节点，那么父节点就应当是黑色。
-所以新节点总有一个叔父节点，有可能是叶子 nil
+下面假定新节点的父节点为红色，所以它有祖父节点
 */
-RBT * insert_case3(RBT *ROOT, RBT *root)
+void insert_case3( RBT *N)
 {
 	/*
 	父节点P是红色
@@ -321,476 +318,245 @@ RBT * insert_case3(RBT *ROOT, RBT *root)
 	在祖父节点 递归处理
 	*/
 
-	if (un(root) != NULL && un(root)->color == red)
+	if (un(N) != NULL && un(N)->color == red)
 	{
-		root->P->color = black;
-		un(root)->color = black;
-		gp(root)->color = red;
+		N->P->color = black;
+		un(N)->color = black;
+		gp(N)->color = red;
 
-		return insert_case1(ROOT, gp(root));
+		insert_case1(gp(N));
+		return;
 	}
-	else
-	{
-		return insert_case4(ROOT, root);
-	}
+	insert_case4(N);//uncle 为黑色或NULL
 }
 
 
-RBT * insert_case4(RBT *ROOT, RBT *root)
+void insert_case4(RBT *N)
 {
-	/*
-	父节点P是红色(默认)
-	叔父节点U是黑色或缺少，
-
-	并且新节点N是其父节点P的右子节点而父节点P又是其父节点的左子节点
-	对称情况
-
-	进行一次左旋转调换新节点和其父节点的角色
-	*/
-
-	if (root == root->P->right && root->P == gp(root)->left)
+	if (N == N->P->right && N->P == gp(N)->left)
 	{
-		//rote_left(root->p)
-		ROOT = rotate_L(ROOT, root->P);
-		root = root->left;
-	}
-	else
-		if (root == root->P->left && root->P == gp(root)->right)
-		{
+		//rote_left(root->p)								gp					   gp
+		rotate_L(N->P);		//			 P      U    -->	   root    U
+		N = N->left; //		  br  root				 P     r2
+	}										//           r1  r2           br  r1		
+	else if (N == N->P->left && N->P == gp(N)->right)
+	{
 		//rote_right(root->p)
-		ROOT = rotate_R(ROOT, root->P);
-		root = root->right;
-		}
-
-	return insert_case5(ROOT, root);
+		rotate_R(N->P);
+		N = N->right;
+	}
+	//要变成 root P  （gp）  root P都是左或都是右
+	insert_case5(N);
 }
 
-
-
-RBT * insert_case5(RBT *ROOT, RBT *root)
+void insert_case5(RBT *N)
 {
 	/*
-	父节点P是红色而叔父节点U 是黑色或缺少，
-
-	新节点N 是其父节点的左子节点，
-	而父节点P又是祖父节点G的左子节点
+	P是红，U是黑
+	root和P 同左或同右
 	*/
+	N->P->color = black;
+	gp(N)->color = red;
 
-	root->P->color = black;
-	gp(root)->color = red;
-
-	if (root == root->P->left && root->P == gp(root)->left)
+	if (N == N->P->left && N->P == gp(N)->left)
 	{
-		return rotate_R(ROOT, gp(root));
-		//rote_right(gp(root))
+		rotate_R(gp(N));
 	}
 
-	if (root == root->P->right && root->P == gp(root)->right)
+	if (N == N->P->right && N->P == gp(N)->right)
 	{
-		return rotate_L(ROOT, gp(root));
-		//rote_left(gp(root))
+		rotate_L(gp(N));
 	}
-
-	cout << "error";
-	return ROOT;
 }
 
 
 
-RBT * rotate_L(RBT *ROOT, RBT *root)
+void rotate_L(RBT *root)
 {
 	/*
-	红黑树左旋:使得root-〉R取代root成为新的根节点
+		P                      root
+	 B    root    -->	    P     c2   
+		c1  c2           B    c1
+	root 向左旋转
 	*/
 
-	//root ->p==null 怎么办
+	RBT *pr = root->P, *grand = gp(root);
 
-	RBT * rootR = root->right;
-	RBT * rp = root->P;
-
-	if (rp == NULL)
+	if (grand)
 	{
-
-		root->P = rootR;
-		root->right = rootR->left;
-		//(root->left)
-		if (root->right != NULL)
+		if (pr == grand->left)
 		{
-			root->right->P = root;
-		}
-		rootR->P = rp;
-		rootR->left = root;
-		//(root->right)
-
-		return rootR;
-	}
-
-	if (rp->left == root)
-	{
-		rp->left = rootR;
-	}
-	else
-	{
-		rp->right = rootR;
-	}
-	rootR->P = rp;
-
-	root->P = rootR;
-	root->right = rootR->left;
-	//(root->left)
-	if (root->right != NULL)
-	{
-		root->right->P = root;
-	}
-
-	rootR->left = root;
-	//rootE->right
-	//rootR->P
-
-	return ROOT;
-}
-
-
-
-RBT * rotate_R(RBT *ROOT, RBT *root)
-{
-	/*
-	红黑树右旋：使得root-〉L取代root成为新的根节点
-	*/
-
-	RBT * rootL = root->left;
-	RBT * rp = root->P;
-
-	if (rp == NULL)
-	{
-		root->P = rootL;
-		root->left = rootL->right;
-		//root->right
-
-		if (root->left != NULL)
-		{
-			root->left->P = root;
-		}
-
-		rootL->P = rp;
-		rootL->right = root;
-		//(rootL->left)
-
-		return rootL;
-	}
-
-	if (rp->left == root)
-	{
-		rp->left = rootL;
-	}
-	else
-	{
-		rp->right = rootL;
-	}
-	rootL->P = rp;
-
-	root->P = rootL;
-	root->left = rootL->right;
-	//root->right
-	if (root->left != NULL)
-	{
-		root->left->P = root;
-	}
-
-	rootL->right = root;
-	//rootL->P
-	//rootL->left
-
-	return ROOT;
-}
-
-
-inline RBT *SUCCESSOR(RBT * Z)
-{
-	//调用者保证Z不空，且有右子树
-	Z = Z->right;
-	while (Z->left)
-	{
-		Z = Z->left;
-	}
-
-	return Z;
-}
-
-
-inline RBT *PRECEDENT(RBT * Z)
-{
-	//调用者保证Z不空，且有左子树
-	Z = Z->left;
-	while (Z->right)
-	{
-		Z = Z->right;
-	}
-
-	return Z;
-}
-
-
-RBT * deletetarget(RBT *ROOT, int target)
-{
-	/*
-	ROOT 是树根
-	target 要删除的值
-	返回删除后的根
-	*/
-
-	RBT *Z = ROOT;
-
-	while (Z)
-	{
-		if (Z->val == target)
-		{
-			break;
-		}
-
-		if (Z->val > target)
-		{
-			Z = Z->left;
+			grand->left = root;
 		}
 		else
 		{
-			Z = Z->right;
+			grand->right = root;
 		}
-	}
-
-	if (Z == NULL)
-	{
-		return ROOT;//没找到
-	}
-	//以上找到target的节点Z
-
-
-	RBT *Y;
-	if (Z->left == NULL || Z->right == NULL)
-	{
-		//Z有：左、右、无儿子节点
-		Y = Z;
+		root->P = grand;
 	}
 	else
 	{
-		//Z有两个子节点
-		Y = SUCCESSOR(Z);//Y是X的右子树中的最左侧点
-	}
-	//Y仅有一个子节点或没有子节点
-	//Y的值将被复制到Z，Y的内存对象将要被释放
-
-	RBT *X;//X是Y仅有的子节点
-	if (Y->left)
-	{
-		X = Y->left;
-	}
-	else
-	{
-		X = Y->right;
+		root->P = NULL;
 	}
 
-	//X可能是NULL ，1 successor中发生	2 y==z本身没有子节点
-
-	if (X == NULL)
+	pr->right = root->left;
+	if (root->left)
 	{
-		;
-	}
-	else
-	{
-		X->P = Y->P;
+		root->left->P = pr;
 	}
 
+	root->left = pr;
+	pr->P = root;
+}
 
-	if (Y->P == NULL)
+
+
+void rotate_R(RBT *root)
+{
+	/*
+	     P                    root
+	root    B      -->	    c1     P
+   c1  c2                       c2   B
+	root 向左旋转
+	*/
+	RBT * grand = gp(root), *pr = root->P;
+
+	if (grand)
 	{
-		ROOT = X;//有删除点Z==Y 要删除的是根节点，
-	}
-	else
-		if (Y == Y->P->left)
+		if (pr == grand->left)
 		{
-		Y->P->left = X;
+			grand->left = root;
 		}
 		else
 		{
-			Y->P->right = X;
+			grand->right = root;
 		}
-	//以上将Y从树中取出，并处理上:Y->P,X:下 连接关系
-
-	if (Y != Z)//Y==Z发生于：Z只有左节点或者只有右节点，Y！=Z说明Y有两个子节点
+		root->P = grand;
+	}
+	else//之前的parent为顶部根
 	{
-		//copy y's value to z
-		Z->val = Y->val;
+		root->P = NULL;
 	}
 
-	if (Y->color == black)//如果要删除的Y是红色，性质没有改变
+	pr->left = root->right;
+	if (root->right)
 	{
-		ROOT = deletefixup(ROOT, X);
-		//ROOT=delete_case1(ROOT,X);
+		root->right->P = pr;
 	}
 
-	delete Y;
-	return ROOT;
+	root->right = pr;
+	pr->P = root;
 }
 
 
-RBT *prefixup(RBT *ROOT, RBT *XP)
+RBT * delete_rbt(RBT * root, int target)
 {
-	//X is NULL
-
-	if (XP->color == black)
+	RBT *p = root;
+	RBT *s = NULL;
+	RBT *N = NULL;
+	while (p && p->val != target)
 	{
+		p = (target > p->val) ? p->right : p = p->left;
+	}
+	if (!p) return root;//没找到
 
+	//找到p的替代,左子树的最右，右子树的最左
+	s = p;
+	if (s->left)
+	{
+		s = s->left;
+		while (s->right) s = s->right;
+		p->val = s->val;
+	}
+	//删除点为s,最多有左子树，右子树是空
+	//s必是父亲的右子树
+	N = s->left;
+	s->P->right = N;
+	N->P = s->P;
+	s->left = NULL;
+	s->P = NULL;
+	//以上完成替换
+
+	if (s->color == red )
+	{
+		delete s;
+		return;
 	}
 
-	return NULL;
+	if (N->color == red)
+	{
+		N->color == black;
+		delete s;
+		return;
+	}
+	
+	return delete_fix(root,N);
 }
 
-
-
-RBT * deletefixup(RBT *ROOT, RBT *X)
+void inline eh_color(RBT * rbt1, RBT * rbt2)
 {
-	/*
-	从树ROOT删除了X的Parent，调整属性
-	*/
+	int tmp = rbt1->color;
+	rbt1->color = rbt2->color;
+	rbt2->color = tmp;
+}
 
-	if (ROOT == NULL)
+RBT * delete_fix(RBT * root, RBT * N)
+{
+	RBT *b = br(N);
+	RBT *p = N->P;
+	
+	if (b->color == red)
 	{
-		//说明删除的节点，没有子节点
-		return ROOT;
-	}
-	RBT *W;
-	while (X != ROOT && X->color == black)
-	{
-		if (X == X->P->left)
+		if (N == p->left)
 		{
-			W = X->P->right;
-
-			if (W->color == red)//case 1
-			{
-				W->color = black;
-				X->P->color = red;
-				ROOT = rotate_L(ROOT, X->P);
-				W = X->P->right;
-			}
-
-			if (W->left->color == black &&  W->right->color == black)//case 2
-			{
-				W->color = red;
-				X = X->P;
-			}
-			else
-			{
-				if (W->right->color == black)//case 3
-				{
-					W->left->color = black;
-					W->color = red;
-					ROOT = rotate_R(ROOT, W);
-					W = X->P->right;
-				}
-
-				W->color = X->P->color;//case 4
-				X->P->color = black;
-				W->right->color = black;
-				ROOT = rotate_L(ROOT, X->P);
-				X = ROOT;
-			}
+			rotate_L(p);
 		}
-		else//X==X->P->left
+		else
 		{
-			W = X->P->left;
-
-			if (W->color == red)//case 1
-			{
-				W->color = black;
-				X->P->color = red;
-				ROOT = rotate_R(ROOT, X->P);
-				W = X->P->left;
-			}
-
-			if (W->right->color == black &&  W->left->color == black)//case 2
-			{
-				W->color = red;
-				X = X->P;
-			}
-			else
-			{
-				if (W->left->color == black)//case 3
-				{
-					W->right->color = black;
-					W->color = red;
-					ROOT = rotate_L(ROOT, W);
-					W = X->P->left;
-				}
-
-				W->color = X->P->color;//case 4
-				X->P->color = black;
-				W->left->color = black;
-				ROOT = rotate_R(ROOT, X->P);
-				X = ROOT;
-			}
+			rotate_R(p);
 		}
 	}
 
-	X->color = black;
-
-	return ROOT;
-}
-
-
-inline RBT * brather(RBT * N)
-{
-	if (N == N->P->left)
+	if (b->left->color == black && b->right->color == black )
 	{
-		return N->P->right;
+		b->color == red;
+		delete_fix(root, p);
+	}
+	//b 的两个儿子异色，或同红
+	if (N == p->left)
+	{
+		if (b->right->color == black)//  黑，黑（已截留）    红 黑
+		{
+			eh_color(b, b->left);
+			rotate_R(b);
+		}
+
+		eh_color(p, b);
+		b->right->color = black;
+		rotate_L(p);
 	}
 	else
 	{
-		return N->P->left;
+		if (b->left->color == black)
+		{
+			eh_color(b, b->right);
+			rotate_L(b);
+		}
+
+		eh_color(p, b);
+		b->left->color = black;
+		rotate_R(p);
 	}
+
+	return root;
 }
 
-
-RBT * deletefixup2(RBT *ROOT, RBT *XP, RBT * X)
-{
-
-
-	return NULL;
-}
-
-
-RBT * delete_case1(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-RBT * delete_case2(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-RBT * delete_case3(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-RBT * delete_case4(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-RBT * delete_case5(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-RBT * delete_case6(RBT *ROOT, RBT *n)
-{
-	return NULL;
-}
-
-void   postra(RBT *root)
+void postra(RBT *root)
 {
 	if (root)
 	{
 		postra(root->left);
-
 		postra(root->right);
-
 		cout.width(4);
 		cout << root->val;
 		if (root->color == black)
