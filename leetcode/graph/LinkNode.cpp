@@ -1264,3 +1264,60 @@ ListNode *copyRandomList(ListNode *head)
 	return Head;
 }
 
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB)
+{
+	int la = 0;
+	int lb = 0;
+	int gap = 0;
+	ListNode * p = NULL;
+	ListNode * L = NULL;
+	ListNode * S = NULL;
+
+	p = headA;
+	while (p)
+	{
+		la += 1;
+		p = p->next;
+	}
+
+	p = headB;
+	while (p)
+	{
+		lb += 1;
+		p = p->next;
+	}
+
+	if (la > lb)
+	{
+		gap = la - lb;
+		L = headA;
+		S = headB;
+	}
+	else
+	{
+		gap = lb - la;
+		S = headA;
+		L = headB;
+	}
+
+	while (gap)
+	{
+		L = L->next;
+		gap -= 1;
+	}
+
+	while (L && S && L != S)
+	{
+		L = L->next;
+		S = S->next;
+	}
+
+	if (L == NULL)
+	{
+		return NULL;
+	}
+	else
+	{
+		return L;
+	}
+}

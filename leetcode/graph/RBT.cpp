@@ -480,14 +480,14 @@ RBT * delete_rbt(RBT * root, int target)
 	if (s->color == red )
 	{
 		delete s;
-		return;
+		return root;
 	}
 
 	if (N->color == red)
 	{
 		N->color == black;
 		delete s;
-		return;
+		return root;
 	}
 	
 	return delete_fix(root,N);

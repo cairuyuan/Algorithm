@@ -51,4 +51,7 @@ unsigned int getsize(ListNode *list);//返回节点数
 int  makecycle(ListNode *list, unsigned int nth);//尾部指向nth，构造环
 int  ifcycle1(ListNode *list);//测试是否有环，返回1/0----------------------------------------------8
 ListNode *sortList(ListNode *head);
+
+
+ListNode *getIntersectionNode(ListNode *headA, ListNode *headB);
 #endif

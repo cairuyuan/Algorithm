@@ -3,11 +3,36 @@
 
 int main(int argc, char * argv)
 {
-
-	int x = lengthOfLongestSubstring2("abcabc");
+	auto ret = convertToTitle(26*2);
 	return 0;
 }
 
+string convertToTitle(int n)
+{
+	string ret;
+	char c;
+	while (n > 0)
+	{
+		c = 'A' - 1;
+		if (n % 26 == 0)
+		{
+			c = 'Z';
+		}
+		else
+		{
+			c += n % 26;
+		}
+		
+		ret = c + ret;
+		n /= 26;
+		if (n == 1 && c == 'Z')
+		{
+			break;
+		}
+
+	}
+	return ret;
+}
 
 bool isPalindrome(string &s, int start, int end)
 {
@@ -227,18 +252,7 @@ void DFS_p(string &s, int start, vector<string>& output, vector<vector<string>> 
 		}
 	}
 }
-bool isPalindrome(string &s, int start, int end) 
-{
-	while (start < end) 
-	{
-		if (s[start] != s[end]) return false;
-		start += 1;;
-		end -= 1;
-	}
-	return true;
-}
-
-vector<vector<string>> partition(string s) 
+vector<vector<string>> partition_p(string s) 
 {
 	vector<vector<string>> result;
 	vector<string> output; // 一个partition 方案
@@ -246,3 +260,30 @@ vector<vector<string>> partition(string s)
 	return result;
 }
 // 搜索必须以s[start] 开头的partition 方案
+
+
+stack<int> data;
+stack<int> mi;
+void push(int x) {
+	data.push(x);
+	if (mi.empty() || x <= mi.top())
+	{
+		mi.push(x);
+	}
+}
+
+void pop() {
+	if (data.top() == mi.top())
+	{
+		mi.pop();
+	}
+	data.pop();
+}
+
+int top() {
+	return data.top();
+}
+
+int getMin() {
+	return mi.top();
+}
