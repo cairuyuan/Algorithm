@@ -44,4 +44,7 @@ TreeNode *buildTree1(TreeNode ** pr, TreeNode ** in, int count);
 void flatten(TreeNode *root);
 
 
+bool hasNext();
+int next();
+
 #endif

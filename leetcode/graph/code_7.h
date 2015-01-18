@@ -21,4 +21,11 @@ int getMin();
 
 
 string convertToTitle(int n);
+int compareVersion(string version1, string version2);
+int findPeakElement(const vector<int> &num);
+
+int calculateMinimumHP(vector<vector<int> > &dungeon);
+string largestNumber(vector<int> &num);
+
+int prim();
 #endif

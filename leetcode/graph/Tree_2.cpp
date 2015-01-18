@@ -923,3 +923,25 @@ vector<TreeNode *> generateTrees(int n)
 }
 
 
+//BSTIterator(TreeNode *root);
+TreeNode *ptr;
+stack<TreeNode *> s;
+void init_BSTIterator()
+{
+
+}
+bool hasNext()
+{
+	return ptr != NULL;
+}
+int next()
+{
+	int ret;
+	for (; ptr; ptr = ptr->left) s.push(ptr);
+	ptr = s.top();
+	s.pop();
+	if (!ptr) exit(-1);
+	ret = ptr->val;
+	ptr = ptr->right;
+	return ret;
+}
