@@ -4,46 +4,61 @@
 #define N 110
 
 int maps[N][N], low[N], visited[N];
-int n;
+int nn;
 
+class tmp{
+	virtual int x();
+};
 int main(int argc, char * argv)
 {
-	int i, v, j, ans;
-	while (scanf("%d", &n) != EOF)
-	{
-		memset(maps, MaxInt, sizeof(maps));
-		for (i = 1; i <= n; i++)
-		for (j = 1; j <= n; j++)
-		{
-			scanf("%d", &v);
-			maps[i][j] = maps[i][j] = v;
-		}
-		ans = prim();
-		printf("%d\n", ans);
-	}
-	return 0;
+	int x = sizeof(tmp);
+	std:cout << x;
+	//int i, v, j, ans;
+	//while (scanf("%d", &nn) != EOF)
+	//{
+	//	memset(maps, MaxInt, sizeof(maps));
+	//	for (i = 1; i <= nn; i++)
+	//	for (j = 1; j <= nn; j++)
+	//	{
+	//		scanf("%d", &v);
+	//		maps[i][j] = maps[i][j] = v;
+	//	}
+	//	ans = prim();
+	//	printf("%d\n", ans);
+	//}
+	//return 0;
 }
 
 int prim()
 {
-	int i, j, pos, min, result = 0;
-	memset(visited, 0, sizeof(visited));	//从某点开始，分别标记和记录该点
-	visited[1] = 1; pos = 1;				//第一次给low数组赋值
-	for (i = 1; i <= n; i++)
-	if (i != pos) low[i] = maps[pos][i];	//再运行n-1次
-	for (i = 1; i<n; i++)					//找出最小权值并记录位置
+	int pos, min, result = 0;
+	memset(visited, 0, sizeof(visited));
+	pos = 0;
+	visited[pos] = 1;			
+	for (int i = 0; i < nn; i++)			//初始化low数组
+	{				
+		if (i != pos)  low[i] = maps[pos][i];//初始点到各点的距离/权值
+	}
+
+	for (int i = 0; i < nn; i++) 
 	{
-		min = MaxInt;
-		for (j = 1; j <= n; j++)
-		if (visited[j] == 0 && min>low[j])
+		min = MaxInt;							
+		for (int j = 0; j < nn; j++)	//i是当前点，搜索与i最近的点pos，距离min
 		{
-			min = low[j]; pos = j;
-		}									//最小权值累加
-		result += min;						//标记该点
-		visited[pos] = 1;					//更新权值
-		for (j = 1; j <= n; j++)
-		if (visited[j] == 0 && low[j] > maps[pos][j])
-			low[j] = maps[pos][j];
+			if (visited[j] == 0 && min > low[j])
+			{
+				min = low[j];
+				pos = j;	 
+			}									
+		}
+		result += min;						
+		visited[pos] = 1;	
+
+		for (int j = 0; j < nn; j++)
+		{
+			if (visited[j] == 0 && low[j] > maps[pos][j])//更新： 当前点到j的距离 大于 pos到j的距离
+				low[j] = maps[pos][j];
+		}
 	}
 	return result;
 }
