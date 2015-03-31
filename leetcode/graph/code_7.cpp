@@ -9,24 +9,34 @@ int nn;
 class tmp{
 	virtual int x();
 };
+
+void comb(int , int , int *);
 int main(int argc, char * argv)
 {
-	int x = sizeof(tmp);
-	std:cout << x;
-	//int i, v, j, ans;
-	//while (scanf("%d", &nn) != EOF)
-	//{
-	//	memset(maps, MaxInt, sizeof(maps));
-	//	for (i = 1; i <= nn; i++)
-	//	for (j = 1; j <= nn; j++)
-	//	{
-	//		scanf("%d", &v);
-	//		maps[i][j] = maps[i][j] = v;
-	//	}
-	//	ans = prim();
-	//	printf("%d\n", ans);
-	//}
-	//return 0;
+	int k = 3;
+	int *a = new int[k];
+	comb(5, 3, a);
+
+	return 0;
+}
+
+void comb(int m, int k, int *a)
+{
+	int i, j;
+	for (i = m; i >= k; i--)
+	{
+		a[k-1] = i;
+		if (k > 1)
+		{
+			comb(i - 1, k - 1,a);
+		}
+		else
+		{
+			for (j = 0; j < 3; j += 1)
+				printf("%4d", a[j]);
+			printf("\n");
+		}
+	}
 }
 
 int prim()
