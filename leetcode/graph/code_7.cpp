@@ -11,14 +11,81 @@ class tmp{
 };
 
 void comb(int , int , int *);
+
+int findKth(int *a, int m, int *b, int n, int k);
+int findKth(int *a, int m, int k);
+void myqsort(int a[], int length );
+int bsearch(int a[], int length, int target);
 int main(int argc, char * argv)
 {
-	int k = 3;
-	int *a = new int[k];
-	comb(5, 3, a);
+	const int m = 5, n  = 7;
 
+	int a[m] = {1,3,7,9,23};
+	int b[n] = {3,5,56,67,88,99,100};
+	//for (size_t i = 0; i < (m+n); i++) {
+	//	cout << "find kth :" << findKth(a,m,b,n,i+1) << "\n";
+	//}
+	const int mm = 2;
+	int aa[mm] = {5,3};
+	myqsort(aa, mm);
 	return 0;
 }
+
+
+int bsearch(int a[], int length, int target){
+	int i = 0, j = length - 1, m;
+	while (i < j) {
+		m = (i + j) / 2;
+		if (a[m] == target) return m;
+		a[m] <target ? i = m + 1 : j = m - 1;
+	}
+	return i;
+}
+int findKth(int *a, int m, int *b, int n, int k){
+
+	if (m > n)  return findKth(b,n,a,m,k);
+	if (m == 0) return b[k - 1];
+	if (k == 1) return min(a[0],b[0]);
+
+	int pa = min(m , k/2);
+	int pb = k - pa;
+
+	if (a[pa - 1] < b[pb - 1])
+		return findKth(a + pa, m - pa, b, pb, k - pa);
+	else if (a[pa - 1] > b[pb - 1])
+		return findKth(a, pa, b + pb, n - pb, k - pb);
+	else
+		return a[pa -1];
+}
+
+int findKth(int *a, int m, int k = 0){
+
+	if (a == NULL) return 0;
+	//if (m < k) return 0;
+
+	int extmp;
+	int piv = a[m - 1];
+	int r = m - 1, l = 0;
+	while (r > l){
+		while (r > l && a[r] >= piv) r -= 1;
+		while (r > l && a[l] <  piv) l += 1;
+		if (l < r) {		//尚未遇到的情况，调整
+			swap(a[l], a[r]);
+		}
+		else if (a[l] > piv) {//lr遇到或超过，做最后一次调整,1 7 2 4 8 6
+			swap(a[l], a[m - 1]);
+		}
+	}
+	return l;// [0, l], [l+1 , m-1]
+}
+
+void myqsort(int a[], int length){
+	if (a == NULL || length < 2) return;
+	int Lcount = findKth(a, length)+1;
+	myqsort(a, Lcount);
+	myqsort(a + Lcount, length - Lcount);
+}
+
 
 void comb(int m, int k, int *a)
 {
