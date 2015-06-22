@@ -1,4 +1,5 @@
-package n11;
+package n42;
+
 
 public class Solution {
 
@@ -23,4 +24,5 @@ public class Solution {
 		}
 		return sum;
     }
+
 }
