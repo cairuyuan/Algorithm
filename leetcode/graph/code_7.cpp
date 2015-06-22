@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "code_7.h"
+#include "LinkNode.h"
+
 #define MaxInt 0x3f3f3f3f
 #define N 110
 
@@ -13,13 +15,48 @@ class tmp{
 void comb(int , int , int *);
 int main(int argc, char * argv)
 {
-	int k = 3;
-	int *a = new int[k];
-	comb(5, 3, a);
-
+	//int k = 3;
+	//int *a = new int[k];
+	//comb(5, 3, a);
+	
+	int a[] =  {1, 1};
+	ListNode *head = makelist(a, 2);
+	print(head);
+	head = removeElements(head,1);
+	print(head);
 	return 0;
 }
 
+ListNode* removeElements(ListNode* head, int val){
+
+	ListNode *m = NULL, *p = NULL, *tmp = NULL;
+
+	while(head != NULL && head->val == val){
+		tmp = head;
+		head = head->next;
+		tmp->next = NULL;
+		delete tmp;
+	}
+
+	if (head == NULL) return NULL;
+
+	p = head;
+	m = p->next;
+
+	while (m) {
+		if (m->val == val){
+			tmp = m;
+			m = p->next = m->next;
+			tmp->next = NULL;
+			delete tmp;
+		}
+		else{
+			p = m;
+			m = m->next;
+		}
+	}
+	return head;
+}
 void comb(int m, int k, int *a)
 {
 	int i, j;
