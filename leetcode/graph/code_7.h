@@ -28,4 +28,6 @@ int calculateMinimumHP(vector<vector<int> > &dungeon);
 string largestNumber(vector<int> &num);
 
 int prim();
+ListNode* removeElements(ListNode* head, int val);
+
 #endif

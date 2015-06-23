@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "code_7.h"
+#include "LinkNode.h"
+
 #define MaxInt 0x3f3f3f3f
 #define N 110
 
@@ -163,6 +165,37 @@ void myqsort(int a[], int length){
 }
 
 
+ListNode* removeElements(ListNode* head, int val){
+
+	ListNode *m = NULL, *p = NULL, *tmp = NULL;
+
+	while(head != NULL && head->val == val){
+		tmp = head;
+		head = head->next;
+		tmp->next = NULL;
+		delete tmp;
+	}
+
+	if (head == NULL) return NULL;
+
+	p = head;
+	m = p->next;
+
+	while (m) {
+		if (m->val == val){
+			tmp = m;
+			m = p->next = m->next;
+			tmp->next = NULL;
+			delete tmp;
+		}
+		else{
+			p = m;
+			m = m->next;
+		}
+	}
+	return head;
+}
+
 void comb(int m, int k, int *a)
 {
 	int i, j;
@@ -271,24 +304,21 @@ int calculateMinimumHP(vector<vector<int> > &dungeon)
 	}
 	return dp[0][0] + 1;
 }
+
 int findPeakElement(const vector<int> &num)
 {
 	// greater than its neighbors.
 	// num[-1] = num[n] = -¡Þ.
 	size_t n = num.size();
-	if (num[0] > num[1])
-	{
+	if (num[0] > num[1]) {
 		return 0;
 	}
-	if (num[n-1] > num[n-2])
-	{
+	if (num[n-1] > num[n-2]) {
 		return n - 1;
 	}
 
-	for (size_t i = 1; i < n-1; i++)
-	{
-		if (num[i-1] < num[i] && num[i] > num[i+1])
-		{
+	for (size_t i = 1; i < n-1; i++) {
+		if (num[i-1] < num[i] && num[i] > num[i+1]) {
 			return i;
 		}
 	}
@@ -306,6 +336,7 @@ You may imagine that num[-1] = num[n] = -¡Þ.
 For example, in array [1, 2, 3, 1], 3 is a peak element and your function should return the index number 2.
 	*/
 }
+
 void getints(const string & version, queue<int> & v)
 {
 	int i = 0, j = 0;
