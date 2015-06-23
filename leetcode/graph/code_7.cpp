@@ -16,22 +16,98 @@ int findKth(int *a, int m, int *b, int n, int k);
 int findKth(int *a, int m, int k);
 void myqsort(int a[], int length );
 int bsearch(int a[], int length, int target);
+
+int mostContainer(int a[],int length);
+int calculate(string s);
+int findKth2(int *a, int l, int r);
+
 int main(int argc, char * argv)
 {
 	const int m = 5, n  = 7;
 
-	int a[m] = {1,3,7,9,23};
-	int b[n] = {3,5,56,67,88,99,100};
-	//for (size_t i = 0; i < (m+n); i++) {
-	//	cout << "find kth :" << findKth(a,m,b,n,i+1) << "\n";
-	//}
-	const int mm = 2;
-	int aa[mm] = {5,3};
-	myqsort(aa, mm);
+	int a[m] = {6,3,5,9,4};
+	//int b[n] = {3,5,56,67,88,99,100};
+	////for (size_t i = 0; i < (m+n); i++) {
+	////	cout << "find kth :" << findkth(a,m,b,n,i+1) << "\n";
+	////}
+	//const int mm = 2;
+	//int aa[mm] = {5,3};
+	//myqsort(aa, mm);
+
+	//int x = calculate("(1)");//3
+	int k = 3;
+	int p;
+	p = findKth2(a, 0, m - 1);
+	p = findKth2(a, 1, m - 1);
 	return 0;
 }
 
+int findKth2(int *a, int i, int j){
+	if (a == NULL || j <= i) return -1;
 
+	int l = i, r = j;
+	int piv = a[r];
+	while (r > l){
+		while (r > l && a[r] >= piv) r -= 1;
+		while (r > l && a[l] <  piv) l += 1;
+
+		if (l < r)            swap(a[l], a[r]); 
+		else if (a[l] > piv)  swap(a[l], a[j]); 
+	}
+	return l;// [0, l], [l+1 , m-1]
+}
+
+int calculate(string s) {
+	int op = 1, i = 0, ret = 0;
+	while (i < s.size()){
+		switch (s[i]){
+		case '(':{
+					 int j = i + 1, count = 1;
+					 while (count != 0){
+						 if (s[j] == '(')      count += 1; 
+						 else if (s[j] == ')') count -= 1; 
+						 j += 1;
+					 }
+
+					 string subs = s.substr(i + 1, j - i - 2);
+					 int parcal = calculate(subs);
+					 ret += op * parcal;
+					 i = j;
+					 break;
+		}
+		case ' ': i += 1; break;
+		case '-':op = -1; i += 1; break;
+		case '+':op = +1; i += 1; break;
+		default:{
+					int opnum = 0;
+					while (i < s.size() && s[i] <= '9' && s[i] >= '0'){
+						opnum = opnum * 10 + s[i] - '0';
+						i += 1;
+					}
+					ret += op * opnum;
+		}
+		}
+	}
+	return ret;
+}
+
+int mostContainer(int a[], int length){
+	if (!a || length <= 0)
+		return 0;
+
+	int i = 1, j = length - 2;
+	int ret  = min(a[0], a[length - 1])*length;
+	while (i < j)
+	{
+		while (a[i] < a[i - 1] && i < j) i += 1;
+		while (a[j] < a[j + 1] && i < j) j -= 1;
+		const int area = min(a[i], a[j]) *(j - 1);
+
+		if (area > ret) ret = area; 
+	}
+
+	return ret;
+}
 int bsearch(int a[], int length, int target){
 	int i = 0, j = length - 1, m;
 	while (i < j) {
