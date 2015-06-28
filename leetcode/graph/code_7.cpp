@@ -30,6 +30,11 @@ int computeArea(int A, int B, int C, int D, int E, int F, int G, int H);
 int calculate4(string s);
 
 int maximalSquare(vector<vector<char>>& matrix);
+
+int departition(vector<int> &a, int start, int end);
+void mydesort(vector<int> &a, int start, int end);
+int findKL(vector<int>& nums, int k);
+
 int main(int argc, char * argv)
 {
 	const int m = 5, n  = 7;
@@ -67,18 +72,78 @@ int main(int argc, char * argv)
 	/*
 	["01101","11010","01110","11110","11111","00000"]
 	*/
-	vector<string> vs = { "01101", "11010", "01110", "11110", "11111", "00000"};
-	vector<vector<char>> matrix;
-	for (size_t i = 0; i < vs.size(); i++) {
-		vector<char> vc;
-		for (size_t j = 0; j < vs[i].size(); j++) {
-			vc.push_back(vs[i][j]);
-		}
-		matrix.push_back(vc);
+	//vector<string> vs = { "01101", "11010", "01110", "11110", "11111", "00000"};
+	//vector<vector<char>> matrix;
+	//for (size_t i = 0; i < vs.size(); i++) {
+	//	vector<char> vc;
+	//	for (size_t j = 0; j < vs[i].size(); j++) {
+	//		vc.push_back(vs[i][j]);
+	//	}
+	//	matrix.push_back(vc);
+	//}
+	//cout << maximalSquare(matrix) << "\n";
+	vector<int> a = { 2, 5, 4, 3, 1, 7, 9 };
+	for (size_t i = 0; i < a.size(); i++)
+	{
+		cout << findKL(a, i + 1) << ' ';
 	}
-	cout << maximalSquare(matrix) << "\n";
-	return 0;
+	cout << '\n';
+	int tmp = findKL(a, 2);
+	//mydesort(a,0,a.size()-1);
+	return 0; 
 }
+
+int findKLsub(vector<int>& a, int start, int end, int k){
+	if (start > end || start < 0 || end < 0) return -1;
+
+	if (start == end && start == k) return a[k];
+
+	int p = departition(a, start, end);
+	if (p < k) {
+		return findKLsub(a,p,end,k);
+	} else{
+		return findKLsub(a, start, p - 1, k);
+	}
+}
+
+int findKL(vector<int>& a, int k){
+	int L = 0, R = a.size() - 1;
+	while (L < R) {
+		int i = L, j = R, p = a[i];
+		while (i < j) {
+			while (i < j && a[j] < p) --j;
+			a[i] = a[j];
+			while (i < j && a[i] >= p) ++i;
+			a[j] = a[i];
+		}
+		a[i] = p;
+
+		if (i == k - 1) return a[k - 1];
+		else if (i > k - 1) R = i - 1;
+		else L = i + 1;
+	}
+	return a[k - 1];
+}
+
+
+int departition(vector<int> &a, int start, int end){
+	int i = start, j = end, p = a[start];
+	while (i < j){
+		while (i < j && a[i] >= p) i += 1;
+		while (i < j && a[j]  < p) j -= 1;
+		if (i < j) swap(a[i], a[j]);
+		else if (a[i] > p) swap(a[start],a[i]);
+	}
+	return i;
+}
+
+void mydesort(vector<int> &a, int start, int end){
+	if (start >= end || start < 0 || end < 0) return;
+	int p = departition(a, start, end);
+	mydesort(a, start, p - 1);
+	mydesort(a, p, end);
+}
+
 int maximalSquare(vector<vector<char>>& matrix){
 	size_t Y = matrix.size();
 	if (Y == 0) return 0;
