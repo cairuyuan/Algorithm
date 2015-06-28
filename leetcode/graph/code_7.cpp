@@ -27,6 +27,9 @@ int findKth2(int *a, int l, int r);
 int calculate2(string s);
 
 int computeArea(int A, int B, int C, int D, int E, int F, int G, int H);
+int calculate4(string s);
+
+int maximalSquare(vector<vector<char>>& matrix);
 int main(int argc, char * argv)
 {
 	const int m = 5, n  = 7;
@@ -57,10 +60,99 @@ int main(int argc, char * argv)
 	" 3+5 / 2 " = 5
 
 	*/
-	calculate("3 + 2 * 2");
+	//cout << calculate4("3+2*2") << "\n";
+	//cout << calculate4(" 3/2") << "\n";
+	//cout << calculate4(" 3+5 / 2 ") << "\n";
+	//cout << calculate4("1 + 1 - 1") << "\n";
+	/*
+	["01101","11010","01110","11110","11111","00000"]
+	*/
+	vector<string> vs = { "01101", "11010", "01110", "11110", "11111", "00000"};
+	vector<vector<char>> matrix;
+	for (size_t i = 0; i < vs.size(); i++) {
+		vector<char> vc;
+		for (size_t j = 0; j < vs[i].size(); j++) {
+			vc.push_back(vs[i][j]);
+		}
+		matrix.push_back(vc);
+	}
+	cout << maximalSquare(matrix) << "\n";
 	return 0;
 }
+int maximalSquare(vector<vector<char>>& matrix){
+	size_t Y = matrix.size();
+	if (Y == 0) return 0;
+	size_t X = matrix[0].size();
+	vector<int> size(X, 0);
+	int p, ret = 0;
+	for (size_t j = 0; j < X; j++) {
+		size[j] = matrix[0][j] == '0' ? 0 : 1;
+		ret = max(ret, size[j]);
+	}
+	for (size_t i = 1; i < Y; i++) {
+		p = matrix[i][0] == '0' ? 0 : 1;
+		ret = max(ret, p);
+		for (size_t j = 1; j < X; j++) {
+			int tmp = 0;
+			if (matrix[i][j] != '0') {
+				tmp = 1 + min(min(size[j], size[j - 1]), p);
+			}
+			size[j - 1] = p;
+			p = tmp;
+			ret = max(ret, p);
+		}
+		size[X - 1] = p;
+	}
+	return ret*ret;
+}
+int calculate4(string s){
+	stack<int> ss;
+	stack<char> op;
+	int i = 0, t;
 
+	while (i < s.length()) {
+		switch (s[i]){
+		case ' ':i++; break;
+		case '+':
+		case '-':
+			if (!op.empty()){
+				t = ss.top(); ss.pop();
+				if (op.top() == '+') t = ss.top() + t; 
+				else t = ss.top() - t;  
+				ss.pop();
+				ss.push(t);
+				op.pop();
+			}
+			op.push(s[i]);
+			i += 1;
+			break;
+		case '*':
+			i++; op.push('*'); break;
+		case '/':
+			i++; op.push('/'); break;
+		default:
+			t = 0;
+			while (s[i] >= '0' && s[i] <= '9' && i < s.length()) {
+				t = t * 10 + s[i] - '0';
+				i += 1;
+			}
+			if (!op.empty() && (op.top() == '/' || op.top() == '*')) {
+				if (op.top() == '/') t = ss.top() / t; 
+				else                 t = ss.top() * t; 
+				ss.pop(); op.pop();
+			}
+			ss.push(t);
+		}
+
+	}
+	if (!op.empty()) {
+		t = ss.top(); ss.pop();
+		if (op.top() == '+')       t = ss.top() + t;
+		else if (op.top() == '-')  t = ss.top() - t;
+		ss.push(t);
+	}
+	return ss.top();
+}
 
 int calculate2(string s){
 	stack<int> ss;
