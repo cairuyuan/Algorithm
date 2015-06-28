@@ -35,63 +35,7 @@ int departition(vector<int> &a, int start, int end);
 void mydesort(vector<int> &a, int start, int end);
 int findKL(vector<int>& nums, int k);
 
-int main(int argc, char * argv)
-{
-	const int m = 5, n  = 7;
 
-	//int a[m] = {6,3,5,9,4};
-	//int b[n] = {3,5,56,67,88,99,100};
-	////for (size_t i = 0; i < (m+n); i++) {
-	////	cout << "find kth :" << findkth(a,m,b,n,i+1) << "\n";
-	////}
-	//const int mm = 2;
-	//int aa[mm] = {5,3};
-	//myqsort(aa, mm);
-
-	//int x = calculate("(1)");//3
-	//int k = 3;
-	//int p;
-	//p = findKth2(a, 0, m - 1);
-	//p = findKth2(a, 1, m - 1);
-	//computeArea(-1500000001, 0, -1500000000, 1, 1500000000, 0, 1500000001, 1);
-	/*
-	"1 + 1" = 2
-	" 2-1 + 2 " = 3
-	"(1+(4+5+2)-3)+(6+8)" = 23
-	"(1)+(2)"
-
-	"3+2*2" = 7
-	" 3/2 " = 1
-	" 3+5 / 2 " = 5
-
-	*/
-	//cout << calculate4("3+2*2") << "\n";
-	//cout << calculate4(" 3/2") << "\n";
-	//cout << calculate4(" 3+5 / 2 ") << "\n";
-	//cout << calculate4("1 + 1 - 1") << "\n";
-	/*
-	["01101","11010","01110","11110","11111","00000"]
-	*/
-	//vector<string> vs = { "01101", "11010", "01110", "11110", "11111", "00000"};
-	//vector<vector<char>> matrix;
-	//for (size_t i = 0; i < vs.size(); i++) {
-	//	vector<char> vc;
-	//	for (size_t j = 0; j < vs[i].size(); j++) {
-	//		vc.push_back(vs[i][j]);
-	//	}
-	//	matrix.push_back(vc);
-	//}
-	//cout << maximalSquare(matrix) << "\n";
-	vector<int> a = { 2, 5, 4, 3, 1, 7, 9 };
-	for (size_t i = 0; i < a.size(); i++)
-	{
-		cout << findKL(a, i + 1) << ' ';
-	}
-	cout << '\n';
-	int tmp = findKL(a, 2);
-	//mydesort(a,0,a.size()-1);
-	return 0; 
-}
 
 int findKLsub(vector<int>& a, int start, int end, int k){
 	if (start > end || start < 0 || end < 0) return -1;
