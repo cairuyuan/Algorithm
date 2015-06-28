@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "code_7.h"
 #include "LinkNode.h"
+#include "head.h"
+
 
 #define MaxInt 0x3f3f3f3f
 #define N 110
@@ -22,12 +24,14 @@ int bsearch(int a[], int length, int target);
 int mostContainer(int a[],int length);
 int calculate(string s);
 int findKth2(int *a, int l, int r);
+int calculate2(string s);
 
+int computeArea(int A, int B, int C, int D, int E, int F, int G, int H);
 int main(int argc, char * argv)
 {
 	const int m = 5, n  = 7;
 
-	int a[m] = {6,3,5,9,4};
+	//int a[m] = {6,3,5,9,4};
 	//int b[n] = {3,5,56,67,88,99,100};
 	////for (size_t i = 0; i < (m+n); i++) {
 	////	cout << "find kth :" << findkth(a,m,b,n,i+1) << "\n";
@@ -37,13 +41,64 @@ int main(int argc, char * argv)
 	//myqsort(aa, mm);
 
 	//int x = calculate("(1)");//3
-	int k = 3;
-	int p;
-	p = findKth2(a, 0, m - 1);
-	p = findKth2(a, 1, m - 1);
+	//int k = 3;
+	//int p;
+	//p = findKth2(a, 0, m - 1);
+	//p = findKth2(a, 1, m - 1);
+	//computeArea(-1500000001, 0, -1500000000, 1, 1500000000, 0, 1500000001, 1);
+	/*
+	"1 + 1" = 2
+	" 2-1 + 2 " = 3
+	"(1+(4+5+2)-3)+(6+8)" = 23
+	"(1)+(2)"
+
+	"3+2*2" = 7
+	" 3/2 " = 1
+	" 3+5 / 2 " = 5
+
+	*/
+	calculate("3 + 2 * 2");
 	return 0;
 }
 
+
+int calculate2(string s){
+	stack<int> ss;
+	stack<char> op;
+	int i = 0, t;
+	while (i < s.length()) {
+		switch (s[i]) {
+		case ' ':break;
+		case '+':op.push('+'); break;
+		case '-':op.push('-'); break;
+		case '(':op.push('('); break;
+		default:
+			t = 0;
+			if (s[i] == ')'){
+				t = ss.top(); ss.pop(); op.pop();
+			} else {
+				while (s[i] >= '0' && s[i] <= '9' && i < s.length()) {
+					t = t * 10 + s[i] - '0';
+					i += 1;
+				}
+				i -= 1;
+			}
+			while (!op.empty() && op.top() != '(') {
+				t = ss.top() + (op.top() == '+' ? 1 : -1) * t;
+				ss.pop(); op.pop();
+			}
+			ss.push(t);
+			break;
+		}
+		i += 1;
+	}
+	return  ss.top();
+}
+int computeArea(int A, int B, int C, int D, int E, int F, int G, int H){
+	int x = max(A, E), y = max(B, F);
+	int X = min(C, G), Y = min(D,H);
+	return (C - A) * (D - B) + (G - E)*(H - F) - max(0.0, (X*1.0 - x))*max(0.0, (Y*1.0 - y));
+}
 int findKth2(int *a, int i, int j){
 	if (a == NULL || j <= i) return -1;
 
@@ -59,39 +114,49 @@ int findKth2(int *a, int i, int j){
 	return l;// [0, l], [l+1 , m-1]
 }
 
-int calculate(string s) {
-	int op = 1, i = 0, ret = 0;
-	while (i < s.size()){
-		switch (s[i]){
-		case '(':{
-					 int j = i + 1, count = 1;
-					 while (count != 0){
-						 if (s[j] == '(')      count += 1; 
-						 else if (s[j] == ')') count -= 1; 
-						 j += 1;
-					 }
-
-					 string subs = s.substr(i + 1, j - i - 2);
-					 int parcal = calculate(subs);
-					 ret += op * parcal;
-					 i = j;
-					 break;
+static int sindex = 0;
+int fetchNextToken(string &s, int isLookUp){
+	int ret = -5;
+	int presindex = sindex;
+	while (sindex < s.length()) {
+		switch (s[sindex]) {
+		case ' ':break;
+		case '+':ret = -1; break;
+		case '-':ret = -2; return -2;
+		case '*':ret = -3; return -3;
+		case '/':ret = -4; return -4;
+		default:
+			ret = 0;
+			while (s[sindex] >= '0' && s[sindex] <= '9' && sindex < s.length()) {
+				ret = ret * 10 + s[sindex] - '0';
+				sindex += 1;
+			}
+			sindex -= 1;
 		}
-		case ' ': i += 1; break;
-		case '-':op = -1; i += 1; break;
-		case '+':op = +1; i += 1; break;
-		default:{
-					int opnum = 0;
-					while (i < s.size() && s[i] <= '9' && s[i] >= '0'){
-						opnum = opnum * 10 + s[i] - '0';
-						i += 1;
-					}
-					ret += op * opnum;
-		}
-		}
+		sindex += 1;
 	}
+	if (isLookUp)  sindex = presindex; 
+
 	return ret;
 }
+
+int calculate(string s) {
+	
+	stack<int> ss;
+	stack<char> op;
+	int token = 0;
+	int ret;
+	while ((token = fetchNextToken(s, 0)) != -5) {
+		if (token >=0 ) {//Êý×Ö
+			;
+		}
+	}
+	return 0;
+}
+
+
+
+
 
 int mostContainer(int a[], int length){
 	if (!a || length <= 0)
