@@ -4,10 +4,12 @@
 vector<string> summaryRanges(vector<int>& nums);
 int countPrimes(int n);
 void rotate(vector<int>& nums, int k);
+vector<int> majorityElement(vector<int>& nums);
+string fractionToDecimal(int numerator, int denominator);
 
 int main(int argc, char * argv)
 {
-	rotate(vector<int>{1}, 1);
+	cout<<fractionToDecimal(0-1, 0-2147483648)<<"\n";
 	return 0;
 }
 
@@ -69,4 +71,58 @@ void rotate(int nums[], int n, int k) {
 	Reversee(nums, 0, n - k - 1);
 	Reversee(nums, n - k, n - 1);
 	Reversee(nums, 0, n - 1);
+}
+
+
+vector<int> majorityElement(vector<int>& nums) {
+	vector<int> res;
+	int m = 0, n = 0, cm = 0, cn = 0;
+	for (auto &a : nums) {
+		if (a == m) ++cm;
+		else if (a == n) ++cn;
+		else if (cm == 0) m = a, cm = 1;
+		else if (cn == 0) n = a, cn = 1;
+		else --cm, --cn;
+	}
+	cm = cn = 0;
+	for (auto &a : nums) {
+		if (a == m) ++cm;
+		else if (a == n) ++cn;
+	}
+	if (cm > nums.size() / 3) res.push_back(m);
+	if (cn > nums.size() / 3) res.push_back(n);
+	return res;
+}
+
+string fractionToDecimal(int n, int d){
+	/*要考虑正负*/
+	long long numerator = abs((long long)n),denominator = abs((long long)d);
+
+	string res, fra;
+	stringstream stream;
+	stream << numerator / (long long)denominator;
+	stream >> res;
+	stream.clear();
+	map<long long, int> m;
+	long long  t, index = 1;
+	numerator %= denominator;
+	m[numerator] = index++;
+	while (numerator != 0) {
+		numerator *= 10;
+		t = numerator / denominator;
+		fra += (char)(t + '0');
+		numerator %= denominator;
+		if (m[numerator] == 0) {
+			m[numerator] = index++;
+		} else {//出现重复
+			fra += ")";
+			index = m[numerator];
+			fra.insert(index-1,1,'(');
+			break;
+		}
+	}
+	if (fra.size() != 0) res += "." + fra;
+	if (1.0 * n * d < 0) res.insert(0, 1, '-');
+
+	return res;
 }
